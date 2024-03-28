@@ -7,6 +7,7 @@ export const dasboardRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/dashboard",
   component: Dashboard,
+  
   beforeLoad: ({ context, location }) => {
     // check if user is Authenticated otherwise  redirect to login page
     if (!context.userStore.isAuthenticated) {

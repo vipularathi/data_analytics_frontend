@@ -1,13 +1,31 @@
 import React, { useState } from "react";
+import { signUpRoute } from "./signupConfig";
+import { observer } from "mobx-react-lite";
 
-const SignUpPage = () => {
+const SignUpPage = observer(() => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const { user, isAuthenticated } = signUpRoute.useRouteContext({
+    select: (userStore) => {
+      return {
+        user: userStore.userStore,
+        isAuthenticated: userStore.userStore.isAuthenticated,
+      };
+    },
+  });
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    user.signUp({
+      provider: "email",
+      fullname: name,
+      email: email,
+      password: password,
+      provider_token: "string",
+    });
   };
 
   return (
@@ -45,11 +63,13 @@ const SignUpPage = () => {
               required
             />
           </div>
-          <button type="submit">{isSubmitting ? "Loading..." : "Login"}</button>
+          <button type="submit">
+            {isSubmitting ? "Loading..." : "Sign Up"}
+          </button>
         </fieldset>
       </form>
     </div>
   );
-};
+});
 
 export default SignUpPage;

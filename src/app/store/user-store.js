@@ -2,6 +2,7 @@ import { action, makeObservable, observable, runInAction } from "mobx";
 import {
   getAccessToken,
   getUser,
+  isTokenValid,
   refreshToken,
   resetSession,
   setSession,
@@ -46,22 +47,20 @@ export class UserStore {
 
   /** Sign In */
   async signIn(credentials) {
-    this.user = null;
-    this.error = null;
-    this.accessToken = "";
-    this.isAuthenticated = false;
     try {
       const res = await signIn(credentials);
       // TODO: change the path
-      const userData = res?.data?.user;
-      const accessToken = res?.data?.access_token;
+      const userData = res?.data?.data?.user?.data;
+      const accessToken = res?.data?.token;
       setSession(accessToken);
       runInAction(() => {
         this.user = userData;
         this.accessToken = accessToken;
         this.isAuthenticated = true;
       });
+      return res;
     } catch (e) {
+      console.log(e?.response?.data?.message);
       resetSession();
       runInAction(() => {
         this.error = e;
@@ -89,6 +88,7 @@ export class UserStore {
         this.isAuthenticated = true;
       });
     } catch (e) {
+      console.log(e);
       resetSession();
       runInAction(() => {
         this.error = e;
@@ -100,20 +100,28 @@ export class UserStore {
 
   /** Sign Out */
   async signOut() {
-    try {
-      const res = await signOut();
+    const accessToken = getAccessToken();
+    if (isTokenValid(accessToken)) {
+      try {
+        const res = await signOut(accessToken);
+        resetSession();
+        runInAction(() => {
+          this.user = null;
+          this.accessToken = null;
+          this.isAuthenticated = false;
+        });
+      } catch (e) {
+        resetSession();
+        runInAction(() => {
+          this.error = e;
+          this.isAuthenticated = false;
+        });
+      }
+    } else {
       resetSession();
-      runInAction(() => {
-        this.user = null;
-        this.accessToken = null;
-        this.isAuthenticated = false;
-      });
-    } catch (e) {
-      resetSession();
-      runInAction(() => {
-        this.error = e;
-        this.isAuthenticated = false;
-      });
+      this.user = null;
+      this.accessToken = null;
+      this.isAuthenticated = false;
     }
   }
 
@@ -149,7 +157,9 @@ export class UserStore {
     }
   }
 
-  /** Auto Login */
+  /** Auto Login
+   *
+   */
   async attemptAutoLogin() {
     const accessToken = getAccessToken();
     if (isTokenValid(accessToken)) {

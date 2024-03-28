@@ -1,29 +1,39 @@
 import axios from "axios";
 
 // Default configuration links
-const defaultAuthConfig = {
+const authConfig = {
   tokenStorageKey: "jwt_access_token",
-  signInUrl: "api/auth/sign-in",
-  signUpUrl: "api/auth/sign-up",
-  singOutUrl: "api/auth/sign-out",
+  signInUrl: "/auth/sign-in",
+  signUpUrl: "/auth/sign-up",
+  singOutUrl: "/auth/logout",
   tokenRefreshUrl: "api/auth/refresh",
-  getUserUrl: "api/auth/user",
-  updateUserUrl: "api/auth/user",
+  getUserUrl: "/auth/profile",
+  updateUserUrl: "/auth/profile",
   updateTokenFromHeader: false,
 };
+/*
+ * Axios configuration for the API
+ */
+const axiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_AUTH_API_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
 /**
  * Set Session
  */
 export const setSession = (accessToken) => {
   if (accessToken) {
     localStorage.setItem(authConfig.tokenStorageKey, accessToken);
-    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+    axiosInstance.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
   }
 };
 
 export const resetSession = () => {
   localStorage.removeItem(authConfig.tokenStorageKey);
-  delete axios.defaults.headers.common.Authorization;
+  delete axiosInstance.defaults.headers.common.Authorization;
 };
 
 /**
@@ -56,7 +66,7 @@ export const attemptAutoLogin = async () => {
 
   if (isTokenValid(accessToken)) {
     try {
-      const response = await axios.get(authConfig.getUserUrl, {
+      const response = await axiosInstance.get(authConfig.getUserUrl, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       const userData = response?.data;
@@ -77,7 +87,7 @@ export const attemptAutoLogin = async () => {
  * Get current user with access Token
  */
 export const getUser = (accessToken) => {
-  return axios.get(authConfig.getUserUrl, {
+  return axiosInstance.get(authConfig.getUserUrl, {
     headers: { Authorization: `Bearer ${accessToken}` },
   });
 };
@@ -85,27 +95,28 @@ export const getUser = (accessToken) => {
  * Sign In
  */
 export const signIn = (credentails) => {
-  return axios.post(defaultAuthConfig.signInUrl, credentails);
+  return axiosInstance.post(authConfig.signInUrl, credentails);
 };
 /**
  * Sign Up
  */
 export const signUp = (data) => {
-  return axios.post(authConfig.signUpUrl, data);
+  return axiosInstance.post(authConfig.signUpUrl, data);
 };
 /**
  * Sign Out
  */
-export const signOut = () => {
-  return axios.post(authConfig.singOutUrl);
-  resetSession();
+export const signOut = (accessToken) => {
+  return axiosInstance.post(authConfig.singOutUrl, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
 };
 /**
  * Update User
  */
 export const updateUser = async (userData) => {
   try {
-    return await axios.put(authConfig.updateUserUrl, userData);
+    return await axiosInstance.put(authConfig.updateUserUrl, userData);
   } catch (error) {
     return error;
   }
@@ -115,7 +126,7 @@ export const updateUser = async (userData) => {
  */
 export const refreshToken = async () => {
   try {
-    return await axios.post(authConfig.tokenRefreshUrl);
+    return await axiosInstance.post(authConfig.tokenRefreshUrl);
   } catch (error) {
     return error;
   }

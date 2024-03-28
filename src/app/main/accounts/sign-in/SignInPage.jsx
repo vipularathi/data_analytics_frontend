@@ -1,14 +1,16 @@
 import {
   Navigate,
   getRouteApi,
+  redirect,
   useNavigate,
   useRouteContext,
+  useSearch,
 } from "@tanstack/react-router";
 import React, { useState } from "react";
 import { signInRoute } from "./signinConfig";
+import { observer } from "mobx-react-lite";
 
-const routeApi = getRouteApi("/signin");
-const SignInPage = () => {
+const SignInPage = observer(() => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,13 +28,16 @@ const SignInPage = () => {
     },
   });
 
-  const search = routeApi.useSearch();
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    user.setTempUser(email);
-    navigate({ to: search.redirect }); // redirect if login successful
+    user
+      .signIn({ provider: "email", email, password })
+      .then(() => {
+        console.log("Successfully login");
+        navigate({ to: "/dashboard" }); // redirect if login successful
+      })
+      .catch(() => {});
   };
 
   return (
@@ -44,7 +49,7 @@ const SignInPage = () => {
             <label htmlFor="username-input">Email</label>
             <input
               id="username-input"
-              type="text"
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -65,6 +70,6 @@ const SignInPage = () => {
       </form>
     </div>
   );
-};
+});
 
 export default SignInPage;

@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import { dasboardRoute } from "./dashboardConfig";
 import { useNavigate } from "@tanstack/react-router";
+import { observer } from "mobx-react-lite";
 
-const Dashboard = () => {
+const Dashboard = observer(() => {
   const navigate = useNavigate();
-  const { user, isAuthenticated } = dasboardRoute.useRouteContext({
+  const { user } = dasboardRoute.useRouteContext({
     select: (userStore) => {
       return {
         user: userStore.userStore,
@@ -14,7 +15,14 @@ const Dashboard = () => {
   });
 
   const handleLogout = () => {
-    user.resetTempUser();
+    user
+      .signOut()
+      .then(() => {
+        console.log("successfully Sign Out");
+      })
+      .catch(() => {
+        console.log("Error in Sign Out");
+      });
     navigate({ to: "/" });
   };
 
@@ -22,20 +30,15 @@ const Dashboard = () => {
     <div>
       <h3>Dashboard page</h3>
       <p>
-        Hi<b> {user.user}</b>!
+        Hi <b>{user.user?.displayName}</b>!
       </p>
       <p>If you can see this, that means you are authenticated.</p>
       <div className="mt-4">
-        <button
-          type="button"
-          onClick={handleLogout}
-          className="bg-slate-500 text-white py-2 px-4 rounded-md"
-        >
+        <button type="button" onClick={handleLogout}>
           Logout
         </button>
       </div>
     </div>
   );
-};
-
+});
 export default Dashboard;

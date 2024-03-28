@@ -1,8 +1,9 @@
 import { Link, Outlet } from "@tanstack/react-router";
 import React from "react";
 import { rootRoute } from "./rootConfig";
+import { observer } from "mobx-react-lite";
 
-const RootComponent = () => {
+const RootComponent = observer(() => {
   const { user, isAuthenticated } = rootRoute.useRouteContext({
     select: (userStore) => {
       return {
@@ -11,6 +12,7 @@ const RootComponent = () => {
       };
     },
   });
+
   return (
     <>
       <div style={{ display: "flex", gap: 10 }}>
@@ -23,7 +25,7 @@ const RootComponent = () => {
         >
           Home
         </Link>
-        {isAuthenticated ? (
+        {user.isAuthenticated ? (
           <Link
             to={"/dashboard"}
             activeProps={{
@@ -60,6 +62,6 @@ const RootComponent = () => {
       <Outlet />
     </>
   );
-};
+});
 
 export default RootComponent;

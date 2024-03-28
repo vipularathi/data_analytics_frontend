@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import React from "react";
 import { homeRoute } from "./homeConfig";
+import { observer } from "mobx-react-lite";
 
-const Home = () => {
+const Home = observer(() => {
   const { user, isAuthenticated } = homeRoute.useRouteContext({
     select: (userStore) => {
       return {
@@ -11,7 +12,7 @@ const Home = () => {
       };
     },
   });
-  
+
   return (
     <div>
       <h3>Welcome Home!</h3>
@@ -22,6 +23,6 @@ const Home = () => {
       </p>
     </div>
   );
-};
+});
 
 export default Home;

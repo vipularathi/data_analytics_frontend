@@ -1,11 +1,18 @@
 import { Outlet, RouterProvider } from "@tanstack/react-router";
 import { router } from "./route";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 function App() {
   /*
-   * The RouterProvider provide the context to whole app 
+   * The RouterProvider provide the context to whole app
    */
-  return <RouterProvider router={router} />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
 }
 
 export default App;
