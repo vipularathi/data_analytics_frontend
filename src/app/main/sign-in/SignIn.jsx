@@ -1,43 +1,35 @@
 import {
+  Link,
   useNavigate,
-  useRouteContext,
 } from "@tanstack/react-router";
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
+import { userStore } from "../../store/user";
 
 const SignInPage = observer(() => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
-
-  /*
-   * accessing the userStore with Router Context
-   */
-  const { user } = useRouteContext({
-    select: (userStore) => {
-      return {
-        user: userStore.userStore,
-        isAuthenticated: userStore.userStore.isAuthenticated,
-      };
-    },
-  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    user
+    userStore.isLoading = true;
+
+    userStore
       .signIn({ provider: "email", email, password })
       .then(() => {
-        console.log("Successfully login");
-        navigate({ to: "/dashboard" }); // redirect if login successful
+        userStore.isLoading = false;
+        navigate({ to: "/" });
       })
-      .catch(() => {});
+      .catch(() => {
+        userStore.isLoading = false;
+      });
   };
 
   return (
     <div>
       <h3>Login page</h3>
+      <Link to="/signup">Sign Up</Link>
       <form onSubmit={handleSubmit}>
         <fieldset>
           <div style={{ padding: 10, display: "flex", gap: 10 }}>
@@ -60,7 +52,7 @@ const SignInPage = observer(() => {
               required
             />
           </div>
-          <button type="submit">{isSubmitting ? "Loading..." : "Login"}</button>
+          <button type="submit">{userStore.isLoading ? "Loading..." : "Login"}</button>
         </fieldset>
       </form>
     </div>

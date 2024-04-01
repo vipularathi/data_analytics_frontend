@@ -3,13 +3,8 @@ import { dasboardRoute } from "./app/main/dashboard/dashboardConfig";
 import { signInRoute } from "./app/main/sign-in/signinConfig";
 import { signUpRoute } from "./app/main/sign-up/signupConfig";
 import { rootRoute } from "./app/main/rootConfig";
-import { homeRoute } from "./app/main/home/homeConfig";
-import { UserStore } from "./app/store/user-store";
+import { userStore } from "./app/store/user";
 
-/*
- * Initaite the userStore to provide context in Router context
- */
-const userStore = new UserStore();
 /*
  * Define the router Tree for adding children based on pages
  */
@@ -17,7 +12,6 @@ const routeTree = rootRoute.addChildren([
   dasboardRoute,
   signInRoute,
   signUpRoute,
-  homeRoute,
 ]);
 
 /*
@@ -25,7 +19,7 @@ const routeTree = rootRoute.addChildren([
  */
 export const router = createRouter({
   routeTree,
-  defaultPreload: "intent",
+  defaultPreload: false,
   context: {
     userStore: userStore, // This will be set after we wrap the app in an AuthProvider
   },

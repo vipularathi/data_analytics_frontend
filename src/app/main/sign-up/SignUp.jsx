@@ -1,31 +1,33 @@
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { useRouteContext } from "@tanstack/react-router";
+import { userStore } from "../../store/user";
+import { useNavigate } from "@tanstack/react-router";
 
 const SignUpPage = observer(() => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isSubmitting] = useState(false);
-
-  const { user } = useRouteContext({
-    select: (userStore) => {
-      return {
-        user: userStore.userStore,
-        isAuthenticated: userStore.userStore.isAuthenticated,
-      };
-    },
-  });
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    user.signUp({
-      provider: "email",
-      fullname: name,
-      email: email,
-      password: password,
-      provider_token: "string",
-    });
+    userStore
+      .createUser({
+        provider: "email",
+        fullname: name,
+        email: email,
+        password: password,
+        provider_token: "string",
+      })
+      .then((resp) => {
+        console.log(resp)
+        
+        // userStore.isLoading = false;
+        // navigate({ to: "/" });
+      })
+      .catch(() => {
+        userStore.isLoading = false;
+      });
   };
 
   return (
@@ -64,7 +66,7 @@ const SignUpPage = observer(() => {
             />
           </div>
           <button type="submit">
-            {isSubmitting ? "Loading..." : "Sign Up"}
+            {userStore.isLoading ? "Loading..." : "Sign Up"}
           </button>
         </fieldset>
       </form>

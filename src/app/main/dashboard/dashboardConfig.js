@@ -5,11 +5,11 @@ import { rootRoute } from "../rootConfig";
 /** Routing for Dashboard */
 export const dasboardRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/dashboard",
+  path: "/",
   component: Dashboard,
   
   beforeLoad: ({ context, location }) => {
-    // check if user is Authenticated otherwise  redirect to login page
+    // check if user is Authenticated otherwise redirect to login page
     if (!context.userStore.isAuthenticated) {
       throw redirect({
         to: "/signin",

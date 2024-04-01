@@ -1,34 +1,23 @@
-import { useNavigate, useRouteContext } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { observer } from "mobx-react-lite";
+import { userStore } from "../../store/user";
 
 const Dashboard = observer(() => {
   const navigate = useNavigate();
-  const { user } = useRouteContext({
-    select: (userStore) => {
-      return {
-        user: userStore.userStore,
-        isAuthenticated: userStore.userStore.isAuthenticated,
-      };
-    },
-  });
 
   const handleLogout = () => {
-    user
+    userStore
       .signOut()
       .then(() => {
-        console.log("successfully Sign Out");
+        navigate({ to: "/signin" });
       })
-      .catch(() => {
-        console.log("Error in Sign Out");
-      });
-    navigate({ to: "/" });
   };
 
   return (
     <div>
       <h3>Dashboard page</h3>
       <p>
-        Hi <b>{user.user?.displayName}</b>!
+        Hi <b>{userStore.user?.displayName}</b>!
       </p>
       <p>If you can see this, that means you are authenticated.</p>
       <div className="mt-4">
