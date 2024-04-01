@@ -1,10 +1,8 @@
-import { Link } from "@tanstack/react-router";
-import React from "react";
-import { homeRoute } from "./homeConfig";
+import { Link, useRouteContext } from "@tanstack/react-router";
 import { observer } from "mobx-react-lite";
 
 const Home = observer(() => {
-  const { user, isAuthenticated } = homeRoute.useRouteContext({
+  const { isAuthenticated } = useRouteContext({
     select: (userStore) => {
       return {
         user: userStore.userStore,

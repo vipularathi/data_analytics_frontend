@@ -1,11 +1,9 @@
-import React, { useContext } from "react";
-import { dasboardRoute } from "./dashboardConfig";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useRouteContext } from "@tanstack/react-router";
 import { observer } from "mobx-react-lite";
 
 const Dashboard = observer(() => {
   const navigate = useNavigate();
-  const { user } = dasboardRoute.useRouteContext({
+  const { user } = useRouteContext({
     select: (userStore) => {
       return {
         user: userStore.userStore,

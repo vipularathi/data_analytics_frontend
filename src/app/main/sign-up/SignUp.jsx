@@ -1,25 +1,14 @@
-import {
-  Navigate,
-  getRouteApi,
-  redirect,
-  useNavigate,
-  useRouteContext,
-  useSearch,
-} from "@tanstack/react-router";
-import React, { useState } from "react";
-import { signInRoute } from "./signinConfig";
+import { useState } from "react";
 import { observer } from "mobx-react-lite";
+import { useRouteContext } from "@tanstack/react-router";
 
-const SignInPage = observer(() => {
+const SignUpPage = observer(() => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const navigate = useNavigate();
+  const [isSubmitting] = useState(false);
 
-  /*
-   * accessing the userStore with Router Context
-   */
-  const { user, isAuthenticated } = signInRoute.useRouteContext({
+  const { user } = useRouteContext({
     select: (userStore) => {
       return {
         user: userStore.userStore,
@@ -28,27 +17,36 @@ const SignInPage = observer(() => {
     },
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    user
-      .signIn({ provider: "email", email, password })
-      .then(() => {
-        console.log("Successfully login");
-        navigate({ to: "/dashboard" }); // redirect if login successful
-      })
-      .catch(() => {});
+    user.signUp({
+      provider: "email",
+      fullname: name,
+      email: email,
+      password: password,
+      provider_token: "string",
+    });
   };
 
   return (
     <div>
-      <h3>Login page</h3>
+      <h3>Sign page</h3>
       <form onSubmit={handleSubmit}>
         <fieldset>
           <div style={{ padding: 10, display: "flex", gap: 10 }}>
-            <label htmlFor="username-input">Email</label>
+            <label htmlFor="name">Name</label>
             <input
-              id="username-input"
+              id="name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+          <div style={{ padding: 10, display: "flex", gap: 10 }}>
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -65,11 +63,13 @@ const SignInPage = observer(() => {
               required
             />
           </div>
-          <button type="submit">{isSubmitting ? "Loading..." : "Login"}</button>
+          <button type="submit">
+            {isSubmitting ? "Loading..." : "Sign Up"}
+          </button>
         </fieldset>
       </form>
     </div>
   );
 });
 
-export default SignInPage;
+export default SignUpPage;

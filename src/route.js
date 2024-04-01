@@ -1,7 +1,7 @@
 import { createRouter } from "@tanstack/react-router";
 import { dasboardRoute } from "./app/main/dashboard/dashboardConfig";
-import { signInRoute } from "./app/main/accounts/sign-in/signinConfig";
-import { signUpRoute } from "./app/main/accounts/sign-up/signupConfig";
+import { signInRoute } from "./app/main/sign-in/signinConfig";
+import { signUpRoute } from "./app/main/sign-up/signupConfig";
 import { rootRoute } from "./app/main/rootConfig";
 import { homeRoute } from "./app/main/home/homeConfig";
 import { UserStore } from "./app/store/user-store";
@@ -29,5 +29,4 @@ export const router = createRouter({
   context: {
     userStore: userStore, // This will be set after we wrap the app in an AuthProvider
   },
-
 });
