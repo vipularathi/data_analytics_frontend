@@ -39,6 +39,7 @@ const SignInPage = observer(() => {
     <div>
       <h3>Login page</h3>
       <Link to="/signup">Sign Up</Link>
+      <Link to="/forget-password">Forget Password</Link>
       <form onSubmit={handleSubmit}>
         <fieldset>
           <div style={{ padding: 10, display: "flex", gap: 10 }}>

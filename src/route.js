@@ -8,6 +8,7 @@ import { backtestRoute } from "./app/main/backtest/backtestConfig";
 import { axtRoute } from "./app/main/axt/axtConfig";
 import { createBacktestRoute } from "./app/main/create-backtest/createBacktestConfig";
 import { backtestReportRoute } from "./app/main/backtest-report/backtestReportConfig";
+import { forgetPasswordRoute } from "./app/main/forget-password/forgetPasswordConfig";
 
 /*
  * Define the router Tree for adding children based on pages
@@ -16,6 +17,7 @@ const routeTree = rootRoute.addChildren([
   dasboardRoute.addChildren([backtestRoute, backtestReportRoute, axtRoute, createBacktestRoute]),
   signInRoute,
   signUpRoute,
+  forgetPasswordRoute,
 ]);
 
 /*

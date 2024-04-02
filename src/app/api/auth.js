@@ -10,7 +10,7 @@ class AuthApi {
     sendOtpUrl: "auth/otp",
     signOutUrl: "auth/logout",
     verifyOtpUrl: "auth/verify-otp",
-    verifyTokenUrl: "auth/verify-token"
+    verifyTokenUrl: "auth/verify-token",
   };
 
   constructor(axiosInstance) {

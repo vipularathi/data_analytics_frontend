@@ -12,17 +12,26 @@ class UserStore {
   accessToken = "";
   isAuthenticated = false;
   isLoading = false;
+  showCreatePW = false;
 
   constructor() {
     makeObservable(this, {
       user: false,
       userRole: false,
+      accessToken: false,
       requestToken: false,
+      showCreatePW: observable,
       verifyingToken: observable,
       showOtp: observable,
       isAuthenticated: observable,
       isLoading: observable,
+      createUser: action,
       signIn: action,
+      verifyOtp: action,
+      signOut: action,
+      resetPassword: action,
+      setNewPassword: action,
+      verifyToken: action,
     })
   }
 
@@ -62,14 +71,19 @@ class UserStore {
       runInAction(() => {
         this.showOtp = false;
         this.isLoading = false;
+        this.requestToken = null;
       })
       return respData
     } catch (error) {
       //
+      runInAction(() => {
+        this.showOtp = false;
+        this.isLoading = false;
+        this.requestToken = null;
+      })
     }
   }
   
-  /** Sign In */
   async signIn(credentials) {
 
     try {
@@ -141,11 +155,20 @@ class UserStore {
     }
 
     authApi.setSession(accessToken);
+
+    
     try {
-      await authApi.verifyToken();
+      const { data: respData } = await authApi.verifyToken();
+
+      const userData = respData?.data.user;
+  
+      const accessToken = respData.token;
       runInAction(() => {
         this.verifyingToken = false;
         this.isAuthenticated = true;
+        this.user = userData.data;
+        this.userRole = userData.role;
+        this.accessToken = accessToken;
       })
     } catch (e) {
       //
@@ -153,6 +176,42 @@ class UserStore {
         this.verifyingToken = false;
         this.isAuthenticated = false;
       })
+    }
+  }
+
+
+  async resetPassword(data) {
+    runInAction(() => {
+      this.isLoading = true;
+    })
+    try {
+      const { data: respData } = await authApi.sendOtp(data);
+      console.log(respData);
+      runInAction(() => {
+        this.showCreatePW = true;
+        this.isLoading = false;
+        this.requestToken = respData.request_token;
+      })
+    } catch (error) {
+      console.log(error)
+      //
+    }
+  }
+
+  async setNewPassword({ otp, password }) {
+    runInAction(() => {
+      this.isLoading = true;
+    })
+    try {
+      const { data: respData } = await authApi.verifyOtp({ otp, password }, { headers: { 'request-token': this.requestToken } });
+      runInAction(() => {
+        this.isLoading = false;
+        this.showCreatePW = false;
+        this.requestToken = null;
+      })
+      return respData;
+    } catch (error) {
+      //
     }
   }
 }

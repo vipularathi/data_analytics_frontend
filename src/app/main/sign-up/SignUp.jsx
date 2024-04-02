@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { userStore } from "../../store/user";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 
 const SignUpPage = observer(() => {
   const [name, setName] = useState("");
@@ -40,7 +40,8 @@ const SignUpPage = observer(() => {
   }
   return (
     <div>
-      <h3>Sign page</h3>
+      <h3>Sign Up</h3>
+      <Link to="/signin">Sign in</Link>
       <form onSubmit={handleSubmit}>
         <fieldset>
           <div style={{ padding: 10, display: "flex", gap: 10 }}>
