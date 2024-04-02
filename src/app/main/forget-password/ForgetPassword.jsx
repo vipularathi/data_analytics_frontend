@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { userStore } from "../../store/user";
+import { userStore } from "../../store/user.store";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 

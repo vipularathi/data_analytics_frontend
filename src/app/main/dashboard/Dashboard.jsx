@@ -1,6 +1,6 @@
 import { Link, Outlet, useNavigate } from "@tanstack/react-router";
 import { observer } from "mobx-react-lite";
-import { userStore } from "../../store/user";
+import { userStore } from "../../store/user.store";
 import { useEffect } from "react";
 
 const Dashboard = observer(() => {

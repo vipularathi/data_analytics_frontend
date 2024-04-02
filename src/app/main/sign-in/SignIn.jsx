@@ -4,7 +4,7 @@ import {
 } from "@tanstack/react-router";
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { userStore } from "../../store/user";
+import { userStore } from "../../store/user.store";
 
 const SignInPage = observer(() => {
   const [email, setEmail] = useState("");

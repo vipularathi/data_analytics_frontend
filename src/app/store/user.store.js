@@ -1,7 +1,7 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import {
   authApi
-} from "../api/auth";
+} from "../services/auth.service";
 
 class UserStore {
   verifyingToken = true;

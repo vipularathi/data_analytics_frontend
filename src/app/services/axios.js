@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { userStore } from '../store/user';
+import { userStore } from '../store/user.store';
 import { API_BASE_URL } from '../utils/url';
 
 export default function createAxiosInstance(baseURL) {

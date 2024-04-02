@@ -3,7 +3,7 @@ import { dasboardRoute } from "./app/main/dashboard/dashboardConfig";
 import { signInRoute } from "./app/main/sign-in/signinConfig";
 import { signUpRoute } from "./app/main/sign-up/signupConfig";
 import { rootRoute } from "./app/main/rootConfig";
-import { userStore } from "./app/store/user";
+import { userStore } from "./app/store/user.store";
 import { backtestRoute } from "./app/main/backtest/backtestConfig";
 import { axtRoute } from "./app/main/axt/axtConfig";
 import { createBacktestRoute } from "./app/main/create-backtest/createBacktestConfig";

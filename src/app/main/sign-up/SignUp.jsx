@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { userStore } from "../../store/user";
+import { userStore } from "../../store/user.store";
 import { Link, useNavigate } from "@tanstack/react-router";
 
 const SignUpPage = observer(() => {
