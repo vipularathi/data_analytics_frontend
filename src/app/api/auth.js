@@ -5,22 +5,28 @@ class AuthApi {
   #axiosInstance = null;
 
   authConfig = {
-    tokenStorageKey: "jwt_access_token",
     signInUrl: "auth/sign-in",
     signUpUrl: "auth/sign-up",
     sendOtpUrl: "auth/otp",
-    singOutUrl: "auth/logout",
-    tokenRefreshUrl: "api/auth/refresh",
-    getUserUrl: "auth/profile",
-    updateUserUrl: "auth/profile",
+    signOutUrl: "auth/logout",
+    verifyOtpUrl: "auth/verify-otp",
+    verifyTokenUrl: "auth/verify-token"
   };
 
   constructor(axiosInstance) {
     this.#axiosInstance = axiosInstance;
   }
 
+  getToken() {
+    return localStorage.getItem('token');
+  }
+
   setToken(token) {
     localStorage.setItem('token', token);
+    this.#axiosInstance.defaults.headers.common['auth-token'] = token;
+  }
+
+  setSession(token) {
     this.#axiosInstance.defaults.headers.common['auth-token'] = token;
   }
 
@@ -33,6 +39,18 @@ class AuthApi {
     return this.#axiosInstance.post(this.authConfig.sendOtpUrl, data)
   }
 
+  verifyOtp(data, config) {
+    return this.#axiosInstance.post(
+      this.authConfig.verifyOtpUrl,
+      data,
+      config
+    )
+  }
+
+  verifyToken() {
+    return this.#axiosInstance.get(this.authConfig.verifyTokenUrl);
+  }
+
   signUp(credentails) {
     return this.#axiosInstance.post(this.authConfig.signUpUrl, credentails);
   }
@@ -42,7 +60,7 @@ class AuthApi {
   }
 
   signOut() {
-    return this.#axiosInstance.post(this.authConfig.singOutUrl)
+    return this.#axiosInstance.post(this.authConfig.signOutUrl)
   }
 }
 

@@ -1,10 +1,14 @@
-import { useNavigate } from "@tanstack/react-router";
+import { Link, Outlet, useNavigate } from "@tanstack/react-router";
 import { observer } from "mobx-react-lite";
 import { userStore } from "../../store/user";
+import { useEffect } from "react";
 
 const Dashboard = observer(() => {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    userStore.verifyToken()
+  }, [])
   const handleLogout = () => {
     userStore
       .signOut()
@@ -12,19 +16,26 @@ const Dashboard = observer(() => {
         navigate({ to: "/signin" });
       })
   };
-
   return (
     <div>
-      <h3>Dashboard page</h3>
-      <p>
-        Hi <b>{userStore.user?.displayName}</b>!
-      </p>
-      <p>If you can see this, that means you are authenticated.</p>
-      <div className="mt-4">
-        <button type="button" onClick={handleLogout}>
-          Logout
-        </button>
-      </div>
+      {userStore.verifyingToken ? <p>Loading...</p> : (
+        <>
+          <h3>Dashboard page</h3>
+          <p>
+            Hi <b>{userStore.user?.displayName}</b>!
+          </p>
+          <Link to="/axt">AXT</Link>
+          <Link to="/backtest">Backtest</Link>
+          <p>If you can see this, that means you are authenticated.</p>
+          <div className="mt-4">
+            <button type="button" onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
+          <Outlet />
+        </>
+      )}
+      
     </div>
   );
 });

@@ -9,6 +9,7 @@ import { userStore } from "../../store/user";
 const SignInPage = observer(() => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [otp, setOtp] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -26,6 +27,14 @@ const SignInPage = observer(() => {
       });
   };
 
+  const handleOtpSubmit = (e) => {
+    e.preventDefault();
+
+    userStore.verifyOtp({ otp }).then(() => {
+      userStore.showOtp = false;
+      navigate({ to: "/signin" });
+    })
+  }
   return (
     <div>
       <h3>Login page</h3>
@@ -55,6 +64,20 @@ const SignInPage = observer(() => {
           <button type="submit">{userStore.isLoading ? "Loading..." : "Login"}</button>
         </fieldset>
       </form>
+
+      {userStore.showOtp && (<form onSubmit={handleOtpSubmit}>
+        <div style={{ padding: 10, display: "flex", gap: 10 }}>
+          <label htmlFor="otp">OTP</label>
+          <input
+            id="otp"
+            type="number"
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit">{userStore.isLoading ? "Loading..." : "verify"}</button>
+      </form>)}
     </div>
   );
 });
