@@ -1,6 +1,12 @@
 module.exports = {
   root: true,
   env: { browser: true, es2020: true },
+  plugins: [
+    "react-refresh",
+    "mobx",
+    "@tanstack/query",
+    "unused-imports",
+  ],
   extends: [
     "airbnb",
     "eslint:recommended",
@@ -8,18 +14,10 @@ module.exports = {
     "plugin:react/jsx-runtime",
     "plugin:react-hooks/recommended",
     "plugin:mobx/recommended",
-    "plugin:prettier/recommended",
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parserOptions: { ecmaVersion: "latest", sourceType: "module" },
   settings: { react: { version: "18.2" } },
-  plugins: [
-    "react-refresh",
-    "mobx",
-    "@tanstack/query",
-    "unused-imports",
-    "prettier",
-  ],
   rules: {
     "react/jsx-no-target-blank": "off",
     "react-refresh/only-export-components": [
@@ -34,26 +32,7 @@ module.exports = {
       },
     ],
     "jsx-quotes": ["warn", "prefer-double"],
-    "unused-imports/no-unused-imports": "warn",
-
-    "prettier/prettier": [
-      "warn",
-      {
-        endOfLine: "auto",
-        arrowParens: "always",
-        bracketSpacing: true,
-        jsxBracketSameLine: false,
-        printWidth: 120,
-        proseWrap: "preserve",
-        requirePragma: false,
-        semi: true,
-        singleQuote: true,
-        tabWidth: 2,
-        trailingComma: "none",
-        useTabs: true,
-        singleAttributePerLine: true,
-      },
-    ],
+    "unused-imports/no-unused-imports": "error",
 
     // Mobx [https://www.npmjs.com/package/eslint-plugin-mobx]
     "mobx/exhaustive-make-observable": "warn",

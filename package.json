@@ -28,7 +28,6 @@
     "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-mobx": "^0.0.9",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",

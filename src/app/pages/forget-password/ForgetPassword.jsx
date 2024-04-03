@@ -38,24 +38,29 @@ const ForgetPassword = observer(() => {
         </form>
       ) : (
         <form onSubmit={handleSetNewPassword}>
-          <label htmlFor="newPW">New Password:</label>
+          <label htmlFor="newPW">
+            New Password:
+            <input
+              id="newPW"
+              type="text"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+          </label>
           <br />
-          <input
-            id="newPW"
-            type="text"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
+
           <br />
-          <label htmlFor="otp">OTP</label>
+          <label htmlFor="otp">
+            OTP
+            <input
+              id="otp"
+              type="text"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+            />
+          </label>
           <br />
-          <input
-            id="otp"
-            type="text"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-          />
-          <button>{userStore.isLoading ? "Loading..." : "submit"}</button>
+          <button type="submit">{userStore.isLoading ? "Loading..." : "submit"}</button>
         </form>
       )}
     </div>

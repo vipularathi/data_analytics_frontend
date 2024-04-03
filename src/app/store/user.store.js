@@ -147,7 +147,7 @@ export class UserStore {
     }
   }
 
-  async signOut() {
+  static async signOut() {
     try {
       await authApi.signOut();
 
@@ -168,7 +168,7 @@ export class UserStore {
         this.isAuthenticated = false;
         this.verifyingToken = false;
       });
-      return;
+      return undefined;
     }
 
     authApi.setSession(accessToken);
@@ -184,12 +184,16 @@ export class UserStore {
         this.userRole = userData.role;
         this.accessToken = respData.token;
       });
-    } catch (e) {
+
+      return userData;
+    } catch (err) {
       //
       runInAction(() => {
         this.verifyingToken = false;
         this.isAuthenticated = false;
       });
+
+      return err;
     }
   }
 
