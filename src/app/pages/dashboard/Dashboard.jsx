@@ -8,18 +8,18 @@ const Dashboard = observer(() => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    userStore.verifyToken()
-  }, [userStore])
+    userStore.verifyToken();
+  }, [userStore]);
   const handleLogout = () => {
-    userStore
-      .signOut()
-      .then(() => {
-        navigate({ to: "/signin" });
-      })
+    userStore.signOut().then(() => {
+      navigate({ to: "/signin" });
+    });
   };
   return (
     <div>
-      {userStore.verifyingToken ? <p>Loading...</p> : (
+      {userStore.verifyingToken ? (
+        <p>Loading...</p>
+      ) : (
         <>
           <h3>Dashboard page</h3>
           <p>

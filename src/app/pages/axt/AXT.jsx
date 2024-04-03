@@ -1,7 +1,5 @@
 const Axt = () => {
-  return (
-    <div>AXT</div>
-  )
-}
+  return <div>AXT</div>;
+};
 
 export default Axt;

@@ -1,7 +1,5 @@
 const CreateBacktest = () => {
-  return (
-    <div>CreateBacktest</div>
-  )
-}
+  return <div>CreateBacktest</div>;
+};
 
-export default CreateBacktest
+export default CreateBacktest;

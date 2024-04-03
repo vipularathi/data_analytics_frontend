@@ -4,7 +4,7 @@ import { dasboardRoute } from "../dashboard/dashboardConfig";
 
 /** Routing for Backtest Index */
 export const backtestRoute = createRoute({
-    getParentRoute: () => dasboardRoute,
-    path: "/backtest",
-    component: Backtest,
+  getParentRoute: () => dasboardRoute,
+  path: "/backtest",
+  component: Backtest,
 });

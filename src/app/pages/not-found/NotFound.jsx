@@ -1,3 +1,4 @@
+// eslint-disable-next-line mobx/missing-observer
 const NotFound = () => {
   return (
     <div style={{ padding: 2 }}>

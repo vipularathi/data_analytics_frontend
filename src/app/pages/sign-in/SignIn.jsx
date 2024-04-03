@@ -1,7 +1,4 @@
-import {
-  Link,
-  useNavigate,
-} from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useUser } from "../../hooks/store/use-user";
@@ -34,8 +31,8 @@ const SignInPage = observer(() => {
     userStore.verifyOtp({ otp }).then(() => {
       userStore.showOtp = false;
       navigate({ to: "/signin" });
-    })
-  }
+    });
+  };
   return (
     <div>
       <h3>Login page</h3>
@@ -63,23 +60,29 @@ const SignInPage = observer(() => {
               required
             />
           </div>
-          <button type="submit">{userStore.isLoading ? "Loading..." : "Login"}</button>
+          <button type="submit">
+            {userStore.isLoading ? "Loading..." : "Login"}
+          </button>
         </fieldset>
       </form>
 
-      {userStore.showOtp && (<form onSubmit={handleOtpSubmit}>
-        <div style={{ padding: 10, display: "flex", gap: 10 }}>
-          <label htmlFor="otp">OTP</label>
-          <input
-            id="otp"
-            type="number"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">{userStore.isLoading ? "Loading..." : "verify"}</button>
-      </form>)}
+      {userStore.showOtp && (
+        <form onSubmit={handleOtpSubmit}>
+          <div style={{ padding: 10, display: "flex", gap: 10 }}>
+            <label htmlFor="otp">OTP</label>
+            <input
+              id="otp"
+              type="number"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit">
+            {userStore.isLoading ? "Loading..." : "verify"}
+          </button>
+        </form>
+      )}
     </div>
   );
 });

@@ -4,7 +4,7 @@ import BacktestReport from "./BacktestReport";
 
 /** Routing for Backtest Report */
 export const backtestReportRoute = createRoute({
-    getParentRoute: () => backtestRoute,
-    path: "$backtestId",
-    component: BacktestReport,
+  getParentRoute: () => backtestRoute,
+  path: "$backtestId",
+  component: BacktestReport,
 });

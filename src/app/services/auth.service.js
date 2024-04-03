@@ -2,7 +2,6 @@ import { API_BASE_URL } from "../utils/url";
 import { BaseApi } from "./base.service";
 
 class AuthApi extends BaseApi {
-
   authConfig = {
     signInUrl: "auth/sign-in",
     signUpUrl: "auth/sign-up",
@@ -13,37 +12,33 @@ class AuthApi extends BaseApi {
   };
 
   constructor() {
-    super(API_BASE_URL)
+    super(API_BASE_URL);
   }
 
   getToken() {
-    return localStorage.getItem('token');
+    return localStorage.getItem("token");
   }
 
   setToken(token) {
-    localStorage.setItem('token', token);
-    this.axiosInstance.defaults.headers.common['auth-token'] = token;
+    localStorage.setItem("token", token);
+    this.axiosInstance.defaults.headers.common["auth-token"] = token;
   }
 
   setSession(token) {
-    this.axiosInstance.defaults.headers.common['auth-token'] = token;
+    this.axiosInstance.defaults.headers.common["auth-token"] = token;
   }
 
   removeToken() {
-    localStorage.removeItem('token');
-    delete this.axiosInstance.defaults.headers.common['auth-token'];
+    localStorage.removeItem("token");
+    delete this.axiosInstance.defaults.headers.common["auth-token"];
   }
 
   sendOtp(data) {
-    return this.axiosInstance.post(this.authConfig.sendOtpUrl, data)
+    return this.axiosInstance.post(this.authConfig.sendOtpUrl, data);
   }
 
   verifyOtp(data, config) {
-    return this.axiosInstance.post(
-      this.authConfig.verifyOtpUrl,
-      data,
-      config
-    )
+    return this.axiosInstance.post(this.authConfig.verifyOtpUrl, data, config);
   }
 
   verifyToken() {
@@ -59,10 +54,8 @@ class AuthApi extends BaseApi {
   }
 
   signOut() {
-    return this.axiosInstance.post(this.authConfig.signOutUrl)
+    return this.axiosInstance.post(this.authConfig.signOutUrl);
   }
 }
-
-
 
 export const authApi = new AuthApi();

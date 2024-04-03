@@ -13,7 +13,12 @@ import { forgetPasswordRoute } from "./app/pages/forget-password/forgetPasswordC
  * Define the router Tree for adding children based on pages
  */
 const routeTree = rootRoute.addChildren([
-  dasboardRoute.addChildren([backtestRoute, backtestReportRoute, axtRoute, createBacktestRoute]),
+  dasboardRoute.addChildren([
+    backtestRoute,
+    backtestReportRoute,
+    axtRoute,
+    createBacktestRoute,
+  ]),
   signInRoute,
   signUpRoute,
   forgetPasswordRoute,

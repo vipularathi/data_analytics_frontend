@@ -17,13 +17,11 @@ const SignUpPage = observer(() => {
       .createUser({
         provider: "email",
         fullname: name,
-        email: email,
-        password: password,
+        email,
+        password,
         provider_token: "string",
       })
       .then((resp) => {
-        console.log(resp)
-        
         // userStore.isLoading = false;
         // navigate({ to: "/" });
       })
@@ -35,10 +33,10 @@ const SignUpPage = observer(() => {
   const handleOtpSubmit = (e) => {
     e.preventDefault();
 
-    userStore.verifyOtp({ otp }).then(( ) => {
+    userStore.verifyOtp({ otp }).then(() => {
       navigate({ to: "/signin" });
-    })
-  }
+    });
+  };
   return (
     <div>
       <h3>Sign Up</h3>
@@ -46,34 +44,40 @@ const SignUpPage = observer(() => {
       <form onSubmit={handleSubmit}>
         <fieldset>
           <div style={{ padding: 10, display: "flex", gap: 10 }}>
-            <label htmlFor="name">Name</label>
-            <input
-              id="name"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
+            <label htmlFor="name">
+              Name
+              <input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </label>
           </div>
           <div style={{ padding: 10, display: "flex", gap: 10 }}>
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+            <label htmlFor="email">
+              Email
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </label>
           </div>
           <div style={{ padding: 10, display: "flex", gap: 10 }}>
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <label htmlFor="password">
+              Password
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </label>
           </div>
           <button type="submit">
             {userStore.isLoading ? "Loading..." : "Sign Up"}
@@ -81,19 +85,25 @@ const SignUpPage = observer(() => {
         </fieldset>
       </form>
 
-      {userStore.showOtp && (<form onSubmit={handleOtpSubmit}>
-        <div style={{ padding: 10, display: "flex", gap: 10 }}>
-          <label htmlFor="otp">OTP</label>
-          <input
-            id="otp"
-            type="number"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">{userStore.isLoading ? "Loading..." : "verify"}</button>
-      </form>)}
+      {userStore.showOtp && (
+        <form onSubmit={handleOtpSubmit}>
+          <div style={{ padding: 10, display: "flex", gap: 10 }}>
+            <label htmlFor="otp">
+              OTP
+              <input
+                id="otp"
+                type="number"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                required
+              />
+            </label>
+          </div>
+          <button type="submit">
+            {userStore.isLoading ? "Loading..." : "verify"}
+          </button>
+        </form>
+      )}
     </div>
   );
 });
