@@ -1,14 +1,14 @@
 import { createRouter } from "@tanstack/react-router";
-import { dasboardRoute } from "./app/main/dashboard/dashboardConfig";
-import { signInRoute } from "./app/main/sign-in/signinConfig";
-import { signUpRoute } from "./app/main/sign-up/signupConfig";
-import { rootRoute } from "./app/main/rootConfig";
+import { dasboardRoute } from "./app/pages/dashboard/dashboardConfig";
+import { signInRoute } from "./app/pages/sign-in/signinConfig";
+import { signUpRoute } from "./app/pages/sign-up/signupConfig";
+import { rootRoute } from "./app/pages/rootConfig";
 import { userStore } from "./app/store/user.store";
-import { backtestRoute } from "./app/main/backtest/backtestConfig";
-import { axtRoute } from "./app/main/axt/axtConfig";
-import { createBacktestRoute } from "./app/main/create-backtest/createBacktestConfig";
-import { backtestReportRoute } from "./app/main/backtest-report/backtestReportConfig";
-import { forgetPasswordRoute } from "./app/main/forget-password/forgetPasswordConfig";
+import { backtestRoute } from "./app/pages/backtest/backtestConfig";
+import { axtRoute } from "./app/pages/axt/axtConfig";
+import { createBacktestRoute } from "./app/pages/create-backtest/createBacktestConfig";
+import { backtestReportRoute } from "./app/pages/backtest-report/backtestReportConfig";
+import { forgetPasswordRoute } from "./app/pages/forget-password/forgetPasswordConfig";
 
 /*
  * Define the router Tree for adding children based on pages

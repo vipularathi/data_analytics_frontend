@@ -4,6 +4,7 @@ import {
 } from "../services/auth.service";
 
 class UserStore {
+  _rootStore = null;
   verifyingToken = true;
   showOtp = false;
   requestToken = null;
@@ -14,7 +15,7 @@ class UserStore {
   isLoading = false;
   showCreatePW = false;
 
-  constructor() {
+  constructor(_rootStore) {
     makeObservable(this, {
       user: false,
       userRole: false,
@@ -33,6 +34,8 @@ class UserStore {
       setNewPassword: action,
       verifyToken: action,
     })
+
+    this._rootStore = _rootStore;
   }
 
   async createUser(credentials) {
@@ -216,7 +219,4 @@ class UserStore {
   }
 }
 
-/*
- * Initaite the userStore to provide context in Router context
- */
-export const userStore = new UserStore();
+export default UserStore;
