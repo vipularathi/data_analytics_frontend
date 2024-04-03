@@ -23,7 +23,10 @@ const Dashboard = observer(() => {
         <>
           <h3>Dashboard page</h3>
           <p>
-            Hi <b>{userStore.user?.displayName}</b>!
+            Hi
+            {" "}
+            <b>{userStore.user?.displayName}</b>
+            !
           </p>
           <Link to="/axt">AXT</Link>
           <Link to="/backtest">Backtest</Link>

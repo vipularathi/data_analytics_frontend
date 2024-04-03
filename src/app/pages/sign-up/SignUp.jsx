@@ -21,7 +21,7 @@ const SignUpPage = observer(() => {
         password,
         provider_token: "string",
       })
-      .then((resp) => {
+      .then((_resp) => {
         // userStore.isLoading = false;
         // navigate({ to: "/" });
       })

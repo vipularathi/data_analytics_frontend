@@ -41,24 +41,28 @@ const SignInPage = observer(() => {
       <form onSubmit={handleSubmit}>
         <fieldset>
           <div style={{ padding: 10, display: "flex", gap: 10 }}>
-            <label htmlFor="username-input">Email</label>
-            <input
-              id="username-input"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+            <label htmlFor="username-input">
+              Email
+              <input
+                id="username-input"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </label>
           </div>
           <div style={{ padding: 10, display: "flex", gap: 10 }}>
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <label htmlFor="password">
+              Password
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </label>
           </div>
           <button type="submit">
             {userStore.isLoading ? "Loading..." : "Login"}
@@ -69,14 +73,16 @@ const SignInPage = observer(() => {
       {userStore.showOtp && (
         <form onSubmit={handleOtpSubmit}>
           <div style={{ padding: 10, display: "flex", gap: 10 }}>
-            <label htmlFor="otp">OTP</label>
-            <input
-              id="otp"
-              type="number"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              required
-            />
+            <label htmlFor="otp">
+              OTP
+              <input
+                id="otp"
+                type="number"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                required
+              />
+            </label>
           </div>
           <button type="submit">
             {userStore.isLoading ? "Loading..." : "verify"}
