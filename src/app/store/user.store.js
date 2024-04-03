@@ -4,7 +4,7 @@ import {
 } from "../services/auth.service";
 
 export class UserStore {
-  _rootStore = null;
+  _rootStore;
   verifyingToken = true;
   showOtp = false;
   requestToken = null;

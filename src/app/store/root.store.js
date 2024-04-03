@@ -1,7 +1,7 @@
 import { UserStore } from "./user.store";
 
 class RootStore {
-    user = null;
+    user;
     constructor() {
         this.user = new UserStore(this);
     }
