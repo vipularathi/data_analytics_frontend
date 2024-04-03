@@ -1,7 +1,7 @@
-import { baseInstance } from "./axios";
+import { API_BASE_URL } from "../utils/url";
+import { BaseApi } from "./base.service";
 
-class AuthApi {
-  #axiosInstance = null;
+class AuthApi extends BaseApi {
 
   authConfig = {
     signInUrl: "auth/sign-in",
@@ -12,83 +12,57 @@ class AuthApi {
     verifyTokenUrl: "auth/verify-token",
   };
 
-  constructor(axiosInstance) {
-    this.#axiosInstance = axiosInstance;
+  constructor() {
+    super(API_BASE_URL)
   }
 
-  /**
-   * @returns {string} 
-   */
   getToken() {
     return localStorage.getItem('token');
   }
 
-
-  /**
-   * Set Token
-   * @param {string} token
-   */
   setToken(token) {
     localStorage.setItem('token', token);
-    this.#axiosInstance.defaults.headers.common['auth-token'] = token;
+    this.axiosInstance.defaults.headers.common['auth-token'] = token;
   }
 
   setSession(token) {
-    this.#axiosInstance.defaults.headers.common['auth-token'] = token;
+    this.axiosInstance.defaults.headers.common['auth-token'] = token;
   }
 
   removeToken() {
     localStorage.removeItem('token');
-    delete this.#axiosInstance.defaults.headers.common['auth-token'];
+    delete this.axiosInstance.defaults.headers.common['auth-token'];
   }
 
   sendOtp(data) {
-    return this.#axiosInstance.post(this.authConfig.sendOtpUrl, data)
+    return this.axiosInstance.post(this.authConfig.sendOtpUrl, data)
   }
 
-  /**
-   * 
-   * @param {*} data 
-   * @param {*} config 
-   * @returns {Promise<any>}
-   */
   verifyOtp(data, config) {
-    return this.#axiosInstance.post(
+    return this.axiosInstance.post(
       this.authConfig.verifyOtpUrl,
       data,
       config
     )
   }
 
-  /**
-   * @returns {Promise<any>}
-  */
   verifyToken() {
-    return this.#axiosInstance.get(this.authConfig.verifyTokenUrl);
+    return this.axiosInstance.get(this.authConfig.verifyTokenUrl);
   }
 
-  /**
-   * @returns {Promise<any>}
-  */
   signUp(credentails) {
-    return this.#axiosInstance.post(this.authConfig.signUpUrl, credentails);
+    return this.axiosInstance.post(this.authConfig.signUpUrl, credentails);
   }
 
-  /**
-   * @returns {Promise<any>}
-  */
   signIn(credentails) {
-    return this.#axiosInstance.post(this.authConfig.signInUrl, credentails);
+    return this.axiosInstance.post(this.authConfig.signInUrl, credentails);
   }
 
-  /**
-   * @returns {Promise<any>}
-  */
   signOut() {
-    return this.#axiosInstance.post(this.authConfig.signOutUrl)
+    return this.axiosInstance.post(this.authConfig.signOutUrl)
   }
 }
 
 
 
-export const authApi = new AuthApi(baseInstance);
+export const authApi = new AuthApi();
