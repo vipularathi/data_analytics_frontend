@@ -4,7 +4,7 @@ export class BaseApi {
     axiosInstance;
     constructor(baseUrl) {
         const axiosInstance = axios.create({
-            baseUrl,
+            baseURL: baseUrl,
             headers: {
                 "Content-Type": "application/json",
             },
