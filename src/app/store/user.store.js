@@ -3,7 +3,7 @@ import {
   authApi
 } from "../services/auth.service";
 
-class UserStore {
+export class UserStore {
   _rootStore = null;
   verifyingToken = true;
   showOtp = false;
@@ -218,5 +218,3 @@ class UserStore {
     }
   }
 }
-
-export default UserStore;

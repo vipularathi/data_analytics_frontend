@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { userStore } from "../../store/user.store";
 import { Link, useNavigate } from "@tanstack/react-router";
+import { useUser } from "../../hooks/store/use-user";
 
 const SignUpPage = observer(() => {
+  const userStore = useUser();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

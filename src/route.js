@@ -3,7 +3,6 @@ import { dasboardRoute } from "./app/pages/dashboard/dashboardConfig";
 import { signInRoute } from "./app/pages/sign-in/signinConfig";
 import { signUpRoute } from "./app/pages/sign-up/signupConfig";
 import { rootRoute } from "./app/pages/rootConfig";
-import { userStore } from "./app/store/user.store";
 import { backtestRoute } from "./app/pages/backtest/backtestConfig";
 import { axtRoute } from "./app/pages/axt/axtConfig";
 import { createBacktestRoute } from "./app/pages/create-backtest/createBacktestConfig";
@@ -26,7 +25,4 @@ const routeTree = rootRoute.addChildren([
 export const router = createRouter({
   routeTree,
   defaultPreload: false,
-  context: {
-    userStore: userStore, // This will be set after we wrap the app in an AuthProvider
-  },
 });

@@ -1,14 +1,15 @@
 import { Link, Outlet, useNavigate } from "@tanstack/react-router";
 import { observer } from "mobx-react-lite";
-import { userStore } from "../../store/user.store";
 import { useEffect } from "react";
+import { useUser } from "../../hooks/store/use-user";
 
 const Dashboard = observer(() => {
+  const userStore = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
     userStore.verifyToken()
-  }, [])
+  }, [userStore])
   const handleLogout = () => {
     userStore
       .signOut()
@@ -35,7 +36,6 @@ const Dashboard = observer(() => {
           <Outlet />
         </>
       )}
-      
     </div>
   );
 });

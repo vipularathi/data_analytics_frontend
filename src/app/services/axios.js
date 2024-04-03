@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { userStore } from '../store/user.store';
 import { API_BASE_URL } from '../utils/url';
 
 export default function createAxiosInstance(baseURL) {
@@ -24,7 +23,6 @@ export default function createAxiosInstance(baseURL) {
                 }
                 if (err.response.status === 401 && err.config && !err.config.__isRetryRequest) {
                     // unauthorized - clear session and redirect to sign-in
-                    userStore.signOut();
                 }
                 if (err.response.status === 403) {
                     // acces denied - redirect to forbidden page

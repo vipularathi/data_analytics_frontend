@@ -1,10 +1,10 @@
-import { userStore } from "./user.store";
+import { UserStore } from "./user.store";
 
-class Root {
+class RootStore {
     user = null;
     constructor() {
-        this.user = new userStore(this);
+        this.user = new UserStore(this);
     }
 }
 
-export default Root;
+export default RootStore;

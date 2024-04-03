@@ -1,9 +1,10 @@
 import { observer } from "mobx-react-lite";
-import { userStore } from "../../store/user.store";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
+import { useUser } from "../../hooks/store/use-user";
 
 const ForgetPassword = observer(() => {
+  const userStore = useUser();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");

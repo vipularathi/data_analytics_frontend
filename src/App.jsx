@@ -1,6 +1,7 @@
 import { RouterProvider } from "@tanstack/react-router";
 import { router } from "./route";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { StoreProvider } from "./app/contexts/store.context";
 
 const queryClient = new QueryClient();
 
@@ -10,7 +11,9 @@ function App() {
    */
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <StoreProvider>
+        <RouterProvider router={router} />
+      </StoreProvider>
     </QueryClientProvider>
   );
 }
