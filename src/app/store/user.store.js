@@ -147,7 +147,7 @@ export class UserStore {
     }
   }
 
-  static async signOut() {
+  async signOut() {
     try {
       await authApi.signOut();
 

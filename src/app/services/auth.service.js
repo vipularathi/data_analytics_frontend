@@ -15,7 +15,7 @@ class AuthApi extends BaseApi {
     super(API_BASE_URL);
   }
 
-  static getToken() {
+  getToken() {
     return localStorage.getItem("token");
   }
 

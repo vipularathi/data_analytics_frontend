@@ -64,5 +64,6 @@ module.exports = {
     "lines-between-class-members": "off",
     "no-underscore-dangle": "off",
     "object-curly-newline": "off",
+    "class-methods-use-this": "off",
   },
 };
