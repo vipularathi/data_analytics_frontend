@@ -106,9 +106,9 @@ export class UserStore {
       });
       
       return respData;
-    } catch (e) {
+    } catch (err) {
 
-      const errorData = e.response.data
+      const errorData = err.response.data
 
       if (!errorData.verified) {
 
@@ -116,20 +116,26 @@ export class UserStore {
           this.isLoading = true
         })
 
-        const { data: otpData } = await authApi.sendOtp({ email: credentials.email, purpose: 'email_verify' });
-
-        runInAction(() => {
-          this.requestToken = otpData.request_token;
-          this.showOtp = true
-          this.isLoading = false
-        })
+        try {
+          const { data: otpData } = await authApi.sendOtp({ email: credentials.email, purpose: 'email_verify' });
+  
+          runInAction(() => {
+            this.requestToken = otpData.request_token;
+            this.showOtp = true
+            this.isLoading = false
+          })
+        } catch (error) {
+          runInAction(() => {
+            this.isLoading = false
+          })
+        }
       } else {
         runInAction(() => {
           this.isAuthenticated = false;
           this.user = null;
         });
       }
-      return e
+      return err
     }
   }
 
@@ -189,15 +195,16 @@ export class UserStore {
     })
     try {
       const { data: respData } = await authApi.sendOtp(data);
-      console.log(respData);
       runInAction(() => {
         this.showCreatePW = true;
         this.isLoading = false;
         this.requestToken = respData.request_token;
       })
     } catch (error) {
-      console.log(error)
       //
+      runInAction(() => {
+        this.isLoading = false;
+      })
     }
   }
 
@@ -215,6 +222,10 @@ export class UserStore {
       return respData;
     } catch (error) {
       //
+      runInAction(() => {
+        this.isLoading = false;
+        this.requestToken = null;
+      })
     }
   }
 }

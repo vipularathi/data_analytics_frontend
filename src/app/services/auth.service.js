@@ -1,4 +1,3 @@
-
 import { baseInstance } from "./axios";
 
 class AuthApi {
@@ -17,10 +16,18 @@ class AuthApi {
     this.#axiosInstance = axiosInstance;
   }
 
+  /**
+   * @returns {string} 
+   */
   getToken() {
     return localStorage.getItem('token');
   }
 
+
+  /**
+   * Set Token
+   * @param {string} token
+   */
   setToken(token) {
     localStorage.setItem('token', token);
     this.#axiosInstance.defaults.headers.common['auth-token'] = token;
@@ -39,6 +46,12 @@ class AuthApi {
     return this.#axiosInstance.post(this.authConfig.sendOtpUrl, data)
   }
 
+  /**
+   * 
+   * @param {*} data 
+   * @param {*} config 
+   * @returns {Promise<any>}
+   */
   verifyOtp(data, config) {
     return this.#axiosInstance.post(
       this.authConfig.verifyOtpUrl,
@@ -47,18 +60,30 @@ class AuthApi {
     )
   }
 
+  /**
+   * @returns {Promise<any>}
+  */
   verifyToken() {
     return this.#axiosInstance.get(this.authConfig.verifyTokenUrl);
   }
 
+  /**
+   * @returns {Promise<any>}
+  */
   signUp(credentails) {
     return this.#axiosInstance.post(this.authConfig.signUpUrl, credentails);
   }
 
+  /**
+   * @returns {Promise<any>}
+  */
   signIn(credentails) {
     return this.#axiosInstance.post(this.authConfig.signInUrl, credentails);
   }
 
+  /**
+   * @returns {Promise<any>}
+  */
   signOut() {
     return this.#axiosInstance.post(this.authConfig.signOutUrl)
   }
