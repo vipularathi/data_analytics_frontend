@@ -1,37 +1,35 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { useUser } from "../../hooks/store/use-user";
+import { useAuth } from "../../hooks/store/use-auth";
 
 const SignInPage = observer(() => {
-  const userStore = useUser();
+  const authStore = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
+  const [errMsg, setErrMsg] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    userStore.isLoading = true;
-
-    userStore
+    setErrMsg(null);
+    authStore
       .signIn({ provider: "email", email, password })
       .then(() => {
-        userStore.isLoading = false;
         navigate({ to: "/" });
       })
-      .catch(() => {
-        userStore.isLoading = false;
+      .catch((error) => {
+        setErrMsg(error.message);
       });
   };
 
   const handleOtpSubmit = (e) => {
     e.preventDefault();
-
-    userStore.verifyOtp({ otp }).then(() => {
-      userStore.showOtp = false;
-      navigate({ to: "/signin" });
-    });
+    authStore.verifyOtp({ otp })
+      .catch((error) => {
+        setErrMsg(error.message);
+      });
   };
   return (
     <div>
@@ -65,12 +63,13 @@ const SignInPage = observer(() => {
             </label>
           </div>
           <button type="submit">
-            {userStore.isLoading ? "Loading..." : "Login"}
+            {authStore.isLoading ? "Loading..." : "Login"}
           </button>
+          <p>{errMsg}</p>
         </fieldset>
       </form>
 
-      {userStore.showOtp && (
+      {authStore.showOtp && (
         <form onSubmit={handleOtpSubmit}>
           <div style={{ padding: 10, display: "flex", gap: 10 }}>
             <label htmlFor="otp">
@@ -85,8 +84,11 @@ const SignInPage = observer(() => {
             </label>
           </div>
           <button type="submit">
-            {userStore.isLoading ? "Loading..." : "verify"}
+            {authStore.isLoading ? "Loading..." : "verify"}
           </button>
+          <p>
+            {errMsg}
+          </p>
         </form>
       )}
     </div>

@@ -1,25 +1,32 @@
+/* eslint-disable no-nested-ternary */
 import { Link, Outlet, useNavigate } from "@tanstack/react-router";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
+import { useAuth } from "../../hooks/store/use-auth";
 import { useUser } from "../../hooks/store/use-user";
 
 const Dashboard = observer(() => {
+  const authStore = useAuth();
   const userStore = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
-    userStore.verifyToken();
-  }, [userStore]);
+    authStore
+      .verifyToken()
+      .catch(() => {
+        navigate({ to: "/signin" });
+      });
+  }, [authStore, navigate]);
   const handleLogout = () => {
-    userStore.signOut().then(() => {
+    authStore.signOut().then(() => {
       navigate({ to: "/signin" });
     });
   };
   return (
     <div>
-      {userStore.verifyingToken ? (
+      {authStore.verifyingToken ? (
         <p>Loading...</p>
-      ) : (
+      ) : (authStore.isAuthenticated && !authStore.verifyingToken) ? (
         <>
           <h3>Dashboard page</h3>
           <p>
@@ -28,8 +35,6 @@ const Dashboard = observer(() => {
             <b>{userStore.user?.displayName}</b>
             !
           </p>
-          <Link to="/axt">AXT</Link>
-          <Link to="/backtest">Backtest</Link>
           <p>If you can see this, that means you are authenticated.</p>
           <div className="mt-4">
             <button type="button" onClick={handleLogout}>
@@ -38,7 +43,7 @@ const Dashboard = observer(() => {
           </div>
           <Outlet />
         </>
-      )}
+      ) : null}
     </div>
   );
 });

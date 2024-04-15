@@ -1,30 +1,38 @@
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { useUser } from "../../hooks/store/use-user";
+import { useAuth } from "../../hooks/store/use-auth";
 
 const ForgetPassword = observer(() => {
-  const userStore = useUser();
+  const authStore = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [otp, setOtp] = useState("");
+  const [errMsg, setErrMsg] = useState(null);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    userStore.resetPassword({ email, purpose: "pwd_reset" });
+    authStore.resetPassword({ email, purpose: "pwd_reset" }).catch((error) => {
+      setErrMsg(error.message);
+    });
   };
 
   const handleSetNewPassword = (e) => {
     e.preventDefault();
-    userStore.setNewPassword({ otp, password: newPassword }).then(() => {
-      navigate({ to: "/signin" });
-    });
+    authStore.setNewPassword({ otp, password: newPassword })
+      .then(() => {
+        navigate({ to: "/signin" });
+      })
+      .catch((error) => {
+        setErrMsg(error.message);
+      });
   };
 
   return (
     <div>
       ForgetPassword
-      {!userStore.showCreatePW ? (
+      {!authStore.showCreatePW ? (
         <form onSubmit={handleSubmit}>
           <input
             type="email"
@@ -33,8 +41,11 @@ const ForgetPassword = observer(() => {
             required
           />
           <button type="submit">
-            {userStore.isLoading ? "Loading..." : "Submit"}
+            {authStore.isLoading ? "Loading..." : "Submit"}
           </button>
+          <p>
+            {errMsg}
+          </p>
         </form>
       ) : (
         <form onSubmit={handleSetNewPassword}>
@@ -60,7 +71,10 @@ const ForgetPassword = observer(() => {
             />
           </label>
           <br />
-          <button type="submit">{userStore.isLoading ? "Loading..." : "submit"}</button>
+          <button type="submit">{authStore.isLoading ? "Loading..." : "submit"}</button>
+          <p>
+            {errMsg}
+          </p>
         </form>
       )}
     </div>

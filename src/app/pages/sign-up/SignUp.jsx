@@ -1,19 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useUser } from "../../hooks/store/use-user";
+import { useAuth } from "../../hooks/store/use-auth";
 
 const SignUpPage = observer(() => {
-  const userStore = useUser();
+  const authStore = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
+  const [errMsg, setErrMsg] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => () => {
+    authStore.showOtp = false;
+  }, [authStore]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    userStore
+    authStore
       .createUser({
         provider: "email",
         fullname: name,
@@ -21,19 +26,15 @@ const SignUpPage = observer(() => {
         password,
         provider_token: "string",
       })
-      .then((_resp) => {
-        // userStore.isLoading = false;
-        // navigate({ to: "/" });
-      })
-      .catch(() => {
-        userStore.isLoading = false;
+      .catch((error) => {
+        setErrMsg(error.message);
       });
   };
 
   const handleOtpSubmit = (e) => {
     e.preventDefault();
 
-    userStore.verifyOtp({ otp }).then(() => {
+    authStore.verifyOtp({ otp }).then(() => {
       navigate({ to: "/signin" });
     });
   };
@@ -80,12 +81,15 @@ const SignUpPage = observer(() => {
             </label>
           </div>
           <button type="submit">
-            {userStore.isLoading ? "Loading..." : "Sign Up"}
+            {authStore.isLoading ? "Loading..." : "Sign Up"}
           </button>
+          <p>
+            {errMsg}
+          </p>
         </fieldset>
       </form>
 
-      {userStore.showOtp && (
+      {authStore.showOtp && (
         <form onSubmit={handleOtpSubmit}>
           <div style={{ padding: 10, display: "flex", gap: 10 }}>
             <label htmlFor="otp">
@@ -100,7 +104,7 @@ const SignUpPage = observer(() => {
             </label>
           </div>
           <button type="submit">
-            {userStore.isLoading ? "Loading..." : "verify"}
+            {authStore.isLoading ? "Loading..." : "verify"}
           </button>
         </form>
       )}
