@@ -1,21 +1,23 @@
 /* eslint-disable no-nested-ternary */
-import { Link, Outlet, useNavigate } from "@tanstack/react-router";
+import { Outlet, useNavigate } from "@tanstack/react-router";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { useAuth } from "../../hooks/store/use-auth";
 import { useUser } from "../../hooks/store/use-user";
+import RootLayout from "../../layout/RootLayout";
+import LayoutList from "../../layout/LayoutList";
 
 const Dashboard = observer(() => {
   const authStore = useAuth();
   const userStore = useUser();
   const navigate = useNavigate();
 
+  console.log(authStore.verifyingToken, authStore.isAuthenticated);
+
   useEffect(() => {
-    authStore
-      .verifyToken()
-      .catch(() => {
-        navigate({ to: "/signin" });
-      });
+    authStore.verifyToken().catch(() => {
+      navigate({ to: "/signin" });
+    });
   }, [authStore, navigate]);
   const handleLogout = () => {
     authStore.signOut().then(() => {
@@ -23,17 +25,15 @@ const Dashboard = observer(() => {
     });
   };
   return (
-    <div>
+    <RootLayout layouts={LayoutList}>
       {authStore.verifyingToken ? (
         <p>Loading...</p>
-      ) : (authStore.isAuthenticated && !authStore.verifyingToken) ? (
+      ) : authStore.isAuthenticated && !authStore.verifyingToken ? (
         <>
           <h3>Dashboard page</h3>
           <p>
-            Hi
-            {" "}
-            <b>{userStore.user?.displayName}</b>
-            !
+            Hi,
+            <b>{userStore.user?.displayName}</b>!
           </p>
           <p>If you can see this, that means you are authenticated.</p>
           <div className="mt-4">
@@ -44,7 +44,7 @@ const Dashboard = observer(() => {
           <Outlet />
         </>
       ) : null}
-    </div>
+    </RootLayout>
   );
 });
 export default Dashboard;
