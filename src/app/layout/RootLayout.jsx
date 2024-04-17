@@ -1,11 +1,8 @@
 import { observer } from "mobx-react-lite";
-import { useSettings } from "../hooks/store/use-settings";
-import { useMemo } from "react";
-import { useAuth } from "../hooks/store/use-auth";
+import settingsConfig from "../config/settingConfig";
 
 const RootLayout = observer(({ children, layouts }) => {
-  const settings = useSettings();
-  const Layout = layouts[settings.layout];
+  const Layout = layouts[settingsConfig.layout];
   return <Layout>{children}</Layout>;
 });
 

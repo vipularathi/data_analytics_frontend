@@ -4,6 +4,7 @@ export class NavbarStore {
   open = true;
   mobileOpen = false;
   foldedOpen = false;
+  folded = true;
 
   constructor(_rootStore) {
     makeAutoObservable(this);
@@ -35,5 +36,8 @@ export class NavbarStore {
   }
   navbarToggle() {
     this.open = !this.open;
+  }
+  navbarFolded() {
+    this.folded = !this.folded;
   }
 }

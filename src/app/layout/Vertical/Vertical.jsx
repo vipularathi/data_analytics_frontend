@@ -1,7 +1,8 @@
 import { observer } from "mobx-react-lite";
-import { useSettings } from "../../hooks/store/use-settings";
 import { styled } from "@mui/material";
 import NavbarVertical from "./NavbarVertical";
+import settingsConfig from "../../config/settingConfig";
+import ToolbarLayout1 from "./ToolbarLayout1";
 
 const Root = styled("div")(({ config }) => ({
   ...(config.mode === "boxed" && {
@@ -21,11 +22,20 @@ const Root = styled("div")(({ config }) => ({
 }));
 
 const Vertical = observer(({ children }) => {
-  const settings = useSettings();
   return (
-    <Root config={settings} className="flex w-full">
-      <NavbarVertical />
-      {children}
+    <Root config={settingsConfig} className="flex w-full">
+      <div className="flex min-w-0 flex-auto">
+        <NavbarVertical />
+        <main
+          id="fuse-main"
+          className="relative  flex min-h-full min-w-0 flex-auto flex-col"
+        >
+          <ToolbarLayout1 />
+          <div className="relative  flex min-h-0 flex-auto flex-col">
+            {children}
+          </div>
+        </main>
+      </div>
     </Root>
   );
 });

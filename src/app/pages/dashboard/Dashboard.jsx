@@ -12,8 +12,6 @@ const Dashboard = observer(() => {
   const userStore = useUser();
   const navigate = useNavigate();
 
-  console.log(authStore.verifyingToken, authStore.isAuthenticated);
-
   useEffect(() => {
     authStore.verifyToken().catch(() => {
       navigate({ to: "/signin" });
