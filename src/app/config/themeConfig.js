@@ -49,6 +49,10 @@ export const themesConfig = {
         dark: "#b71c1c",
         contrastText: darkPaletteText.primary,
       },
+      chart: {
+        borderColor: "#e9ecee",
+        cardColor: "#fff",
+      },
     },
   },
   defaultDark: {
@@ -80,6 +84,10 @@ export const themesConfig = {
         light: "#ffcdd2",
         main: "#f44336",
         dark: "#b71c1c",
+      },
+      chart: {
+        borderColor: "#36445d",
+        cardColor: "#283144",
       },
     },
   },

@@ -16,9 +16,9 @@ const ToolbarLayout1 = observer(({ className }) => {
       className={clsx("relative flex shadow", className)}
       color="default"
       position="static"
-      elevation={0}
+      elevation={1}
     >
-      <Toolbar className="min-h-48 z-5 p-0 md:min-h-64'">
+      <Toolbar className="min-h-48 z-5 p-0 md:min-h-64">
         <div className="flex flex-1 px-16">
           <Hidden lgUp>
             <NavbarToggleButton className="mx-0 h-40 w-40 p-0 sm:mx-8" />

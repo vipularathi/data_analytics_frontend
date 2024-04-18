@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import NavbarStyle1Content from "./NavbarStyle1Content";
 import { Hidden, SwipeableDrawer, styled } from "@mui/material";
 import { useNavbarStore } from "../../../../hooks/store/use-navbar-store";
+import { useTheme } from "@emotion/react";
 
 const navbarWidth = 280;
 const Root = styled("div")(({ theme, folded }) => ({
@@ -25,10 +26,10 @@ const StyledNavbar = styled("div")(
     width: navbarWidth,
     maxWidth: navbarWidth,
     maxHeight: "100%",
-    transition: theme.transitions.create(["width", "min-width"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.shorter,
-    }),
+    // transition: theme.transitions.create(["width", "min-width"], {
+    //   easing: theme.transitions.easing.sharp,
+    //   duration: theme.transitions.duration.shorter,
+    // }),
     left: 0,
 
     ...(folded && {
@@ -41,6 +42,11 @@ const StyledNavbar = styled("div")(
     ...(foldedandopened && {
       width: navbarWidth,
       minWidth: navbarWidth,
+      "& .NavbarStyle2-content": {
+        "& .fuse-list-item-text-primary": {
+          whiteSpace: "wrap",
+        },
+      },
     }),
     ...(foldedandclosed && {
       "& .NavbarStyle2-content": {
@@ -74,6 +80,9 @@ const StyledNavbar = styled("div")(
         "& .collapse-children": {
           display: "none",
         },
+        "& .fuse-list-item-text-primary": {
+          whiteSpace: "nowrap",
+        },
       },
     }),
   })
@@ -92,6 +101,7 @@ const StyledNavbarMobile = styled(SwipeableDrawer)(({ theme }) => ({
 }));
 
 const NavbarStyle1 = observer(() => {
+  const theme = useTheme();
   const navbar = useNavbarStore();
   const folded = navbar.folded;
   const foldedandclosed = folded && !navbar.foldedOpen;

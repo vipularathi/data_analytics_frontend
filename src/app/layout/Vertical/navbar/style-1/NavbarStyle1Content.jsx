@@ -10,9 +10,10 @@ import smallLightLogo from "../../../../../assets/logo/finzome-logo.png";
 import smallDarkLogo from "../../../../../assets/logo/finzome-logo-white.png";
 import largeLightLogo from "../../../../../assets/logo/finzome-logo-icon.png";
 import largeDarkLogo from "../../../../../assets/logo/finzome-logo-icon-white.png";
-import { useRouter } from "@tanstack/react-router";
 
 const Root = styled("div")(({ theme, foldedandclosed, foldedandopened }) => ({
+  background:
+    theme.palette.mode === "dark" ? theme.palette.background.paper : "#fff",
   "& .navbar-toggler": {
     ...(foldedandclosed && {
       display: "none",
@@ -21,7 +22,6 @@ const Root = styled("div")(({ theme, foldedandclosed, foldedandopened }) => ({
       display: "block",
     }),
   },
-  backgroundColor: theme.palette.background.default,
   color: theme.palette.text.primary,
   "& ::-webkit-scrollbar-thumb": {
     boxShadow: `inset 0 0 0 20px ${theme.palette.mode === "light" ? "rgba(0, 0, 0, 0.24)" : "rgba(255, 255, 255, 0.24)"}`,
@@ -32,6 +32,7 @@ const Root = styled("div")(({ theme, foldedandclosed, foldedandopened }) => ({
 }));
 
 const StyledContent = styled("div")(() => ({
+  paddingTop: 12,
   overscrollBehavior: "contain",
   overflowX: "hidden",
   overflowY: "auto",
@@ -62,14 +63,14 @@ const NavbarStyle1Content = observer(({ className }) => {
   return (
     <Root
       className={clsx(
-        "flex h-full flex-auto flex-col overflow-hidden",
+        "flex h-full flex-auto flex-col overflow-hidden shadow-0",
         className
       )}
       foldedandclosed={foldedandclosed}
       foldedandopened={foldedandopened}
     >
       <div
-        className={`flex h-48 shrink-0 flex-row items-center  md:h-76 ${foldedandclosed ? "mx-auto" : "px-12"}`}
+        className={`flex min-h-40 shrink-1 flex-row items-center ${foldedandclosed ? "mx-auto" : "px-12"}`}
       >
         <div className="flex flex-1">
           <Logo

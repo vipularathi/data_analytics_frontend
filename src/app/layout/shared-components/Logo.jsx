@@ -13,7 +13,7 @@ const Logo = observer(({ src, foldedandopened }) => {
   return (
     <Root className="flex items-center">
       <img
-        className={`logo-icon h-32 ${foldedandopened && "h-40"}`}
+        className={`logo-icon  h-28 ${foldedandopened && " h-28"}`}
         src={src}
         alt="logo"
       />

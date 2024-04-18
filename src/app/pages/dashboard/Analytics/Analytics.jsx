@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useAuth } from "../../../hooks/store/use-auth";
 import { useUser } from "../../../hooks/store/use-user";
 import RootLayout from "../../../layout/RootLayout";
-import LayoutList from '../../../layout/LayoutList'
+import LayoutList from "../../../layout/LayoutList";
 
 const Analytics = observer(() => {
   const authStore = useAuth();
@@ -24,24 +24,7 @@ const Analytics = observer(() => {
   };
   return (
     <RootLayout layouts={LayoutList}>
-      {authStore.verifyingToken ? (
-        <p>Loading...</p>
-      ) : authStore.isAuthenticated && !authStore.verifyingToken ? (
-        <>
-          <h3>Dashboard page</h3>
-          <p>
-            Hi,
-            <b>{userStore.user?.displayName}</b>!
-          </p>
-          <p>If you can see this, that means you are authenticated.</p>
-          <div className="mt-4">
-            <button type="button" onClick={handleLogout}>
-              Logout
-            </button>
-          </div>
-          <Outlet />
-        </>
-      ) : null}
+      <Outlet />
     </RootLayout>
   );
 });

@@ -43,19 +43,24 @@ const NavItem = ({ item }) => {
   const routerState = useRouterState();
 
   return (
-    <Link to={item.url}>
+    <Link to={item.url} className="flex justify-center px-6">
       <Root
         className={clsx(
           "fuse-list-item",
           routerState.location.pathname === item.url && "active"
         )}
       >
-        <item.icon className="fuse-list-item-icon" />
+        <item.icon fontSize="small" className="fuse-list-item-icon" />
         <ListItemText
           className="fuse-list-item-text"
           primary={item.title}
+          primaryTypographyProps={{
+            fontSize: 16,
+            fontWeight: "medium",
+            letterSpacing: 0,
+          }}
           classes={{
-            primary: "text-13 font-medium fuse-list-item-text-primary truncate",
+            primary: "text-13 font-medium fuse-list-item-text-primary",
           }}
         />
       </Root>
