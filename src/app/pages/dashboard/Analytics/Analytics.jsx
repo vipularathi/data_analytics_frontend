@@ -2,12 +2,12 @@
 import { Outlet, useNavigate } from "@tanstack/react-router";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
-import { useAuth } from "../../hooks/store/use-auth";
-import { useUser } from "../../hooks/store/use-user";
-import RootLayout from "../../layout/RootLayout";
-import LayoutList from "../../layout/LayoutList";
+import { useAuth } from "../../../hooks/store/use-auth";
+import { useUser } from "../../../hooks/store/use-user";
+import RootLayout from "../../../layout/RootLayout";
+import LayoutList from '../../../layout/LayoutList'
 
-const Dashboard = observer(() => {
+const Analytics = observer(() => {
   const authStore = useAuth();
   const userStore = useUser();
   const navigate = useNavigate();
@@ -45,4 +45,4 @@ const Dashboard = observer(() => {
     </RootLayout>
   );
 });
-export default Dashboard;
+export default Analytics;

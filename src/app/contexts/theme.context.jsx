@@ -3,7 +3,6 @@ import { observer } from "mobx-react-lite";
 import themesConfig from "../config/themeConfig";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-export const themeContext = createContext();
 const colorModeContext = createContext({ toggleColorMode: () => {} });
 
 const getDesignTokens = (mode) => {

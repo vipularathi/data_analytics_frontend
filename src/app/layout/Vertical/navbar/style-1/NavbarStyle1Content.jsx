@@ -6,6 +6,11 @@ import NavbarToggleButton from "../../../shared-components/NavbarToggleButton";
 import Navigation from "../../../shared-components/Navigation";
 import { useNavbarStore } from "../../../../hooks/store/use-navbar-store";
 import { useTheme } from "@emotion/react";
+import smallLightLogo from "../../../../../assets/logo/finzome-logo.png";
+import smallDarkLogo from "../../../../../assets/logo/finzome-logo-white.png";
+import largeLightLogo from "../../../../../assets/logo/finzome-logo-icon.png";
+import largeDarkLogo from "../../../../../assets/logo/finzome-logo-icon-white.png";
+import { useRouter } from "@tanstack/react-router";
 
 const Root = styled("div")(({ theme, foldedandclosed, foldedandopened }) => ({
   "& .navbar-toggler": {
@@ -16,7 +21,6 @@ const Root = styled("div")(({ theme, foldedandclosed, foldedandopened }) => ({
       display: "block",
     }),
   },
-
   backgroundColor: theme.palette.background.default,
   color: theme.palette.text.primary,
   "& ::-webkit-scrollbar-thumb": {
@@ -48,11 +52,11 @@ const NavbarStyle1Content = observer(({ className }) => {
   let smallLogo, largeLogo;
 
   if (theme.palette.mode === "light") {
-    smallLogo = "src/assets/logo/finzome-logo.png";
-    largeLogo = "src/assets/logo/finzome-logo-icon.png";
+    smallLogo = smallLightLogo;
+    largeLogo = largeLightLogo;
   } else {
-    smallLogo = "src/assets/logo/finzome-logo-white.png";
-    largeLogo = "src/assets/logo/finzome-logo-icon-white.png";
+    smallLogo = smallDarkLogo;
+    largeLogo = largeDarkLogo;
   }
 
   return (
@@ -70,7 +74,7 @@ const NavbarStyle1Content = observer(({ className }) => {
         <div className="flex flex-1">
           <Logo
             src={foldedandopened || !folded ? smallLogo : largeLogo}
-            foldedandopened={foldedandopened}
+            foldedandopened={foldedandopened || !folded}
           />
         </div>
 
@@ -82,7 +86,7 @@ const NavbarStyle1Content = observer(({ className }) => {
       <StyledContent
         option={{ suppressScrollX: true, wheelPropagation: false }}
       >
-        <Navigation layout="vertical" />
+        <Navigation />
       </StyledContent>
     </Root>
   );

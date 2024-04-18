@@ -28,10 +28,10 @@ const Vertical = observer(({ children }) => {
         <NavbarVertical />
         <main
           id="fuse-main"
-          className="relative  flex min-h-full min-w-0 flex-auto flex-col"
+          className="relative flex min-h-full min-w-0 flex-auto flex-col"
         >
           <ToolbarLayout1 />
-          <div className="relative  flex min-h-0 flex-auto flex-col">
+          <div className="relative flex min-h-0 flex-auto flex-col">
             {children}
           </div>
         </main>

@@ -3,7 +3,7 @@ import navigationConfig from "../../config/navigationConfig";
 import { List, styled } from "@mui/material";
 import clsx from "clsx";
 import NavItem from "./NavItem";
-import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import { useRouter } from "@tanstack/react-router";
 
 const StyledList = styled(List)(({ theme }) => ({
   "& .fuse-list-item": {
@@ -40,24 +40,14 @@ const StyledList = styled(List)(({ theme }) => ({
     },
   },
 }));
-const Navigation = observer(({ className }) => {
-  function handleItemClick(item) {
-    onItemClick?.(item);
-  }
+const Navigation = ({ className }) => {
   return (
-    <StyledList
-      className={clsx(
-        "navigation whitespace-nowrap px-12 py-0",
-        // `active-${active}-list`,
-        // dense && "dense",
-        className
-      )}
-    >
+    <StyledList className={clsx("navigation whitespace-nowrap px-12 py-0")}>
       {navigationConfig.map((_item) => (
-        <NavItem key={_item.id} item={_item} onItemClick={handleItemClick} />
+        <NavItem key={_item.id} item={_item} />
       ))}
     </StyledList>
   );
-});
+};
 
 export default Navigation;

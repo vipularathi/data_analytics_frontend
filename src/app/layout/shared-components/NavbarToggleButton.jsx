@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import IconButton from "@mui/material/IconButton";
-import ViewListIcon from "@mui/icons-material/ViewList";
+import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import { useNavbarStore } from "../../hooks/store/use-navbar-store";
 import { useMediaQuery } from "@mui/material";
 import settingsConfig from "../../config/settingConfig";
@@ -12,7 +12,6 @@ const NavbarToggleButton = observer(({ classname = "" }) => {
   return (
     <IconButton
       className={classname}
-      color="inherit"
       size="small"
       onClick={() => {
         if (isMobile) {
@@ -24,7 +23,7 @@ const NavbarToggleButton = observer(({ classname = "" }) => {
         }
       }}
     >
-      <ViewListIcon />
+      <MenuRoundedIcon />
     </IconButton>
   );
 });

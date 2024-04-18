@@ -20,7 +20,7 @@ const Root = styled("div")(({ theme, folded }) => ({
   }),
 }));
 const StyledNavbar = styled("div")(
-  ({ theme, position, folded, foldedandopened, foldedandclosed }) => ({
+  ({ theme, folded, foldedandopened, foldedandclosed }) => ({
     minWidth: navbarWidth,
     width: navbarWidth,
     maxWidth: navbarWidth,
@@ -29,12 +29,8 @@ const StyledNavbar = styled("div")(
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.shorter,
     }),
-    ...(position === "left" && {
-      left: 0,
-    }),
-    ...(position === "right" && {
-      right: 0,
-    }),
+    left: 0,
+
     ...(folded && {
       position: "absolute",
       width: 76,
@@ -97,7 +93,6 @@ const StyledNavbarMobile = styled(SwipeableDrawer)(({ theme }) => ({
 
 const NavbarStyle1 = observer(() => {
   const navbar = useNavbarStore();
-  const position = "left";
   const folded = navbar.folded;
   const foldedandclosed = folded && !navbar.foldedOpen;
   const foldedandopened = folded && navbar.foldedOpen;
@@ -112,7 +107,6 @@ const NavbarStyle1 = observer(() => {
       <Hidden lgDown>
         <StyledNavbar
           className="flex-auto flex-col"
-          position={position}
           folded={folded ? 1 : 0}
           foldedandopened={foldedandopened ? 1 : 0}
           foldedandclosed={foldedandclosed ? 1 : 0}
@@ -131,7 +125,6 @@ const NavbarStyle1 = observer(() => {
           folded={folded ? 1 : 0}
           foldedandopened={foldedandopened ? 1 : 0}
           foldedandclosed={foldedandclosed ? 1 : 0}
-          anchor={position}
           variant="temporary"
           open={navbar.mobileOpen}
           onClose={() => navbar.navbarCloseMobile()}

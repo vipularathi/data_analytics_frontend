@@ -1,4 +1,5 @@
 import { ListItemButton, ListItemText, alpha, styled } from "@mui/material";
+import { Link, useRouterState } from "@tanstack/react-router";
 import clsx from "clsx";
 
 const Root = styled(ListItemButton)(({ theme }) => ({
@@ -20,8 +21,8 @@ const Root = styled(ListItemButton)(({ theme }) => ({
     color: theme.palette.text.primary,
     backgroundColor:
       theme.palette.mode === "light"
-        ? "rgba(0, 0, 0, .05)!important"
-        : "rgba(255, 255, 255, .1)!important",
+        ? "#dbe4f3!important"
+        : "#5a8dee!important",
     pointerEvents: "none",
     transition: "border-radius .15s cubic-bezier(0.4,0.0,0.2,1)",
     "& > .fuse-list-item-text-primary": {
@@ -37,22 +38,28 @@ const Root = styled(ListItemButton)(({ theme }) => ({
   },
   "& > .fuse-list-item-text": {},
 }));
-const NavItem = (props) => {
-  const { item, onItemClick } = props;
+
+const NavItem = ({ item }) => {
+  const routerState = useRouterState();
+
   return (
-    <Root
-      className={clsx("fuse-list-item", item.active && "active")}
-      onClick={() => onItemClick && onItemClick(item)}
-    >
-      
-      <ListItemText
-        className="fuse-list-item-text"
-        primary={item.title}
-        classes={{
-          primary: "text-13 font-medium fuse-list-item-text-primary truncate",
-        }}
-      />
-    </Root>
+    <Link to={item.url}>
+      <Root
+        className={clsx(
+          "fuse-list-item",
+          routerState.location.pathname === item.url && "active"
+        )}
+      >
+        <item.icon className="fuse-list-item-icon" />
+        <ListItemText
+          className="fuse-list-item-text"
+          primary={item.title}
+          classes={{
+            primary: "text-13 font-medium fuse-list-item-text-primary truncate",
+          }}
+        />
+      </Root>
+    </Link>
   );
 };
 

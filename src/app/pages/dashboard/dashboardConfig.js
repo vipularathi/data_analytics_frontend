@@ -1,10 +1,10 @@
 import { createRoute } from "@tanstack/react-router";
-import Dashboard from "./Dashboard";
 import { rootRoute } from "../rootConfig";
+import RedirectToAnalytics from "../../components/RedirectToAnalytics";
 
-/** Routing for Dashboard */
-export const dasboardRoute = createRoute({
+/** Routing for Analytics */
+export const dashboardRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
-  component: Dashboard,
+  component: RedirectToAnalytics,
 });
