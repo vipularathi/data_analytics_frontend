@@ -4,8 +4,19 @@ import { observer } from "mobx-react-lite";
 import Logo from "../../../shared-components/Logo";
 import NavbarToggleButton from "../../../shared-components/NavbarToggleButton";
 import Navigation from "../../../shared-components/Navigation";
+import { useNavbarStore } from "../../../../hooks/store/use-navbar-store";
+import { useTheme } from "@emotion/react";
 
-const Root = styled("div")(({ theme }) => ({
+const Root = styled("div")(({ theme, foldedandclosed, foldedandopened }) => ({
+  "& .navbar-toggler": {
+    ...(foldedandclosed && {
+      display: "none",
+    }),
+    ...(foldedandopened && {
+      display: "block",
+    }),
+  },
+
   backgroundColor: theme.palette.background.default,
   color: theme.palette.text.primary,
   "& ::-webkit-scrollbar-thumb": {
@@ -28,19 +39,44 @@ const StyledContent = styled("div")(() => ({
   backgroundAttachment: "local, scroll",
 }));
 const NavbarStyle1Content = observer(({ className }) => {
+  const theme = useTheme();
+  const navbar = useNavbarStore();
+  const folded = navbar.folded;
+  const foldedandclosed = folded && !navbar.foldedOpen;
+  const foldedandopened = folded && navbar.foldedOpen;
+
+  let smallLogo, largeLogo;
+
+  if (theme.palette.mode === "light") {
+    smallLogo = "src/assets/logo/finzome-logo.png";
+    largeLogo = "src/assets/logo/finzome-logo-icon.png";
+  } else {
+    smallLogo = "src/assets/logo/finzome-logo-white.png";
+    largeLogo = "src/assets/logo/finzome-logo-icon-white.png";
+  }
+
   return (
     <Root
       className={clsx(
         "flex h-full flex-auto flex-col overflow-hidden",
         className
       )}
+      foldedandclosed={foldedandclosed}
+      foldedandopened={foldedandopened}
     >
-      <div className="flex h-48 shrink-0 flex-row items-center px-12 md:h-76">
-        <div className="mx-4 flex flex-1">
-          <Logo />
+      <div
+        className={`flex h-48 shrink-0 flex-row items-center  md:h-76 ${foldedandclosed ? "mx-auto" : "px-12"}`}
+      >
+        <div className="flex flex-1">
+          <Logo
+            src={foldedandopened || !folded ? smallLogo : largeLogo}
+            foldedandopened={foldedandopened}
+          />
         </div>
 
-        <NavbarToggleButton className="h-40 w-40 p-0" />
+        <div className="navbar-toggler">
+          <NavbarToggleButton className="w-40 h-40 p-0" />
+        </div>
       </div>
 
       <StyledContent

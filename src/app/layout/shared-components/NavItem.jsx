@@ -41,10 +41,10 @@ const NavItem = (props) => {
   const { item, onItemClick } = props;
   return (
     <Root
-      //   component={component}
       className={clsx("fuse-list-item", item.active && "active")}
       onClick={() => onItemClick && onItemClick(item)}
     >
+      
       <ListItemText
         className="fuse-list-item-text"
         primary={item.title}

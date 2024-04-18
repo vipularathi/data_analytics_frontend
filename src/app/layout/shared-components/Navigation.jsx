@@ -3,6 +3,7 @@ import navigationConfig from "../../config/navigationConfig";
 import { List, styled } from "@mui/material";
 import clsx from "clsx";
 import NavItem from "./NavItem";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 
 const StyledList = styled(List)(({ theme }) => ({
   "& .fuse-list-item": {

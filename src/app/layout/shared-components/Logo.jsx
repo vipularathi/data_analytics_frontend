@@ -9,12 +9,12 @@ const Root = styled("div")(({ theme }) => ({
     }),
   },
 }));
-const Logo = observer(() => {
+const Logo = observer(({ src, foldedandopened }) => {
   return (
     <Root className="flex items-center">
       <img
-        className="logo-icon h-32 w-32"
-        src="src/assets/logo/finzome-logo-icon.png"
+        className={`logo-icon h-32 ${foldedandopened && "h-40"}`}
+        src={src}
         alt="logo"
       />
     </Root>

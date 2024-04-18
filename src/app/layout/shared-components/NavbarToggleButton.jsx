@@ -5,12 +5,13 @@ import { useNavbarStore } from "../../hooks/store/use-navbar-store";
 import { useMediaQuery } from "@mui/material";
 import settingsConfig from "../../config/settingConfig";
 
-const NavbarToggleButton = observer(() => {
+const NavbarToggleButton = observer(({ classname = "" }) => {
   const navbar = useNavbarStore();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("lg"));
 
   return (
     <IconButton
+      className={classname}
       color="inherit"
       size="small"
       onClick={() => {
