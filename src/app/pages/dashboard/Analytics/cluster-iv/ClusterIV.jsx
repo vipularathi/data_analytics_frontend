@@ -132,6 +132,9 @@ const ClusterIV = observer(() => {
           },
         },
       },
+      accessibility: {
+        enabled: false,
+      },
       exporting: {
         enabled: false,
       },

@@ -6,6 +6,7 @@ import { useAuth } from "../../../hooks/store/use-auth";
 import { useUser } from "../../../hooks/store/use-user";
 import RootLayout from "../../../layout/RootLayout";
 import LayoutList from "../../../layout/LayoutList";
+import Copyright from "../../../components/Copyright";
 
 const Analytics = observer(() => {
   const authStore = useAuth();
@@ -25,6 +26,7 @@ const Analytics = observer(() => {
   return (
     <RootLayout layouts={LayoutList}>
       <Outlet />
+      <Copyright />
     </RootLayout>
   );
 });

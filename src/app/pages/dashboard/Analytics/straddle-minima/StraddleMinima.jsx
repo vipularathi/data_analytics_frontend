@@ -1,5 +1,11 @@
 import { observer } from "mobx-react-lite";
-import { FormControl, FormLabel, MenuItem, Select, useTheme } from "@mui/material";
+import {
+  FormControl,
+  FormLabel,
+  MenuItem,
+  Select,
+  useTheme,
+} from "@mui/material";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useEffect, useMemo, useState } from "react";
@@ -76,6 +82,9 @@ const StraddleMinima = observer(() => {
         backgroundColor: theme.palette.chart.cardColor,
         height: 500,
       },
+      accessibility: {
+        enabled: false,
+      },
       exporting: {
         enabled: false,
       },
@@ -83,7 +92,7 @@ const StraddleMinima = observer(() => {
         text: "Straddle Minima & IV Chart",
         align: "center",
         style: {
-          color: theme.palette.primary.dark,
+          color: theme.palette.chart.headingColor,
         },
       },
       xAxis: {
@@ -95,12 +104,12 @@ const StraddleMinima = observer(() => {
               .toFormat("hh:mm");
           },
           style: {
-            color: theme.palette.primary.dark,
+            color: theme.palette.chart.headingColor,
           },
         },
         tickWidth: 1,
-        tickColor: theme.palette.primary.dark,
-        lineColor: theme.palette.primary.dark,
+        tickColor: theme.palette.chart.headingColor,
+        lineColor: theme.palette.chart.headingColor,
       },
       yAxis: [
         {
@@ -108,14 +117,14 @@ const StraddleMinima = observer(() => {
           title: {
             text: "Premium",
             style: {
-              color: theme.palette.primary.dark,
+              color: theme.palette.chart.headingColor,
             },
           },
           labels: {
             align: "left",
             format: "{value}",
             style: {
-              color: theme.palette.primary.dark,
+              color: theme.palette.chart.headingColor,
             },
           },
         },
@@ -125,14 +134,14 @@ const StraddleMinima = observer(() => {
           title: {
             text: "Straddle IV",
             style: {
-              color: theme.palette.primary.dark,
+              color: theme.palette.chart.headingColor,
             },
           },
           labels: {
             align: "right",
             format: "{value}",
             style: {
-              color: theme.palette.primary.dark,
+              color: theme.palette.chart.headingColor,
             },
           },
         },
@@ -140,7 +149,7 @@ const StraddleMinima = observer(() => {
       legend: {
         enabled: true,
         itemStyle: {
-          color: theme.palette.primary.dark,
+          color: theme.palette.chart.headingColor,
         },
       },
       plotOptions: {
@@ -203,7 +212,7 @@ const StraddleMinima = observer(() => {
           size="small"
           className="md:max-w-120"
         >
-          <FormLabel>Symbol</FormLabel>
+          <FormLabel sx={{ fontSize: "0.75rem" }}>SYMBOL</FormLabel>
           <Select
             value={symbol}
             displayEmpty
@@ -227,7 +236,7 @@ const StraddleMinima = observer(() => {
           size="small"
           className="md:max-w-120"
         >
-          <FormLabel>Expiry</FormLabel>
+          <FormLabel sx={{ fontSize: "0.75rem" }}>EXPIRY</FormLabel>
           <Select
             value={expiry}
             displayEmpty

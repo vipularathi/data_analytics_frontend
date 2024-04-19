@@ -1,15 +1,15 @@
-import { styled } from "@mui/material";
+import { styled, useMediaQuery, useTheme } from "@mui/material";
 import clsx from "clsx";
 import { observer } from "mobx-react-lite";
 import Logo from "../../../shared-components/Logo";
 import NavbarToggleButton from "../../../shared-components/NavbarToggleButton";
 import Navigation from "../../../shared-components/Navigation";
 import { useNavbarStore } from "../../../../hooks/store/use-navbar-store";
-import { useTheme } from "@emotion/react";
-import smallLightLogo from "../../../../../assets/logo/finzome-logo.png";
-import smallDarkLogo from "../../../../../assets/logo/finzome-logo-white.png";
-import largeLightLogo from "../../../../../assets/logo/finzome-logo-icon.png";
-import largeDarkLogo from "../../../../../assets/logo/finzome-logo-icon-white.png";
+
+import largeLightLogo from "../../../../../assets/logo/finzome-logo.png";
+import largeDarkLogo from "../../../../../assets/logo/finzome-logo-white.png";
+import smallLightLogo from "../../../../../assets/logo/finzome-logo-icon.png";
+import smallDarkLogo from "../../../../../assets/logo/finzome-logo-icon-white.png";
 
 const Root = styled("div")(({ theme, foldedandclosed, foldedandopened }) => ({
   background:
@@ -49,6 +49,7 @@ const NavbarStyle1Content = observer(({ className }) => {
   const folded = navbar.folded;
   const foldedandclosed = folded && !navbar.foldedOpen;
   const foldedandopened = folded && navbar.foldedOpen;
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("lg"));
 
   let smallLogo, largeLogo;
 
@@ -74,7 +75,13 @@ const NavbarStyle1Content = observer(({ className }) => {
       >
         <div className="flex flex-1">
           <Logo
-            src={foldedandopened || !folded ? smallLogo : largeLogo}
+            src={
+              isMobile
+                ? largeLogo
+                : foldedandopened || !folded
+                  ? largeLogo
+                  : smallLogo
+            }
             foldedandopened={foldedandopened || !folded}
           />
         </div>

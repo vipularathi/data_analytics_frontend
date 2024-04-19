@@ -31,13 +31,13 @@ export const themesConfig = {
         light: "#64748b",
         main: "#1e293b",
         dark: "#0f172a",
-        contrastText: darkPaletteText.primary,
+        contrastText: lightPaletteText.primary,
       },
       secondary: {
         light: "#818cf8",
         main: "#4f46e5",
         dark: "#3730a3",
-        contrastText: darkPaletteText.primary,
+        contrastText: lightPaletteText.primary,
       },
       background: {
         paper: "#FFFFFF",
@@ -47,7 +47,7 @@ export const themesConfig = {
         light: "#ffcdd2",
         main: "#f44336",
         dark: "#b71c1c",
-        contrastText: darkPaletteText.primary,
+        contrastText: lightPaletteText.primary,
       },
       chart: {
         borderColor: "#e9ecee",

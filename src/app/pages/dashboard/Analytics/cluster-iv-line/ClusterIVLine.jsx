@@ -115,6 +115,9 @@ const ClusterIVLine = observer(() => {
         backgroundColor: theme.palette.chart.cardColor,
         height: 500,
       },
+      accessibility: {
+        enabled: false,
+      },
       exporting: {
         enabled: false,
       },
