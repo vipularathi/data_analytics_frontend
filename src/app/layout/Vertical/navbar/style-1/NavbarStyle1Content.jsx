@@ -64,7 +64,7 @@ const NavbarStyle1Content = observer(({ className }) => {
   return (
     <Root
       className={clsx(
-        "flex h-full flex-auto flex-col overflow-hidden shadow-0",
+        "flex h-full flex-auto flex-col overflow-hidden shadow-md",
         className
       )}
       foldedandclosed={foldedandclosed}

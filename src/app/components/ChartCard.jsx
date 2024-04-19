@@ -2,12 +2,8 @@ import {
   Card,
   CardContent,
   CardHeader,
-  FormControl,
-  MenuItem,
-  Select,
   useTheme,
 } from "@mui/material";
-import { theme } from "highcharts";
 import { observer } from "mobx-react-lite";
 
 const ChartCard = observer(({ title, children }) => {

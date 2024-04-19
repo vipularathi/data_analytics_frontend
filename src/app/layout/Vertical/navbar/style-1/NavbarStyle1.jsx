@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import NavbarStyle1Content from "./NavbarStyle1Content";
-import { Hidden, SwipeableDrawer, styled, useTheme } from "@mui/material";
+import { Hidden, SwipeableDrawer, styled } from "@mui/material";
 import { useNavbarStore } from "../../../../hooks/store/use-navbar-store";
 
 const navbarWidth = 280;
@@ -20,7 +20,7 @@ const Root = styled("div")(({ theme, folded }) => ({
   }),
 }));
 const StyledNavbar = styled("div")(
-  ({ theme, folded, foldedandopened, foldedandclosed }) => ({
+  ({ folded, foldedandopened, foldedandclosed }) => ({
     minWidth: navbarWidth,
     width: navbarWidth,
     maxWidth: navbarWidth,
@@ -100,7 +100,6 @@ const StyledNavbarMobile = styled(SwipeableDrawer)(({ theme }) => ({
 }));
 
 const NavbarStyle1 = observer(() => {
-  const theme = useTheme();
   const navbar = useNavbarStore();
   const folded = navbar.folded;
   const foldedandclosed = folded && !navbar.foldedOpen;
@@ -111,7 +110,7 @@ const NavbarStyle1 = observer(() => {
       folded={folded ? 1 : 0}
       open={navbar.open}
       id="fuse-navbar"
-      className="sticky top-0 z-20 h-screen shrink-0 shadow"
+      className="sticky top-0 z-20 h-screen shrink-0"
     >
       <Hidden lgDown>
         <StyledNavbar

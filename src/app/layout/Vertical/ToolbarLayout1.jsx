@@ -15,7 +15,6 @@ const ToolbarLayout1 = observer(({ className }) => {
       id="toolbar1"
       className={clsx("relative flex", className)}
       position="static"
-      // elevation={1}
       sx={{ backgroundColor: theme.palette.background.paper }}
     >
       <Toolbar className="min-h-48 z-5 p-0 md:min-h-64 shadow-md">

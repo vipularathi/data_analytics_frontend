@@ -7,7 +7,7 @@ const Copyright = observer(() => {
       <span className="flex sm:justify-center items-center text-[0.625] flex-wrap text-blue-gray">
         © {new Date().getFullYear()}{" "}
         <a href="https://www.finzome.com/" className=" font-bold ml-2">
-          finzome
+          Finzome
         </a>
         , Made with
         <svg

@@ -3,7 +3,6 @@ import navigationConfig from "../../config/navigationConfig";
 import { List, styled } from "@mui/material";
 import clsx from "clsx";
 import NavItem from "./NavItem";
-import { useRouter } from "@tanstack/react-router";
 
 const StyledList = styled(List)(({ theme }) => ({
   "& .fuse-list-item": {
@@ -40,7 +39,7 @@ const StyledList = styled(List)(({ theme }) => ({
     },
   },
 }));
-const Navigation = ({ className }) => {
+const Navigation = observer(() => {
   return (
     <StyledList className={clsx("navigation whitespace-nowrap px-12 py-0")}>
       {navigationConfig.map((_item) => (
@@ -48,6 +47,6 @@ const Navigation = ({ className }) => {
       ))}
     </StyledList>
   );
-};
+});
 
 export default Navigation;
