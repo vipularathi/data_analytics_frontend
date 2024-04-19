@@ -1,8 +1,7 @@
 import { observer } from "mobx-react-lite";
 import NavbarStyle1Content from "./NavbarStyle1Content";
-import { Hidden, SwipeableDrawer, styled } from "@mui/material";
+import { Hidden, SwipeableDrawer, styled, useTheme } from "@mui/material";
 import { useNavbarStore } from "../../../../hooks/store/use-navbar-store";
-import { useTheme } from "@emotion/react";
 
 const navbarWidth = 280;
 const Root = styled("div")(({ theme, folded }) => ({

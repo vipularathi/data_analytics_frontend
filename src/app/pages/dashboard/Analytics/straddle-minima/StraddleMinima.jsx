@@ -189,64 +189,62 @@ const StraddleMinima = observer(() => {
   }, [theme, chartData]);
 
   return (
-    <div>
-      <ChartCard
-        title="Straddle Minima"
-        symbols={symbols}
-        expirys={expirys}
-        setSymbol={setSymbol}
-        setExpiry={setExpiry}
-      >
-        <div className="flex flex-col sm:flex-row">
-          <FormControl
-            sx={{ m: 1 }}
-            fullWidth
-            size="small"
-            className="md:max-w-120"
+    <ChartCard
+      title="Straddle Minima"
+      symbols={symbols}
+      expirys={expirys}
+      setSymbol={setSymbol}
+      setExpiry={setExpiry}
+    >
+      <div className="flex flex-col sm:flex-row">
+        <FormControl
+          sx={{ m: 1 }}
+          fullWidth
+          size="small"
+          className="md:max-w-120"
+        >
+          <FormLabel>Symbol</FormLabel>
+          <Select
+            value={symbol}
+            displayEmpty
+            onChange={(e) => {
+              setSymbol(e.target.value);
+              setExpiry("");
+            }}
           >
-            <FormLabel>Symbol</FormLabel>
-            <Select
-              value={symbol}
-              displayEmpty
-              onChange={(e) => {
-                setSymbol(e.target.value);
-                setExpiry("");
-              }}
-            >
-              {symbols.map((symbol) => {
-                return (
-                  <MenuItem key={symbol} value={symbol}>
-                    {symbol}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-          <FormControl
-            sx={{ m: 1 }}
-            fullWidth
-            size="small"
-            className="md:max-w-120"
+            {symbols.map((symbol) => {
+              return (
+                <MenuItem key={symbol} value={symbol}>
+                  {symbol}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+        <FormControl
+          sx={{ m: 1 }}
+          fullWidth
+          size="small"
+          className="md:max-w-120"
+        >
+          <FormLabel>Expiry</FormLabel>
+          <Select
+            value={expiry}
+            displayEmpty
+            onChange={(e) => setExpiry(e.target.value)}
           >
-            <FormLabel>Expiry</FormLabel>
-            <Select
-              value={expiry}
-              displayEmpty
-              onChange={(e) => setExpiry(e.target.value)}
-            >
-              {expirys.map((e) => {
-                return (
-                  <MenuItem key={e} value={e}>
-                    {e}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-        </div>
-        <HighchartsReact highcharts={Highcharts} options={options} />
-      </ChartCard>
-    </div>
+            {expirys.map((e) => {
+              return (
+                <MenuItem key={e} value={e}>
+                  {e}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+      </div>
+      <HighchartsReact highcharts={Highcharts} options={options} />
+    </ChartCard>
   );
 });
 export default StraddleMinima;

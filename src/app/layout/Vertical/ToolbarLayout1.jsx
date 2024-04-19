@@ -14,9 +14,9 @@ const ToolbarLayout1 = observer(({ className }) => {
     <AppBar
       id="toolbar1"
       className={clsx("relative flex shadow", className)}
-      color="default"
       position="static"
       elevation={1}
+      sx={{ backgroundColor: theme.palette.background.paper }}
     >
       <Toolbar className="min-h-48 z-5 p-0 md:min-h-64">
         <div className="flex flex-1 px-16">
