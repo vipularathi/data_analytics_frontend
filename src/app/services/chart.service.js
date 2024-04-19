@@ -12,19 +12,25 @@ class ChartApi extends BaseApi {
   }
 
   getSymbols() {
-    this.axiosInstance.get(this.chartConfigUrl.symbols);
+    return this.axiosInstance.get(this.chartConfigUrl.symbols);
   }
 
   getStraddleMinima(payload) {
-    this.axiosInstance.get(this.chartConfigUrl.straddleMinima, payload);
+    return this.axiosInstance.get(this.chartConfigUrl.straddleMinima, {
+      params: payload,
+    });
   }
 
-  getStraddleIV() {
-    this.axiosInstance.get(this.chartConfigUrl.straddleIV, payload);
+  getStraddleIV(payload) {
+    return this.axiosInstance.get(this.chartConfigUrl.straddleIV, {
+      params: payload,
+    });
   }
 
-  getStraddleCluster() {
-    this.axiosInstance.get(this.chartConfigUrl.straddleCluster, payload);
+  getStraddleCluster(payload) {
+    return this.axiosInstance.get(this.chartConfigUrl.straddleCluster, {
+      params: payload,
+    });
   }
 }
 

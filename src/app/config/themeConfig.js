@@ -52,6 +52,7 @@ export const themesConfig = {
       chart: {
         borderColor: "#e9ecee",
         cardColor: "#fff",
+        headingColor: "#516377",
       },
     },
   },
@@ -88,6 +89,7 @@ export const themesConfig = {
       chart: {
         borderColor: "#36445d",
         cardColor: "#283144",
+        headingColor: "#d8deea",
       },
     },
   },
