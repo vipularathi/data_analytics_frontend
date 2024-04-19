@@ -1,18 +1,18 @@
 import { observer } from "mobx-react-lite";
-import { FormControl, MenuItem, Select, useTheme } from "@mui/material";
+import { FormControl, FormLabel, MenuItem, Select, useTheme } from "@mui/material";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { DateTime } from "luxon";
 import ChartCard from "../../../../components/ChartCard";
 import { chartApi } from "../../../../services/chart.service";
+import { colorList } from "../../../../utils/constant/colorList";
 const ClusterIVLine = observer(() => {
   const theme = useTheme();
-
+  const chartRef = useRef(null);
   const [symbol, setSymbol] = useState("");
   const [expiry, setExpiry] = useState("");
-  const [chartData, setChartData] = useState([]);
 
   const { data } = useQuery({
     queryKey: ["symbol"],
@@ -48,31 +48,70 @@ const ClusterIVLine = observer(() => {
             symbol: symbol,
             expiry: expiry,
           };
-          const res = await chartApi.getStraddleCluster(payload);
-          setChartData(res.data);
-          console.log(res.data);
+          const { data: resp } = await chartApi.getStraddleCluster(payload);
+          if (resp.strikes.length > 0) {
+            let chartData = resp.iv;
+            const categoriesData = resp.strikes;
+            const timeData = resp.ts.map((t) => t[0]);
+            plotChart(chartData, categoriesData, timeData);
+            chartRef.current.chart.hideLoading();
+          }
         } catch (error) {
           console.log(error);
         }
       }
     };
-    getStraddleCluster();
+
+    const intervalId = setInterval(() => {
+      if (chartRef.current && chartRef.current.chart) {
+        getStraddleCluster();
+      }
+    }, 60000);
+    return () => clearInterval(intervalId);
   }, [symbol, expiry]);
 
-  const options = useMemo(() => {
-    const chartData1 = chartData.map((c) => ({
-      y: c.combined_premium,
-      strike: c.strike,
-    }));
-    const chartData2 = chartData.map((c) => ({
-      y: c.combined_iv,
-      strike: c.strike,
-    }));
-    const categoriesData = chartData.map((c) => c.ts);
+  function plotChart(chartData, categoriesData, tsData) {
+    const seriesLenght = chartRef.current.chart.series.length;
+    for (let j = 0; j < seriesLenght; j++) {
+      chartRef.current.chart.series[0].remove(false, false, false);
+    }
 
+    for (let i = 0; i < chartData.length; i++) {
+      const elem = chartData[i];
+      const timeStamp = tsData[i];
+      chartRef.current.chart.addSeries(
+        {
+          name: "iv" + i,
+          ...(i === 0
+            ? { color: "#1d4ed8", zIndex: 10, lineWidth: 3, dashStyle: "dash" }
+            : i === chartData.length - 1
+              ? {
+                  color: "#fd7e14",
+                  zIndex: 10,
+                  lineWidth: 3,
+                  dashStyle: "dash",
+                }
+              : { color: colorList[i] }),
+          data: elem.map((iv) => ({ y: iv, timeStamp })),
+          marker: {
+            enabled: false,
+          },
+        },
+        false,
+        false
+      );
+    }
+    chartRef.current.chart.xAxis[0].update({
+      categories: categoriesData,
+    });
+
+    chartRef.current.chart.redraw();
+  }
+
+  const options = useMemo(() => {
     return {
       chart: {
-        type: "spline",
+        type: "line",
         backgroundColor: theme.palette.chart.cardColor,
         height: 500,
       },
@@ -80,117 +119,79 @@ const ClusterIVLine = observer(() => {
         enabled: false,
       },
       title: {
-        text: "Straddle Minima & IV Chart",
+        text: "Strike Cluster IV",
         align: "center",
         style: {
-          color: theme.palette.primary.dark,
+          color: theme.palette.chart.headingColor,
         },
       },
       xAxis: {
-        categories: categoriesData ?? [],
-        labels: {
-          formatter: function () {
-            return DateTime.fromMillis(this.value)
-              .setZone("Asia/Kolkata")
-              .toFormat("hh:mm");
-          },
+        categories: [],
+        title: {
+          text: "Strike",
           style: {
-            color: theme.palette.primary.dark,
+            color: theme.palette.chart.headingColor,
           },
         },
+        labels: {
+          format: "{value}",
+          style: {
+            color: theme.palette.chart.headingColor,
+          },
+        },
+        tickColor: theme.palette.chart.headingColor,
         tickWidth: 1,
-        tickColor: theme.palette.primary.dark,
-        lineColor: theme.palette.primary.dark,
-      },
-      yAxis: [
-        {
-          gridLineColor: theme.palette.chart.borderColor,
-          title: {
-            text: "Premium",
-            style: {
-              color: theme.palette.primary.dark,
-            },
-          },
-          labels: {
-            align: "left",
-            format: "{value}",
-            style: {
-              color: theme.palette.primary.dark,
-            },
-          },
-        },
-        {
-          gridLineColor: theme.palette.chart.borderColor,
-          opposite: true,
-          title: {
-            text: "Straddle IV",
-            style: {
-              color: theme.palette.primary.dark,
-            },
-          },
-          labels: {
-            align: "right",
-            format: "{value}",
-            style: {
-              color: theme.palette.primary.dark,
-            },
-          },
-        },
-      ],
-      legend: {
-        enabled: true,
-        itemStyle: {
-          color: theme.palette.primary.dark,
-        },
+        lineColor: theme.palette.chart.headingColor,
       },
       plotOptions: {
         series: {
           animation: false,
         },
       },
+      yAxis: {
+        gridLineColor: theme.palette.chart.borderColor,
+        title: {
+          text: "IV",
+          style: {
+            color: theme.palette.chart.headingColor,
+          },
+        },
+        labels: {
+          format: "{value}",
+          style: {
+            color: theme.palette.chart.headingColor,
+          },
+        },
+      },
+      legend: {
+        enabled: false,
+        itemStyle: {
+          color: theme.palette.chart.headingColor,
+        },
+      },
       tooltip: {
         enabled: true,
         shared: true,
         formatter: function () {
-          const date = DateTime.fromMillis(this.x)
-            .setZone("Asia/Kolkata")
-            .toFormat("LLL dd hh:mm");
-          const strike = this.points[0].point.options.strike;
+          const strike = this.x;
           return this.points.reduce(function (s, point) {
-            return `${s} </br> ${point.series.name}: ${point.y}`;
-          }, `${date} </br> Strike: ${strike}`);
+            const date = point.point.options.timeStamp.replace("T", " ");
+            const color = point.color;
+            return `${s} </br> <span style="color: ${color}">${date} - ${point.y.toFixed(3)}</span>`;
+          }, `Strike - ${strike}`);
         },
         backgroundColor: theme.palette.chart.cardColor,
         style: {
-          color: theme.palette.primary.dark,
+          color: theme.palette.chart.headingColor,
         },
       },
-      series: [
-        {
-          name: "Premium",
-          data: chartData1 ?? [],
-          marker: {
-            enabled: false,
-          },
-          yAxis: 0,
-          color: "#5a8dee",
-        },
-        {
-          name: "IV",
-          data: chartData2 ?? [],
-          marker: {
-            enabled: false,
-          },
-          yAxis: 1,
-          color: "#fd7e14",
-        },
-      ],
+      series: [],
     };
-  }, [theme, chartData]);
+  }, [theme]);
 
   return (
     <div>
-      <ChartCard title="Straddle Minima">
+      <ChartCard title="Strike Cluster IV">
         <div className="flex flex-col sm:flex-row">
           <FormControl
             sx={{ m: 1 }}
@@ -198,6 +199,7 @@ const ClusterIVLine = observer(() => {
             size="small"
             className="md:max-w-120"
           >
+            <FormLabel>Symbol</FormLabel>
             <Select
               value={symbol}
               displayEmpty
@@ -221,6 +223,7 @@ const ClusterIVLine = observer(() => {
             size="small"
             className="md:max-w-120"
           >
+            <FormLabel>Expiry</FormLabel>
             <Select
               value={expiry}
               displayEmpty
@@ -236,9 +239,11 @@ const ClusterIVLine = observer(() => {
             </Select>
           </FormControl>
         </div>
-        <div>
-          <HighchartsReact highcharts={Highcharts} options={options} />
-        </div>
+        <HighchartsReact
+          ref={chartRef}
+          highcharts={Highcharts}
+          options={options}
+        />
       </ChartCard>
     </div>
   );

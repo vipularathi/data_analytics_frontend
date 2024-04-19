@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { FormControl, MenuItem, Select, useTheme } from "@mui/material";
+import { FormControl, FormLabel, MenuItem, Select, useTheme } from "@mui/material";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useEffect, useMemo, useState } from "react";
@@ -204,6 +204,7 @@ const StraddleMinima = observer(() => {
             size="small"
             className="md:max-w-120"
           >
+            <FormLabel>Symbol</FormLabel>
             <Select
               value={symbol}
               displayEmpty
@@ -227,6 +228,7 @@ const StraddleMinima = observer(() => {
             size="small"
             className="md:max-w-120"
           >
+            <FormLabel>Expiry</FormLabel>
             <Select
               value={expiry}
               displayEmpty

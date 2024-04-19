@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { FormControl, MenuItem, Select, useTheme } from "@mui/material";
+import { FormControl, FormLabel, MenuItem, Select, useTheme } from "@mui/material";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useEffect, useMemo, useState } from "react";
@@ -51,7 +51,7 @@ const continuousStraddle = observer(() => {
             cont: true,
           };
           const res = await chartApi.getStraddleMinima(payload);
-          console.log(res.data);
+
           setChartData(res.data);
         } catch (error) {
           console.log(error);
@@ -84,8 +84,6 @@ const continuousStraddle = observer(() => {
         };
       }
     });
-
-    console.log(zones);
 
     return {
       chart: {
@@ -177,8 +175,6 @@ const continuousStraddle = observer(() => {
     };
   }, [theme, chartData]);
 
-  console.log(options);
-
   return (
     <div>
       <ChartCard
@@ -195,6 +191,7 @@ const continuousStraddle = observer(() => {
             size="small"
             className="md:max-w-120"
           >
+            <FormLabel>Symbol</FormLabel>
             <Select
               value={symbol}
               displayEmpty
@@ -218,6 +215,7 @@ const continuousStraddle = observer(() => {
             size="small"
             className="md:max-w-120"
           >
+            <FormLabel>Expiry</FormLabel>
             <Select
               value={expiry}
               displayEmpty
