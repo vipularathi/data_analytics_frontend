@@ -1,25 +1,25 @@
 import { observer } from "mobx-react-lite";
-import { FormControl, FormLabel, MenuItem, Select, useTheme } from "@mui/material";
+import {
+  FormControl,
+  FormLabel,
+  MenuItem,
+  Select,
+  useTheme,
+} from "@mui/material";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useEffect, useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { DateTime } from "luxon";
 import ChartCard from "../../../../components/ChartCard";
 import { chartApi } from "../../../../services/chart.service";
+import { useLoaderData } from "@tanstack/react-router";
 
 const continuousStraddle = observer(() => {
   const theme = useTheme();
-
-  const [symbol, setSymbol] = useState("");
-  const [expiry, setExpiry] = useState("");
+  const data = useLoaderData({ select: (data) => data });
+   const [symbol, setSymbol] = useState(data[0].name);
+   const [expiry, setExpiry] = useState(data[0].expiry[0]);
   const [chartData, setChartData] = useState([]);
-
-  const { data } = useQuery({
-    queryKey: ["symbol"],
-    queryFn: () => chartApi.getSymbols().then((res) => res.data),
-    staleTime: Infinity,
-  });
 
   const symbols = useMemo(() => {
     if (data) {
@@ -200,7 +200,9 @@ const continuousStraddle = observer(() => {
               displayEmpty
               onChange={(e) => {
                 setSymbol(e.target.value);
-                setExpiry("");
+                setExpiry(
+                  data.find((s) => s.name === e.target.value)?.expiry[0] ?? ""
+                );
               }}
             >
               {symbols.map((symbol) => {

@@ -1,23 +1,24 @@
 import { observer } from "mobx-react-lite";
-import { FormControl, FormLabel, MenuItem, Select, useTheme } from "@mui/material";
+import {
+  FormControl,
+  FormLabel,
+  MenuItem,
+  Select,
+  useTheme,
+} from "@mui/material";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import ChartCard from "../../../../components/ChartCard";
 import { chartApi } from "../../../../services/chart.service";
 import { colorList } from "../../../../utils/constant/colorList";
+import { useLoaderData } from "@tanstack/react-router";
 const ClusterIVLine = observer(() => {
   const theme = useTheme();
   const chartRef = useRef(null);
-  const [symbol, setSymbol] = useState("");
-  const [expiry, setExpiry] = useState("");
-
-  const { data } = useQuery({
-    queryKey: ["symbol"],
-    queryFn: () => chartApi.getSymbols().then((res) => res.data),
-    staleTime: Infinity,
-  });
+  const data = useLoaderData({ select: (data) => data });
+  const [symbol, setSymbol] = useState(data[0].name);
+  const [expiry, setExpiry] = useState(data[0].expiry[0]);
 
   const symbols = useMemo(() => {
     if (data) {
@@ -60,14 +61,16 @@ const ClusterIVLine = observer(() => {
         }
       }
     };
-
+    if (chartRef.current && chartRef.current.chart) {
+      getStraddleCluster();
+    }
     const intervalId = setInterval(() => {
       if (chartRef.current && chartRef.current.chart) {
         getStraddleCluster();
       }
     }, 60000);
     return () => clearInterval(intervalId);
-  }, [symbol, expiry]);
+  }, [symbol, expiry, theme.palette.mode]);
 
   function plotChart(chartData, categoriesData, tsData) {
     const seriesLenght = chartRef.current.chart.series.length;
@@ -207,7 +210,9 @@ const ClusterIVLine = observer(() => {
               displayEmpty
               onChange={(e) => {
                 setSymbol(e.target.value);
-                setExpiry("");
+                setExpiry(
+                  data.find((s) => s.name === e.target.value)?.expiry[0] ?? ""
+                );
               }}
             >
               {symbols.map((symbol) => {

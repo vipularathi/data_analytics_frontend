@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 import { observer } from "mobx-react-lite";
 import RootStore from "../store/root.store";
 
@@ -17,3 +17,11 @@ export const StoreProvider = observer(({ children }) => {
     <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
   );
 });
+
+export function useStore() {
+  const store = useContext(StoreContext);
+  if (store === undefined) {
+    throw new Error("useStore must be used within a StoreProvider");
+  }
+  return store;
+}

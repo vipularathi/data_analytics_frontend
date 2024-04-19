@@ -9,23 +9,19 @@ import {
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useEffect, useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { DateTime } from "luxon";
 import ChartCard from "../../../../components/ChartCard";
 import { chartApi } from "../../../../services/chart.service";
+import { useLoaderData } from "@tanstack/react-router";
 
 const StraddleMinima = observer(() => {
+  const data = useLoaderData({ select: (data) => data });
+
   const theme = useTheme();
 
-  const [symbol, setSymbol] = useState("");
-  const [expiry, setExpiry] = useState("");
+  const [symbol, setSymbol] = useState(data[0].name);
+  const [expiry, setExpiry] = useState(data[0].expiry[0]);
   const [chartData, setChartData] = useState([]);
-
-  const { data } = useQuery({
-    queryKey: ["symbol"],
-    queryFn: () => chartApi.getSymbols().then((res) => res.data),
-    staleTime: Infinity,
-  });
 
   const symbols = useMemo(() => {
     if (data) {
@@ -198,13 +194,7 @@ const StraddleMinima = observer(() => {
   }, [theme, chartData]);
 
   return (
-    <ChartCard
-      title="Straddle Minima"
-      symbols={symbols}
-      expirys={expirys}
-      setSymbol={setSymbol}
-      setExpiry={setExpiry}
-    >
+    <ChartCard title="Straddle Minima">
       <div className="flex flex-col sm:flex-row">
         <FormControl
           sx={{ m: 1 }}
@@ -215,10 +205,11 @@ const StraddleMinima = observer(() => {
           <FormLabel sx={{ fontSize: "0.75rem" }}>SYMBOL</FormLabel>
           <Select
             value={symbol}
-            displayEmpty
             onChange={(e) => {
               setSymbol(e.target.value);
-              setExpiry("");
+              setExpiry(
+                data.find((s) => s.name === e.target.value)?.expiry[0] ?? ""
+              );
             }}
           >
             {symbols.map((symbol) => {
@@ -237,11 +228,7 @@ const StraddleMinima = observer(() => {
           className="md:max-w-120"
         >
           <FormLabel sx={{ fontSize: "0.75rem" }}>EXPIRY</FormLabel>
-          <Select
-            value={expiry}
-            displayEmpty
-            onChange={(e) => setExpiry(e.target.value)}
-          >
+          <Select value={expiry} onChange={(e) => setExpiry(e.target.value)}>
             {expirys.map((e) => {
               return (
                 <MenuItem key={e} value={e}>
