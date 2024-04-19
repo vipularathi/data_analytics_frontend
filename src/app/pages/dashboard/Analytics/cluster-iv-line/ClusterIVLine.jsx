@@ -201,7 +201,7 @@ const ClusterIVLine = observer(() => {
             size="small"
             className="md:max-w-120"
           >
-            <FormLabel>Symbol</FormLabel>
+            <FormLabel sx={{ fontSize: "0.75rem" }}>SYMBOL</FormLabel>
             <Select
               value={symbol}
               displayEmpty
@@ -225,7 +225,7 @@ const ClusterIVLine = observer(() => {
             size="small"
             className="md:max-w-120"
           >
-            <FormLabel>Expiry</FormLabel>
+            <FormLabel sx={{ fontSize: "0.75rem" }}>EXPIRY</FormLabel>
             <Select
               value={expiry}
               displayEmpty
