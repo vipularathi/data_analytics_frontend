@@ -7,7 +7,7 @@ const navbarWidth = 280;
 const Root = styled("div")(({ theme, folded }) => ({
   display: "flex",
   flexDirection: "column",
-  zIndex: 4,
+  zIndex: 20,
   [theme.breakpoints.up("lg")]: {
     width: navbarWidth,
     minWidth: navbarWidth,
@@ -110,7 +110,7 @@ const NavbarStyle1 = observer(() => {
       folded={folded ? 1 : 0}
       open={navbar.open}
       id="fuse-navbar"
-      className="sticky top-0 z-20 h-screen shrink-0"
+      className="sticky top-0 h-screen shrink-0"
     >
       <Hidden lgDown>
         <StyledNavbar

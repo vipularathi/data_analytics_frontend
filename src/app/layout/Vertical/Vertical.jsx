@@ -3,6 +3,7 @@ import { styled } from "@mui/material";
 import NavbarVertical from "./NavbarVertical";
 import settingsConfig from "../../config/settingConfig";
 import ToolbarLayout1 from "./ToolbarLayout1";
+import FooterLayout1 from "./FooterLayout1";
 
 const Root = styled("div")(({ config }) => ({
   ...(config.mode === "boxed" && {
@@ -34,6 +35,7 @@ const Vertical = observer(({ children }) => {
           <div className="relative flex min-h-0 flex-auto flex-col">
             {children}
           </div>
+          <FooterLayout1 />
         </main>
       </div>
     </Root>

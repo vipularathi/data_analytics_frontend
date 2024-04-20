@@ -13,12 +13,12 @@ const ToolbarLayout1 = observer(({ className }) => {
   return (
     <AppBar
       id="toolbar1"
-      className={clsx("relative z-1 flex ", className)}
+      className={clsx("relative flex ", className)}
       position="sticky"
       elevation={0}
-      sx={{ backgroundColor: theme.palette.background.paper, zIndex: 1 }}
+      sx={{ backgroundColor: theme.palette.background.paper, zIndex: 10 }}
     >
-      <Toolbar className="min-h-48 z-5 p-0 md:min-h-64 shadow-md">
+      <Toolbar className="min-h-48 p-0 md:min-h-64 shadow-md">
         <div className="flex flex-1 pr-16">
           <Hidden lgUp>
             <NavbarToggleButton className="mx-0 h-40 w-40 p-0 sm:mx-8" />
