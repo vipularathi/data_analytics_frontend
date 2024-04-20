@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import {
   FormControl,
   FormLabel,
+  InputLabel,
   MenuItem,
   Select,
   useTheme,
@@ -202,9 +203,15 @@ const StraddleMinima = observer(() => {
           size="small"
           className="md:max-w-120"
         >
-          <FormLabel sx={{ fontSize: "0.75rem" }}>SYMBOL</FormLabel>
+          <InputLabel
+            id="demo-simple-select-label"
+            sx={{ fontSize: "0.75rem" }}
+          >
+            SYMBOL
+          </InputLabel>
           <Select
             value={symbol}
+            label="SYMBOL"
             onChange={(e) => {
               setSymbol(e.target.value);
               setExpiry(
@@ -227,8 +234,12 @@ const StraddleMinima = observer(() => {
           size="small"
           className="md:max-w-120"
         >
-          <FormLabel sx={{ fontSize: "0.75rem" }}>EXPIRY</FormLabel>
-          <Select value={expiry} onChange={(e) => setExpiry(e.target.value)}>
+          <InputLabel sx={{ fontSize: "0.75rem" }}>EXPIRY</InputLabel>
+          <Select
+            label="EXPIRY"
+            value={expiry}
+            onChange={(e) => setExpiry(e.target.value)}
+          >
             {expirys.map((e) => {
               return (
                 <MenuItem key={e} value={e}>

@@ -1,15 +1,10 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  useTheme,
-} from "@mui/material";
+import { Card, CardContent, CardHeader, useTheme } from "@mui/material";
 import { observer } from "mobx-react-lite";
 
 const ChartCard = observer(({ title, children }) => {
   const theme = useTheme();
   return (
-    <div className="p-8">
+    <div className="py-8 px-12 sm:px-16">
       <Card className=" w-full shadow-2">
         <CardHeader
           title={title}
