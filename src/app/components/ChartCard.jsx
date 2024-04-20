@@ -5,7 +5,11 @@ const ChartCard = observer(({ title, children }) => {
   const theme = useTheme();
   return (
     <div className="py-8 px-12 sm:px-16">
-      <Card className=" w-full shadow-2">
+      <Card
+        variant="outlined"
+        sx={{ backgroundColor: (theme) => theme.palette.background.paper }}
+        className=" w-full shadow-2"
+      >
         <CardHeader
           title={title}
           titleTypographyProps={{

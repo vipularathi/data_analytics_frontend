@@ -14,7 +14,7 @@ const FooterLayout1 = observer(() => {
         backgroundColor: (theme) =>
           theme.palette.mode === "light"
             ? theme.palette.background.paper
-            : theme.palette.background.default,
+            : theme.palette.background.paper,
         zIndex: 1,
       }}
       elevation={0}

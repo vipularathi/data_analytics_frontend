@@ -78,8 +78,8 @@ export const themesConfig = {
         contrastText: darkPaletteText.primary,
       },
       background: {
-        paper: "#1e293b",
-        default: "#111827",
+        paper: "#131722",
+        default: "#2a2e39",
       },
       error: {
         light: "#ffcdd2",
@@ -88,7 +88,7 @@ export const themesConfig = {
       },
       chart: {
         borderColor: "#36445d",
-        cardColor: "#283144",
+        cardColor: "#131722", //283144
         headingColor: "#d8deea",
       },
     },
