@@ -71,7 +71,7 @@ const NavbarStyle1Content = observer(({ className }) => {
       foldedandopened={foldedandopened}
     >
       <div
-        className={`flex min-h-40 shrink-1 flex-row items-center ${foldedandclosed ? "mx-auto" : "px-12"}`}
+        className={`flex min-h-40 shrink-1 flex-row items-center ${foldedandclosed ? "mx-6" : "px-12"}`}
       >
         <div className="flex flex-1">
           <Logo
