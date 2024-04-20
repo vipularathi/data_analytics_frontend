@@ -25,9 +25,7 @@ const Root = styled(ListItemButton)(({ theme }) => ({
         : "#5a8dee!important",
     pointerEvents: "none",
     transition: "border-radius .15s cubic-bezier(0.4,0.0,0.2,1)",
-    "& > .fuse-list-item-text-primary": {
-      color: "inherit",
-    },
+    "& > .fuse-list-item-text-primary": {},
     "& > .fuse-list-item-icon": {
       color: "inherit",
     },
@@ -60,7 +58,7 @@ const NavItem = ({ item }) => {
             letterSpacing: 0,
           }}
           classes={{
-            primary: "text-13 font-medium fuse-list-item-text-primary",
+            primary: "fuse-list-item-text-primary",
           }}
         />
       </Root>

@@ -10,9 +10,9 @@ export const lightPaletteText = {
  * The darkPaletteText object defines the text color palette for the dark theme.
  */
 export const darkPaletteText = {
-  primary: "rgb(255,255,255)",
-  secondary: "rgb(148, 163, 184)",
-  disabled: "rgb(156, 163, 175)",
+  primary: "#d1d4dc",
+  secondary: "#979eb0",
+  disabled: "#b4b9c6",
 };
 /**
  * The themesConfig object is a configuration object for the color themes of the Fuse application.
@@ -89,7 +89,7 @@ export const themesConfig = {
       chart: {
         borderColor: "#36445d",
         cardColor: "#131722", //283144
-        headingColor: "#d8deea",
+        headingColor: "#d1d4dc", //d8deea
       },
     },
   },

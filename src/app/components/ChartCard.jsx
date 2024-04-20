@@ -13,7 +13,6 @@ const ChartCard = observer(({ title, children }) => {
         <CardHeader
           title={title}
           titleTypographyProps={{
-            color: theme.palette.chart.headingColor,
             fontSize: "1.4rem",
           }}
         />
