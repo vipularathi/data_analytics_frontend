@@ -1,6 +1,7 @@
 import { ListItemButton, ListItemText, alpha, styled } from "@mui/material";
 import { Link, useRouterState } from "@tanstack/react-router";
 import clsx from "clsx";
+import { observer } from "mobx-react-lite";
 
 const Root = styled(ListItemButton)(({ theme }) => ({
   minHeight: 44,
@@ -37,7 +38,7 @@ const Root = styled(ListItemButton)(({ theme }) => ({
   "& > .fuse-list-item-text": {},
 }));
 
-const NavItem = ({ item }) => {
+const NavItem = observer(({ item }) => {
   const routerState = useRouterState();
 
   return (
@@ -45,7 +46,7 @@ const NavItem = ({ item }) => {
       <Root
         className={clsx(
           "fuse-list-item",
-          routerState.location.pathname === item.url && "active"
+          routerState.location.pathname === item.url && "active",
         )}
       >
         <item.icon fontSize="small" className="fuse-list-item-icon" />
@@ -64,6 +65,6 @@ const NavItem = ({ item }) => {
       </Root>
     </Link>
   );
-};
+});
 
 export default NavItem;

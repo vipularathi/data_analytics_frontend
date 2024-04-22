@@ -1,26 +1,68 @@
 import { observer } from "mobx-react-lite";
-
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useEffect, useMemo, useRef } from "react";
+import { useTheme } from "@mui/material";
 import { chartApi } from "../services/chart.service";
 import { colorList } from "../utils/constant/colorList";
-import { useTheme } from "@mui/material";
 
 const ClusterIVLineChart = observer(({ symbol, expiry }) => {
   const theme = useTheme();
   const chartRef = useRef(null);
+  function plotChart(chartData, categoriesData, tsData) {
+    const seriesLenght = chartRef.current.chart.series.length;
+    for (let j = 0; j < seriesLenght; j += 1) {
+      chartRef.current.chart.series[0].remove(false, false, false);
+    }
+
+    for (let i = 0; i < chartData.length; i += 1) {
+      const elem = chartData[i];
+      const timeStamp = tsData[i];
+      chartRef.current.chart.addSeries(
+        {
+          name: `iv${i}`,
+          // eslint-disable-next-line no-nested-ternary
+          ...(i === 0
+            ? {
+              color: "#1d4ed8",
+              zIndex: 10,
+              lineWidth: 3,
+              dashStyle: "dash",
+            }
+            : i === chartData.length - 1
+              ? {
+                color: "#fd7e14",
+                zIndex: 10,
+                lineWidth: 3,
+                dashStyle: "dash",
+              }
+              : { color: colorList[i] }),
+          data: elem.map((iv) => ({ y: iv, timeStamp })),
+          marker: {
+            enabled: false,
+          },
+        },
+        false,
+        false,
+      );
+    }
+    chartRef.current.chart.xAxis[0].update({
+      categories: categoriesData,
+    });
+
+    chartRef.current.chart.redraw();
+  }
   useEffect(() => {
     const getStraddleCluster = async () => {
       if (symbol && expiry) {
         try {
           const payload = {
-            symbol: symbol,
-            expiry: expiry,
+            symbol,
+            expiry,
           };
           const { data: resp } = await chartApi.getStraddleCluster(payload);
           if (resp.strikes.length > 0) {
-            let chartData = resp.iv;
+            const chartData = resp.iv;
             const categoriesData = resp.strikes;
             const timeData = resp.ts.map((t) => t[0]);
             plotChart(chartData, categoriesData, timeData);
@@ -42,51 +84,8 @@ const ClusterIVLineChart = observer(({ symbol, expiry }) => {
     return () => clearInterval(intervalId);
   }, [symbol, expiry, theme.palette.mode]);
 
-  function plotChart(chartData, categoriesData, tsData) {
-    const seriesLenght = chartRef.current.chart.series.length;
-    for (let j = 0; j < seriesLenght; j++) {
-      chartRef.current.chart.series[0].remove(false, false, false);
-    }
-
-    for (let i = 0; i < chartData.length; i++) {
-      const elem = chartData[i];
-      const timeStamp = tsData[i];
-      chartRef.current.chart.addSeries(
-        {
-          name: "iv" + i,
-          ...(i === 0
-            ? {
-                color: "#1d4ed8",
-                zIndex: 10,
-                lineWidth: 3,
-                dashStyle: "dash",
-              }
-            : i === chartData.length - 1
-              ? {
-                  color: "#fd7e14",
-                  zIndex: 10,
-                  lineWidth: 3,
-                  dashStyle: "dash",
-                }
-              : { color: colorList[i] }),
-          data: elem.map((iv) => ({ y: iv, timeStamp })),
-          marker: {
-            enabled: false,
-          },
-        },
-        false,
-        false
-      );
-    }
-    chartRef.current.chart.xAxis[0].update({
-      categories: categoriesData,
-    });
-
-    chartRef.current.chart.redraw();
-  }
-
-  const options = useMemo(() => {
-    return {
+  const options = useMemo(
+    () => ({
       chart: {
         type: "line",
         backgroundColor: theme.palette.chart.cardColor,
@@ -154,11 +153,11 @@ const ClusterIVLineChart = observer(({ symbol, expiry }) => {
       tooltip: {
         enabled: true,
         shared: true,
-        formatter: function () {
+        formatter() {
           const strike = this.x;
-          return this.points.reduce(function (s, point) {
+          return this.points.reduce((s, point) => {
             const date = point.point.options.timeStamp.replace("T", " ");
-            const color = point.color;
+            const { color } = point;
             return `${s} </br> <span style="color: ${color}">${date} - ${point.y.toFixed(3)}</span>`;
           }, `Strike - ${strike}`);
         },
@@ -168,8 +167,9 @@ const ClusterIVLineChart = observer(({ symbol, expiry }) => {
         },
       },
       series: [],
-    };
-  }, [theme]);
+    }),
+    [theme],
+  );
   return (
     <HighchartsReact ref={chartRef} highcharts={Highcharts} options={options} />
   );

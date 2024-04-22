@@ -1,4 +1,5 @@
 import { BaseApi } from "./base.service";
+
 const CHART_BASE_URL = "http://192.168.1.13:8501";
 class ChartApi extends BaseApi {
   chartConfigUrl = {

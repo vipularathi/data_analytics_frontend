@@ -18,6 +18,7 @@ export const StoreProvider = observer(({ children }) => {
   );
 });
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useStore() {
   const store = useContext(StoreContext);
   if (store === undefined) {

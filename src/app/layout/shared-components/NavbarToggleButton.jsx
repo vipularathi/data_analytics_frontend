@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import IconButton from "@mui/material/IconButton";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
-import { useNavbarStore } from "../../hooks/store/use-navbar-store";
 import { useMediaQuery } from "@mui/material";
+import { useNavbarStore } from "../../hooks/store/use-navbar-store";
 import settingsConfig from "../../config/settingConfig";
 
 const NavbarToggleButton = observer(({ classname = "" }) => {

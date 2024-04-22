@@ -22,24 +22,22 @@ const Root = styled("div")(({ config }) => ({
   }),
 }));
 
-const Vertical = observer(({ children }) => {
-  return (
-    <Root config={settingsConfig} className="flex w-full">
-      <div className="flex min-w-0 flex-auto">
-        <NavbarVertical />
-        <main
-          id="fuse-main"
-          className="relative flex min-h-full min-w-0 flex-auto flex-col"
-        >
-          <ToolbarLayout1 />
-          <div className="relative flex min-h-0 flex-auto flex-col">
-            {children}
-          </div>
-          <FooterLayout1 />
-        </main>
-      </div>
-    </Root>
-  );
-});
+const Vertical = observer(({ children }) => (
+  <Root config={settingsConfig} className="flex w-full">
+    <div className="flex min-w-0 flex-auto">
+      <NavbarVertical />
+      <main
+        id="fuse-main"
+        className="relative flex min-h-full min-w-0 flex-auto flex-col"
+      >
+        <ToolbarLayout1 />
+        <div className="relative flex min-h-0 flex-auto flex-col">
+          {children}
+        </div>
+        <FooterLayout1 />
+      </main>
+    </div>
+  </Root>
+));
 
 export default Vertical;

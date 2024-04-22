@@ -10,35 +10,30 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useEffect, useMemo, useState } from "react";
 import { DateTime } from "luxon";
+import { useLoaderData } from "@tanstack/react-router";
 import ChartCard from "../../../../components/ChartCard";
 import { chartApi } from "../../../../services/chart.service";
-import { useLoaderData } from "@tanstack/react-router";
 
 const ClusterIV = observer(() => {
   const theme = useTheme();
-  const data = useLoaderData({ select: (data) => data });
+  const data = useLoaderData({ select: (d) => d });
   const [symbol, setSymbol] = useState(data[0].name);
   const [expiry, setExpiry] = useState(data[0].expiry[0]);
   const [chartData, setChartData] = useState([]);
 
   const symbols = useMemo(() => {
     if (data) {
-      return data.map((symbol) => {
-        return symbol.name;
-      });
-    } else return [];
+      return data.map((s) => s.name);
+    } return [];
   }, [data]);
 
   const expirys = useMemo(() => {
     if (data) {
       return (
-        data.find((e) => {
-          return e.name === symbol;
-        })?.expiry || []
+        data.find((e) => e.name === symbol)?.expiry || []
       );
-    } else {
-      return [];
     }
+    return [];
   }, [data, symbol]);
 
   useEffect(() => {
@@ -46,8 +41,8 @@ const ClusterIV = observer(() => {
       if (symbol && expiry) {
         try {
           const payload = {
-            symbol: symbol,
-            expiry: expiry,
+            symbol,
+            expiry,
           };
           const res = await chartApi.getStraddleIV(payload);
           setChartData(res.data);
@@ -69,14 +64,13 @@ const ClusterIV = observer(() => {
           isMinima: true,
           ts: c.ts,
         };
-      } else {
-        return {
-          x: c.strike,
-          y: c.combined_iv,
-          isMinima: false,
-          ts: c.ts,
-        };
       }
+      return {
+        x: c.strike,
+        y: c.combined_iv,
+        isMinima: false,
+        ts: c.ts,
+      };
     });
 
     let shapes = [];
@@ -94,15 +88,15 @@ const ClusterIV = observer(() => {
               });
               shapes = [];
             }
-            var chart = this;
-            var points = chart.series[0].data;
-            points.forEach((p, i) => {
+            const chart = this;
+            const points = chart.series[0].data;
+            points.forEach((p) => {
               if (p.options && p.options.isMinima) {
-                var shape = chart.renderer
+                const shape = chart.renderer
                   .circle(
                     p.plotX + chart.plotLeft,
                     p.plotY + chart.plotTop,
-                    3.5
+                    3.5,
                   )
                   .attr({
                     fill: "#EF4040",
@@ -113,11 +107,11 @@ const ClusterIV = observer(() => {
                 shape.point = p;
 
                 shape
-                  .on("mouseover", function () {
+                  .on("mouseover", () => {
                     p.setState("hover");
                     chart.tooltip.refresh(p);
                   })
-                  .on("mouseout", function () {
+                  .on("mouseout", () => {
                     p.setState();
                     chart.tooltip.hide();
                   });
@@ -210,7 +204,7 @@ const ClusterIV = observer(() => {
         },
       },
       tooltip: {
-        formatter: function () {
+        formatter() {
           const date = DateTime.fromMillis(this.point.options.ts)
             .setZone("Asia/Kolkata")
             .toFormat("LLL dd hh:mm");
@@ -257,17 +251,15 @@ const ClusterIV = observer(() => {
               onChange={(e) => {
                 setSymbol(e.target.value);
                 setExpiry(
-                  data.find((s) => s.name === e.target.value)?.expiry[0] ?? ""
+                  data.find((s) => s.name === e.target.value)?.expiry[0] ?? "",
                 );
               }}
             >
-              {symbols.map((symbol) => {
-                return (
-                  <MenuItem key={symbol} value={symbol}>
-                    {symbol}
-                  </MenuItem>
-                );
-              })}
+              {symbols.map((s) => (
+                <MenuItem key={s} value={s}>
+                  {s}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
           <FormControl
@@ -282,13 +274,11 @@ const ClusterIV = observer(() => {
               displayEmpty
               onChange={(e) => setExpiry(e.target.value)}
             >
-              {expirys.map((e) => {
-                return (
-                  <MenuItem key={e} value={e}>
-                    {e}
-                  </MenuItem>
-                );
-              })}
+              {expirys.map((e) => (
+                <MenuItem key={e} value={e}>
+                  {e}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         </div>

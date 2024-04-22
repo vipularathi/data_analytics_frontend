@@ -9,16 +9,14 @@ const Root = styled("div")(({ theme }) => ({
     }),
   },
 }));
-const Logo = observer(({ src, foldedandopened }) => {
-  return (
-    <Root className="flex items-center">
-      <img
-        className={`logo-icon  h-28 ${foldedandopened && " h-28"}`}
-        src={src}
-        alt="logo"
-      />
-    </Root>
-  );
-});
+const Logo = observer(({ src, foldedandopened }) => (
+  <Root className="flex items-center">
+    <img
+      className={`logo-icon  h-28 ${foldedandopened && " h-28"}`}
+      src={src}
+      alt="logo"
+    />
+  </Root>
+));
 
 export default Logo;

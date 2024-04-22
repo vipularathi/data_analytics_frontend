@@ -1,13 +1,11 @@
 import { Navigate, Outlet } from "@tanstack/react-router";
-import React from "react";
+import { observer } from "mobx-react-lite";
 
-const RedirectToAnalytics = () => {
-  return (
-    <>
-      <Navigate to="/analytics/custom-chart" />
-      <Outlet />
-    </>
-  );
-};
+const RedirectToAnalytics = observer(() => (
+  <>
+    <Navigate to="/analytics/custom-chart" />
+    <Outlet />
+  </>
+));
 
 export default RedirectToAnalytics;

@@ -15,9 +15,9 @@ export const darkPaletteText = {
   disabled: "#b4b9c6",
 };
 /**
- * The themesConfig object is a configuration object for the color themes of the Fuse application.
+ * The themesConfig object is a configuration object for the color themes.
  */
-export const themesConfig = {
+const themesConfig = {
   default: {
     palette: {
       mode: "light",
@@ -88,8 +88,8 @@ export const themesConfig = {
       },
       chart: {
         borderColor: "#36445d",
-        cardColor: "#131722", //283144
-        headingColor: "#d1d4dc", //d8deea
+        cardColor: "#131722", // 283144
+        headingColor: "#d1d4dc", // d8deea
       },
     },
   },

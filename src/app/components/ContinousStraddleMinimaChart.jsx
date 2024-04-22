@@ -1,10 +1,10 @@
 import { observer } from "mobx-react-lite";
 import { useEffect, useMemo, useState } from "react";
-import { chartApi } from "../services/chart.service";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useTheme } from "@mui/material";
 import { DateTime } from "luxon";
+import { chartApi } from "../services/chart.service";
 
 const ContinousStraddleMinimaChart = observer(({ symbol, expiry }) => {
   const [chartData, setChartData] = useState([]);
@@ -15,8 +15,8 @@ const ContinousStraddleMinimaChart = observer(({ symbol, expiry }) => {
       if (symbol && expiry) {
         try {
           const payload = {
-            symbol: symbol,
-            expiry: expiry,
+            symbol,
+            expiry,
             cont: true,
           };
           const res = await chartApi.getStraddleMinima(payload);
@@ -52,6 +52,7 @@ const ContinousStraddleMinimaChart = observer(({ symbol, expiry }) => {
           color: "#5a8dee",
         };
       }
+      return {};
     });
 
     return {
@@ -78,7 +79,7 @@ const ContinousStraddleMinimaChart = observer(({ symbol, expiry }) => {
       xAxis: {
         categories: categoriesData,
         labels: {
-          formatter: function () {
+          formatter() {
             return DateTime.fromMillis(this.value)
               .setZone("Asia/Kolkata")
               .toFormat("LLL dd hh:mm");
@@ -122,7 +123,7 @@ const ContinousStraddleMinimaChart = observer(({ symbol, expiry }) => {
       },
       tooltip: {
         enabled: true,
-        formatter: function () {
+        formatter() {
           const date = DateTime.fromMillis(this.point.category)
             .setZone("Asia/Kolkata")
             .toFormat("LLL dd hh:mm");
@@ -140,7 +141,7 @@ const ContinousStraddleMinimaChart = observer(({ symbol, expiry }) => {
           name: "Premium",
           data: chartData1,
           zoneAxis: "x",
-          zones: zones,
+          zones,
           marker: {
             enabled: false,
           },

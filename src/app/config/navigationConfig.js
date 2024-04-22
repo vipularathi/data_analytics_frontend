@@ -1,4 +1,5 @@
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+
 const navigationConfig = [
   {
     id: "straddleMinima",

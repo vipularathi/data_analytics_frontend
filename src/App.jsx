@@ -1,7 +1,5 @@
-import { RouterProvider } from "@tanstack/react-router";
 import { observer } from "mobx-react-lite";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { router } from "./route";
 import { StoreProvider } from "./app/contexts/store.context";
 import RootThemeProvider from "./app/contexts/theme.context";
 import RouterProviderWithContext from "./RouterProviderWithContext";

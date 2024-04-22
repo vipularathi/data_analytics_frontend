@@ -21,7 +21,7 @@ const routeTree = rootRoute.addChildren([
       clusterIVLineRoute,
       continuousStraddleRoute,
       straddleMinRoute,
-      customChartRoute
+      customChartRoute,
     ]),
   ]),
   signInRoute,

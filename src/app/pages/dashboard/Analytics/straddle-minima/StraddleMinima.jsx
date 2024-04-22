@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
 import {
   FormControl,
-  FormLabel,
   InputLabel,
   MenuItem,
   Select,
@@ -11,12 +10,12 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useEffect, useMemo, useState } from "react";
 import { DateTime } from "luxon";
+import { useLoaderData } from "@tanstack/react-router";
 import ChartCard from "../../../../components/ChartCard";
 import { chartApi } from "../../../../services/chart.service";
-import { useLoaderData } from "@tanstack/react-router";
 
 const StraddleMinima = observer(() => {
-  const data = useLoaderData({ select: (data) => data });
+  const data = useLoaderData({ select: (d) => d });
 
   const theme = useTheme();
 
@@ -26,22 +25,17 @@ const StraddleMinima = observer(() => {
 
   const symbols = useMemo(() => {
     if (data) {
-      return data.map((symbol) => {
-        return symbol.name;
-      });
-    } else return [];
+      return data.map((s) => s.name);
+    } return [];
   }, [data]);
 
   const expirys = useMemo(() => {
     if (data) {
       return (
-        data.find((e) => {
-          return e.name === symbol;
-        })?.expiry || []
+        data.find((e) => e.name === symbol)?.expiry || []
       );
-    } else {
-      return [];
     }
+    return [];
   }, [data, symbol]);
 
   useEffect(() => {
@@ -49,8 +43,8 @@ const StraddleMinima = observer(() => {
       if (symbol && expiry) {
         try {
           const payload = {
-            symbol: symbol,
-            expiry: expiry,
+            symbol,
+            expiry,
           };
           const res = await chartApi.getStraddleMinima(payload);
           setChartData(res.data);
@@ -95,7 +89,7 @@ const StraddleMinima = observer(() => {
       xAxis: {
         categories: categoriesData ?? [],
         labels: {
-          formatter: function () {
+          formatter() {
             return DateTime.fromMillis(this.value)
               .setZone("Asia/Kolkata")
               .toFormat("hh:mm");
@@ -157,14 +151,12 @@ const StraddleMinima = observer(() => {
       tooltip: {
         enabled: true,
         shared: true,
-        formatter: function () {
+        formatter() {
           const date = DateTime.fromMillis(this.x)
             .setZone("Asia/Kolkata")
             .toFormat("LLL dd hh:mm");
-          const strike = this.points[0].point.options.strike;
-          return this.points.reduce(function (s, point) {
-            return `${s} </br> ${point.series.name}: ${point.y}`;
-          }, `${date} </br> Strike: ${strike}`);
+          const { strike } = this.points[0].point.options;
+          return this.points.reduce((s, point) => `${s} </br> ${point.series.name}: ${point.y}`, `${date} </br> Strike: ${strike}`);
         },
         backgroundColor: theme.palette.chart.cardColor,
         style: {
@@ -215,17 +207,15 @@ const StraddleMinima = observer(() => {
             onChange={(e) => {
               setSymbol(e.target.value);
               setExpiry(
-                data.find((s) => s.name === e.target.value)?.expiry[0] ?? ""
+                data.find((s) => s.name === e.target.value)?.expiry[0] ?? "",
               );
             }}
           >
-            {symbols.map((symbol) => {
-              return (
-                <MenuItem key={symbol} value={symbol}>
-                  {symbol}
-                </MenuItem>
-              );
-            })}
+            {symbols.map((s) => (
+              <MenuItem key={s} value={s}>
+                {symbol}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
         <FormControl
@@ -240,13 +230,11 @@ const StraddleMinima = observer(() => {
             value={expiry}
             onChange={(e) => setExpiry(e.target.value)}
           >
-            {expirys.map((e) => {
-              return (
-                <MenuItem key={e} value={e}>
-                  {e}
-                </MenuItem>
-              );
-            })}
+            {expirys.map((e) => (
+              <MenuItem key={e} value={e}>
+                {e}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </div>

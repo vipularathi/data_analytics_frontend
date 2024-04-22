@@ -46,12 +46,13 @@ const StyledContent = styled("div")(() => ({
 const NavbarStyle1Content = observer(({ className }) => {
   const theme = useTheme();
   const navbar = useNavbarStore();
-  const folded = navbar.folded;
+  const { folded } = navbar;
   const foldedandclosed = folded && !navbar.foldedOpen;
   const foldedandopened = folded && navbar.foldedOpen;
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("lg"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
 
-  let smallLogo, largeLogo;
+  let smallLogo;
+  let largeLogo;
 
   if (theme.palette.mode === "light") {
     smallLogo = smallLightLogo;
@@ -65,7 +66,7 @@ const NavbarStyle1Content = observer(({ className }) => {
     <Root
       className={clsx(
         "flex h-full flex-auto flex-col overflow-hidden shadow-md",
-        className
+        className,
       )}
       foldedandclosed={foldedandclosed}
       foldedandopened={foldedandopened}
@@ -76,6 +77,7 @@ const NavbarStyle1Content = observer(({ className }) => {
         <div className="flex flex-1">
           <Logo
             src={
+              // eslint-disable-next-line no-nested-ternary
               isMobile
                 ? largeLogo
                 : foldedandopened || !folded

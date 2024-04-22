@@ -6,7 +6,7 @@ export class NavbarStore {
   foldedOpen = false;
   folded = true;
 
-  constructor(_rootStore) {
+  constructor() {
     makeAutoObservable(this);
   }
 

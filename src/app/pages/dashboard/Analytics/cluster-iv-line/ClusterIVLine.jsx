@@ -9,48 +9,88 @@ import {
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useLoaderData } from "@tanstack/react-router";
 import ChartCard from "../../../../components/ChartCard";
 import { chartApi } from "../../../../services/chart.service";
 import { colorList } from "../../../../utils/constant/colorList";
-import { useLoaderData } from "@tanstack/react-router";
+
 const ClusterIVLine = observer(() => {
   const theme = useTheme();
   const chartRef = useRef(null);
-  const data = useLoaderData({ select: (data) => data });
+  const data = useLoaderData({ select: (d) => d });
   const [symbol, setSymbol] = useState(data[0].name);
   const [expiry, setExpiry] = useState(data[0].expiry[0]);
 
   const symbols = useMemo(() => {
     if (data) {
-      return data.map((symbol) => {
-        return symbol.name;
-      });
-    } else return [];
+      return data.map((s) => s.name);
+    } return [];
   }, [data]);
 
   const expirys = useMemo(() => {
     if (data) {
       return (
-        data.find((e) => {
-          return e.name === symbol;
-        })?.expiry || []
+        data.find((e) => e.name === symbol)?.expiry || []
       );
-    } else {
-      return [];
     }
+    return [];
   }, [data, symbol]);
+
+  function plotChart(chartData, categoriesData, tsData) {
+    const seriesLenght = chartRef.current.chart.series.length;
+    for (let j = 0; j < seriesLenght; j += 1) {
+      chartRef.current.chart.series[0].remove(false, false, false);
+    }
+
+    for (let i = 0; i < chartData.length; i += 1) {
+      const elem = chartData[i];
+      const timeStamp = tsData[i];
+      chartRef.current.chart.addSeries(
+        {
+          name: `iv${i}`,
+          // eslint-disable-next-line no-nested-ternary
+          ...(i === 0
+            ? {
+              color: "#1d4ed8",
+              zIndex: 10,
+              lineWidth: 3,
+              dashStyle: "dash",
+            }
+            : i === chartData.length - 1
+              ? {
+                color: "#fd7e14",
+                zIndex: 10,
+                lineWidth: 3,
+                dashStyle: "dash",
+              }
+              : { color: colorList[i] }),
+          data: elem.map((iv) => ({ y: iv, timeStamp })),
+          marker: {
+            enabled: false,
+          },
+        },
+        false,
+        false,
+      );
+    }
+    chartRef.current.chart.xAxis[0].update({
+      categories: categoriesData,
+    });
+
+    chartRef.current.chart.redraw();
+  }
 
   useEffect(() => {
     const getStraddleCluster = async () => {
       if (symbol && expiry) {
         try {
           const payload = {
-            symbol: symbol,
-            expiry: expiry,
+            symbol,
+            expiry,
           };
           const { data: resp } = await chartApi.getStraddleCluster(payload);
           if (resp.strikes.length > 0) {
-            let chartData = resp.iv;
+            const chartData = resp.iv;
             const categoriesData = resp.strikes;
             const timeData = resp.ts.map((t) => t[0]);
             plotChart(chartData, categoriesData, timeData);
@@ -72,127 +112,87 @@ const ClusterIVLine = observer(() => {
     return () => clearInterval(intervalId);
   }, [symbol, expiry, theme.palette.mode]);
 
-  function plotChart(chartData, categoriesData, tsData) {
-    const seriesLenght = chartRef.current.chart.series.length;
-    for (let j = 0; j < seriesLenght; j++) {
-      chartRef.current.chart.series[0].remove(false, false, false);
-    }
-
-    for (let i = 0; i < chartData.length; i++) {
-      const elem = chartData[i];
-      const timeStamp = tsData[i];
-      chartRef.current.chart.addSeries(
-        {
-          name: "iv" + i,
-          ...(i === 0
-            ? { color: "#1d4ed8", zIndex: 10, lineWidth: 3, dashStyle: "dash" }
-            : i === chartData.length - 1
-              ? {
-                  color: "#fd7e14",
-                  zIndex: 10,
-                  lineWidth: 3,
-                  dashStyle: "dash",
-                }
-              : { color: colorList[i] }),
-          data: elem.map((iv) => ({ y: iv, timeStamp })),
-          marker: {
-            enabled: false,
-          },
-        },
-        false,
-        false
-      );
-    }
-    chartRef.current.chart.xAxis[0].update({
-      categories: categoriesData,
-    });
-
-    chartRef.current.chart.redraw();
-  }
-
-  const options = useMemo(() => {
-    return {
-      chart: {
-        type: "line",
-        backgroundColor: theme.palette.chart.cardColor,
-        height: 500,
+  const options = useMemo(() => ({
+    chart: {
+      type: "line",
+      backgroundColor: theme.palette.chart.cardColor,
+      height: 500,
+    },
+    accessibility: {
+      enabled: false,
+    },
+    exporting: {
+      enabled: false,
+    },
+    title: {
+      text: "Strike Cluster IV",
+      align: "center",
+      style: {
+        color: theme.palette.chart.headingColor,
       },
-      accessibility: {
-        enabled: false,
-      },
-      exporting: {
-        enabled: false,
-      },
+    },
+    xAxis: {
+      categories: [],
       title: {
-        text: "Strike Cluster IV",
-        align: "center",
+        text: "Strike",
         style: {
           color: theme.palette.chart.headingColor,
         },
       },
-      xAxis: {
-        categories: [],
-        title: {
-          text: "Strike",
-          style: {
-            color: theme.palette.chart.headingColor,
-          },
-        },
-        labels: {
-          format: "{value}",
-          style: {
-            color: theme.palette.chart.headingColor,
-          },
-        },
-        tickColor: theme.palette.chart.headingColor,
-        tickWidth: 1,
-        lineColor: theme.palette.chart.headingColor,
-      },
-      plotOptions: {
-        series: {
-          animation: false,
-        },
-      },
-      yAxis: {
-        gridLineColor: theme.palette.chart.borderColor,
-        title: {
-          text: "IV",
-          style: {
-            color: theme.palette.chart.headingColor,
-          },
-        },
-        labels: {
-          format: "{value}",
-          style: {
-            color: theme.palette.chart.headingColor,
-          },
-        },
-      },
-      legend: {
-        enabled: false,
-        itemStyle: {
-          color: theme.palette.chart.headingColor,
-        },
-      },
-      tooltip: {
-        enabled: true,
-        shared: true,
-        formatter: function () {
-          const strike = this.x;
-          return this.points.reduce(function (s, point) {
-            const date = point.point.options.timeStamp.replace("T", " ");
-            const color = point.color;
-            return `${s} </br> <span style="color: ${color}">${date} - ${point.y.toFixed(3)}</span>`;
-          }, `Strike - ${strike}`);
-        },
-        backgroundColor: theme.palette.chart.cardColor,
+      labels: {
+        format: "{value}",
         style: {
           color: theme.palette.chart.headingColor,
         },
       },
-      series: [],
-    };
-  }, [theme]);
+      tickColor: theme.palette.chart.headingColor,
+      tickWidth: 1,
+      lineColor: theme.palette.chart.headingColor,
+    },
+    plotOptions: {
+      series: {
+        animation: false,
+      },
+    },
+    yAxis: {
+      gridLineColor: theme.palette.chart.borderColor,
+      title: {
+        text: "IV",
+        style: {
+          color: theme.palette.chart.headingColor,
+        },
+      },
+      labels: {
+        format: "{value}",
+        style: {
+          color: theme.palette.chart.headingColor,
+        },
+      },
+    },
+    legend: {
+      enabled: false,
+      itemStyle: {
+        color: theme.palette.chart.headingColor,
+      },
+    },
+    tooltip: {
+      enabled: true,
+      shared: true,
+      formatter() {
+        const strike = this.x;
+        return this.points.reduce((s, point) => {
+          const date = point.point.options.timeStamp.replace("T", " ");
+          const { color } = point;
+          return `${s} </br> <span style="color: ${color}">${date} - ${point.y.toFixed(3)}</span>`;
+        }, `Strike - ${strike}`);
+      },
+      backgroundColor: theme.palette.chart.cardColor,
+      style: {
+        color: theme.palette.chart.headingColor,
+      },
+    },
+    series: [],
+  }), [theme]);
 
   return (
     <div>
@@ -211,17 +211,15 @@ const ClusterIVLine = observer(() => {
               onChange={(e) => {
                 setSymbol(e.target.value);
                 setExpiry(
-                  data.find((s) => s.name === e.target.value)?.expiry[0] ?? ""
+                  data.find((s) => s.name === e.target.value)?.expiry[0] ?? "",
                 );
               }}
             >
-              {symbols.map((symbol) => {
-                return (
-                  <MenuItem key={symbol} value={symbol}>
-                    {symbol}
-                  </MenuItem>
-                );
-              })}
+              {symbols.map((s) => (
+                <MenuItem key={s} value={s}>
+                  {symbol}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
           <FormControl
@@ -236,13 +234,11 @@ const ClusterIVLine = observer(() => {
               displayEmpty
               onChange={(e) => setExpiry(e.target.value)}
             >
-              {expirys.map((e) => {
-                return (
-                  <MenuItem key={e} value={e}>
-                    {e}
-                  </MenuItem>
-                );
-              })}
+              {expirys.map((e) => (
+                <MenuItem key={e} value={e}>
+                  {e}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         </div>

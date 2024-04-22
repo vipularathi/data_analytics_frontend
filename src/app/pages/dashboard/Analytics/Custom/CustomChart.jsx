@@ -5,22 +5,18 @@ import { useCallback, useMemo, useState } from "react";
 import ContinousStraddleMinimaChart from "../../../../components/ContinousStraddleMinimaChart";
 import ClusterIVLineChart from "../../../../components/ClusterIVLineChart";
 
-const SYMBOL_NAME = ["NIFTY", "BANKNIFTY", "FINNIFTY"];
-
 const CustomChart = observer(() => {
-  const data = useLoaderData({ select: (data) => data });
+  const data = useLoaderData({ select: (d) => d });
 
   const expirys = useCallback(
     (name) => {
       if (data) {
         return (
-          data.find((e) => {
-            return e.name === name;
-          })?.expiry || []
+          data.find((e) => e.name === name)?.expiry || []
         );
-      } else return [];
+      } return [];
     },
-    [data]
+    [data],
   );
 
   return (
@@ -38,7 +34,7 @@ const CustomChart = observer(() => {
         />
         <CardContent sx={{ py: 0 }}>
           <ContinousStraddleMinimaChart
-            symbol={"NIFTY"}
+            symbol="NIFTY"
             expiry={expirys("NIFTY")[0]}
           />
         </CardContent>
@@ -56,7 +52,7 @@ const CustomChart = observer(() => {
         />
         <CardContent sx={{ py: 0 }}>
           <ContinousStraddleMinimaChart
-            symbol={"BANKNIFTY"}
+            symbol="BANKNIFTY"
             expiry={expirys("BANKNIFTY")[0]}
           />
         </CardContent>
@@ -74,7 +70,7 @@ const CustomChart = observer(() => {
         />
         <CardContent sx={{ py: 0 }}>
           <ContinousStraddleMinimaChart
-            symbol={"FINNIFTY"}
+            symbol="FINNIFTY"
             expiry={expirys("FINNIFTY")[0]}
           />
         </CardContent>
@@ -92,7 +88,7 @@ const CustomChart = observer(() => {
         />
         <CardContent>
           <ContinousStraddleMinimaChart
-            symbol={"NIFTY"}
+            symbol="NIFTY"
             expiry={expirys("NIFTY")[1]}
           />
         </CardContent>
@@ -110,7 +106,7 @@ const CustomChart = observer(() => {
         />
         <CardContent>
           <ContinousStraddleMinimaChart
-            symbol={"BANKNIFTY"}
+            symbol="BANKNIFTY"
             expiry={expirys("BANKNIFTY")[1]}
           />
         </CardContent>
@@ -127,7 +123,7 @@ const CustomChart = observer(() => {
           subheaderTypographyProps={{ fontSize: "0.7rem" }}
         />
         <CardContent>
-          <ClusterIVLineChart symbol={"NIFTY"} expiry={expirys("NIFTY")[1]} />
+          <ClusterIVLineChart symbol="NIFTY" expiry={expirys("NIFTY")[1]} />
         </CardContent>
       </Card>
       <Card
@@ -143,7 +139,7 @@ const CustomChart = observer(() => {
         />
         <CardContent>
           <ClusterIVLineChart
-            symbol={"BANKNIFTY"}
+            symbol="BANKNIFTY"
             expiry={expirys("BANKNIFTY")[1]}
           />
         </CardContent>
@@ -160,7 +156,7 @@ const CustomChart = observer(() => {
           subheaderTypographyProps={{ fontSize: "0.7rem" }}
         />
         <CardContent>
-          <ClusterIVLineChart symbol={"NIFTY"} expiry={expirys("NIFTY")[1]} />
+          <ClusterIVLineChart symbol="NIFTY" expiry={expirys("NIFTY")[1]} />
         </CardContent>
       </Card>
       <Card
@@ -175,7 +171,7 @@ const CustomChart = observer(() => {
           subheaderTypographyProps={{ fontSize: "0.7rem" }}
         />
         <CardContent>
-          <ClusterIVLineChart symbol={"NIFTY"} expiry={expirys("NIFTY")[0]} />
+          <ClusterIVLineChart symbol="NIFTY" expiry={expirys("NIFTY")[0]} />
         </CardContent>
       </Card>
       <Card
@@ -191,7 +187,7 @@ const CustomChart = observer(() => {
         />
         <CardContent>
           <ClusterIVLineChart
-            symbol={"BANKNIFTY"}
+            symbol="BANKNIFTY"
             expiry={expirys("BANKNIFTY")[0]}
           />
         </CardContent>
@@ -209,7 +205,7 @@ const CustomChart = observer(() => {
         />
         <CardContent>
           <ClusterIVLineChart
-            symbol={"FINNIFTY"}
+            symbol="FINNIFTY"
             expiry={expirys("FINNIFTY")[0]}
           />
         </CardContent>
@@ -228,7 +224,7 @@ const CustomChart = observer(() => {
         />
         <CardContent>
           <ClusterIVLineChart
-            symbol={"BANKNIFTY"}
+            symbol="BANKNIFTY"
             expiry={expirys("BANKNIFTY")[1]}
           />
         </CardContent>
@@ -245,7 +241,7 @@ const CustomChart = observer(() => {
           subheaderTypographyProps={{ fontSize: "0.7rem" }}
         />
         <CardContent>
-          <ClusterIVLineChart symbol={"NIFTY"} expiry={expirys("NIFTY")[1]} />
+          <ClusterIVLineChart symbol="NIFTY" expiry={expirys("NIFTY")[1]} />
         </CardContent>
       </Card>
     </div>

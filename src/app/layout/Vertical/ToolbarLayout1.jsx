@@ -1,9 +1,9 @@
 import { AppBar, Hidden, IconButton, Toolbar, useTheme } from "@mui/material";
 import clsx from "clsx";
 import { observer } from "mobx-react-lite";
-import NavbarToggleButton from "../shared-components/NavbarToggleButton";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
+import NavbarToggleButton from "../shared-components/NavbarToggleButton";
 import { useThemeMode } from "../../contexts/theme.context";
 import aRathiLogo from "../../../assets/logo/arathi-logo.png";
 

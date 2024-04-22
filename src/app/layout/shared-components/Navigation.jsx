@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
-import navigationConfig from "../../config/navigationConfig";
 import { List, styled } from "@mui/material";
 import clsx from "clsx";
+import navigationConfig from "../../config/navigationConfig";
 import NavItem from "./NavItem";
 
 const StyledList = styled(List)(({ theme }) => ({
@@ -39,14 +39,12 @@ const StyledList = styled(List)(({ theme }) => ({
     },
   },
 }));
-const Navigation = observer(() => {
-  return (
-    <StyledList className={clsx("navigation whitespace-nowrap px-12 py-0")}>
-      {navigationConfig.map((_item) => (
-        <NavItem key={_item.id} item={_item} />
-      ))}
-    </StyledList>
-  );
-});
+const Navigation = observer(() => (
+  <StyledList className={clsx("navigation whitespace-nowrap px-12 py-0")}>
+    {navigationConfig.map((_item) => (
+      <NavItem key={_item.id} item={_item} />
+    ))}
+  </StyledList>
+));
 
 export default Navigation;

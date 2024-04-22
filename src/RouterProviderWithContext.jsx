@@ -13,7 +13,7 @@ const RouterProviderWithContext = observer(() => {
       queryClient,
       store,
     }),
-    [queryClient, store]
+    [queryClient, store],
   );
   return <RouterProvider router={router} context={context} />;
 });

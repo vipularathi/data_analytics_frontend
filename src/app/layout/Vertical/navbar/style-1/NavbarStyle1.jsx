@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
-import NavbarStyle1Content from "./NavbarStyle1Content";
 import { Hidden, SwipeableDrawer, styled } from "@mui/material";
+import NavbarStyle1Content from "./NavbarStyle1Content";
 import { useNavbarStore } from "../../../../hooks/store/use-navbar-store";
 
 const navbarWidth = 280;
@@ -65,26 +65,12 @@ const StyledNavbar = styled("div")(
         "& .fuse-list-item-text, & .arrow-icon, & .item-badge": {
           opacity: 0,
         },
-        "& .fuse-list-subheader .fuse-list-subheader-text": {
-          opacity: 0,
-        },
-        "& .fuse-list-subheader:before": {
-          content: '""',
-          display: "block",
-          position: "absolute",
-          minWidth: 16,
-          borderTop: "2px solid",
-          opacity: 0.2,
-        },
-        "& .collapse-children": {
-          display: "none",
-        },
         "& .fuse-list-item-text-primary": {
           whiteSpace: "nowrap",
         },
       },
     }),
-  })
+  }),
 );
 const StyledNavbarMobile = styled(SwipeableDrawer)(({ theme }) => ({
   "& > .MuiDrawer-paper": {
@@ -101,7 +87,7 @@ const StyledNavbarMobile = styled(SwipeableDrawer)(({ theme }) => ({
 
 const NavbarStyle1 = observer(() => {
   const navbar = useNavbarStore();
-  const folded = navbar.folded;
+  const { folded } = navbar;
   const foldedandclosed = folded && !navbar.foldedOpen;
   const foldedandopened = folded && navbar.foldedOpen;
 

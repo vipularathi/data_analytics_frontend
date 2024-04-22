@@ -1,13 +1,11 @@
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import themesConfig from "../config/themeConfig";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import themesConfig from "../config/themeConfig";
 
 const colorModeContext = createContext({ toggleColorMode: () => {} });
 
-const getDesignTokens = (mode) => {
-  return mode === "light" ? themesConfig.default : themesConfig.defaultDark;
-};
+const getDesignTokens = (mode) => (mode === "light" ? themesConfig.default : themesConfig.defaultDark);
 
 const RootThemeProvider = observer(({ children }) => {
   const [mode, setMode] = useState("light");
@@ -24,7 +22,7 @@ const RootThemeProvider = observer(({ children }) => {
         setMode(newMode);
       },
     }),
-    [mode]
+    [mode],
   );
 
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
@@ -41,6 +39,5 @@ const RootThemeProvider = observer(({ children }) => {
 
 export default RootThemeProvider;
 
-export const useThemeMode = () => {
-  return useContext(colorModeContext);
-};
+// eslint-disable-next-line react-refresh/only-export-components
+export const useThemeMode = () => useContext(colorModeContext);
