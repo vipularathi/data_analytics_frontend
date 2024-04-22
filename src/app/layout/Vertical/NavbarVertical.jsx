@@ -3,13 +3,8 @@ import NavbarStyle1 from "./navbar/style-1/NavbarStyle1";
 import settingsConfig from "../../config/settingConfig";
 
 const NavbarVertical = observer(() => (
-  <>
-    (
-    {
-    settingsConfig.style === "style1" && <NavbarStyle1 />
-    }
-    )
-  </>
+  // eslint-disable-next-line react/jsx-no-useless-fragment
+  <>{settingsConfig.style === "style1" && <NavbarStyle1 />}</>
 ));
 
 export default NavbarVertical;
