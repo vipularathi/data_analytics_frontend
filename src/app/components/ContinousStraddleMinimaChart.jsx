@@ -1,45 +1,14 @@
 import { observer } from "mobx-react-lite";
-import {
-  FormControl,
-  FormLabel,
-  MenuItem,
-  Select,
-  useTheme,
-} from "@mui/material";
+import { useEffect, useMemo, useState } from "react";
+import { chartApi } from "../services/chart.service";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { useEffect, useMemo, useState } from "react";
+import { useTheme } from "@mui/material";
 import { DateTime } from "luxon";
-import ChartCard from "../../../../components/ChartCard";
-import { chartApi } from "../../../../services/chart.service";
-import { useLoaderData } from "@tanstack/react-router";
 
-const continuousStraddle = observer(() => {
-  const theme = useTheme();
-  const data = useLoaderData({ select: (data) => data });
-  const [symbol, setSymbol] = useState(data[0].name);
-  const [expiry, setExpiry] = useState(data[0].expiry[0]);
+const ContinousStraddleMinimaChart = observer(({ symbol, expiry }) => {
   const [chartData, setChartData] = useState([]);
-
-  const symbols = useMemo(() => {
-    if (data) {
-      return data.map((symbol) => {
-        return symbol.name;
-      });
-    } else return [];
-  }, [data]);
-
-  const expirys = useMemo(() => {
-    if (data) {
-      return (
-        data.find((e) => {
-          return e.name === symbol;
-        })?.expiry || []
-      );
-    } else {
-      return [];
-    }
-  }, [data, symbol]);
+  const theme = useTheme();
 
   useEffect(() => {
     const getContinousStraddle = async () => {
@@ -89,7 +58,7 @@ const continuousStraddle = observer(() => {
       chart: {
         type: "spline",
         backgroundColor: theme.palette.chart.cardColor,
-        height: 500,
+        height: 300,
       },
       accessibility: {
         enabled: false,
@@ -102,6 +71,8 @@ const continuousStraddle = observer(() => {
         align: "center",
         style: {
           color: theme.palette.chart.headingColor,
+          fontWeight: "bold",
+          fontSize: "1rem",
         },
       },
       xAxis: {
@@ -178,70 +149,7 @@ const continuousStraddle = observer(() => {
     };
   }, [theme, chartData]);
 
-  return (
-    <div>
-      <ChartCard
-        title="Continuous Straddle Minima"
-        symbols={symbols}
-        expirys={expirys}
-        setSymbol={setSymbol}
-        setExpiry={setExpiry}
-      >
-        <div className="flex flex-col sm:flex-row">
-          <FormControl
-            sx={{ m: 1 }}
-            fullWidth
-            size="small"
-            className="md:max-w-120"
-          >
-            <FormLabel sx={{ fontSize: "0.75rem" }}>SYMBOL</FormLabel>
-            <Select
-              value={symbol}
-              displayEmpty
-              onChange={(e) => {
-                setSymbol(e.target.value);
-                setExpiry(
-                  data.find((s) => s.name === e.target.value)?.expiry[0] ?? ""
-                );
-              }}
-            >
-              {symbols.map((symbol) => {
-                return (
-                  <MenuItem key={symbol} value={symbol}>
-                    {symbol}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-          <FormControl
-            sx={{ m: 1 }}
-            fullWidth
-            size="small"
-            className="md:max-w-120"
-          >
-            <FormLabel sx={{ fontSize: "0.75rem" }}>EXPIRY</FormLabel>
-            <Select
-              value={expiry}
-              displayEmpty
-              onChange={(e) => setExpiry(e.target.value)}
-            >
-              {expirys.map((e) => {
-                return (
-                  <MenuItem key={e} value={e}>
-                    {e}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-        </div>
-        <div>
-          <HighchartsReact highcharts={Highcharts} options={options} />
-        </div>
-      </ChartCard>
-    </div>
-  );
+  return <HighchartsReact highcharts={Highcharts} options={options} />;
 });
 
-export default continuousStraddle;
+export default ContinousStraddleMinimaChart;

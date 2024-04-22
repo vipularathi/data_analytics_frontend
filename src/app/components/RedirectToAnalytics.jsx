@@ -4,7 +4,7 @@ import React from "react";
 const RedirectToAnalytics = () => {
   return (
     <>
-      <Navigate to="/analytics/straddle-minima" />
+      <Navigate to="/analytics/custom-chart" />
       <Outlet />
     </>
   );

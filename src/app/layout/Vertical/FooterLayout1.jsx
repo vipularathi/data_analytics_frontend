@@ -8,7 +8,7 @@ const FooterLayout1 = observer(() => {
     <AppBar
       id="fuse-footer"
       className={clsx("relative z-20 shadow")}
-      position="default"
+      position="sticky"
       color="default"
       sx={{
         backgroundColor: (theme) =>

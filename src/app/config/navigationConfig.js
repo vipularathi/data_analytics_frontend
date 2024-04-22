@@ -24,5 +24,11 @@ const navigationConfig = [
     icon: RadioButtonUncheckedIcon,
     url: "/analytics/cluster-iv-line",
   },
+  {
+    id: "customChart",
+    title: "Custom Chart",
+    icon: RadioButtonUncheckedIcon,
+    url: "/analytics/custom-chart",
+  },
 ];
 export default navigationConfig;

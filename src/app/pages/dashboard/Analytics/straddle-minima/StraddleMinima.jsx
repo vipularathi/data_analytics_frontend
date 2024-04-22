@@ -168,7 +168,7 @@ const StraddleMinima = observer(() => {
         },
         backgroundColor: theme.palette.chart.cardColor,
         style: {
-          color: theme.palette.primary.dark,
+          color: theme.palette.chart.headingColor,
         },
       },
       series: [

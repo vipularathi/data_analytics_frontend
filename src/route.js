@@ -9,6 +9,7 @@ import { clusterIVLineRoute } from "./app/pages/dashboard/Analytics/cluster-iv-l
 import { continuousStraddleRoute } from "./app/pages/dashboard/Analytics/continuous-straddle/continuousStraddleConfig";
 import { straddleMinRoute } from "./app/pages/dashboard/Analytics/straddle-minima/straddleMinimaConfig";
 import { dashboardRoute } from "./app/pages/dashboard/dashboardConfig";
+import { customChartRoute } from "./app/pages/dashboard/Analytics/Custom/customConfig";
 
 /*
  * Define the router Tree for adding children based on pages
@@ -20,6 +21,7 @@ const routeTree = rootRoute.addChildren([
       clusterIVLineRoute,
       continuousStraddleRoute,
       straddleMinRoute,
+      customChartRoute
     ]),
   ]),
   signInRoute,
