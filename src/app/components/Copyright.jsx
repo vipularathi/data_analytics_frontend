@@ -3,7 +3,7 @@ import Flag from "../../assets/indian-flag.png";
 
 const Copyright = observer(() => (
   <div className="p-8">
-    <span className="flex sm:justify-center items-center text-[0.625] flex-wrap text-blue-gray">
+    <span>
       ©
       {new Date().getFullYear()}
       {" "}
@@ -24,7 +24,7 @@ const Copyright = observer(() => (
         />
       </svg>
       in India
-      <img src={Flag} className="ml-4 w-12 h-8" alt="indian flag" />
+      <img src={Flag} className="ml-4 w-16 h-12" alt="indian flag" />
     </span>
   </div>
 ));

@@ -1,13 +1,31 @@
-import { makeAutoObservable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 
 export class NavbarStore {
+  _rootStore;
   open = true;
   mobileOpen = false;
   foldedOpen = false;
   folded = true;
 
-  constructor() {
-    makeAutoObservable(this);
+  constructor(_rootStore) {
+    makeObservable(this, {
+      _rootStore: false,
+      open: observable,
+      mobileOpen: observable,
+      foldedOpen: observable,
+      folded: observable,
+      navbarToggleFolded: action,
+      navbarOpenFolded: action,
+      navbarCloseFolded: action,
+      navbarToggleMobile: action,
+      navbarOpenMobile: action,
+      navbarCloseMobile: action,
+      navbarClose: action,
+      navbarOpen: action,
+      navbarToggle: action,
+      navbarFolded: action,
+    });
+    this._rootStore = _rootStore;
   }
 
   navbarToggleFolded() {

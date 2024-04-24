@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// Base Api instance
 export class BaseApi {
   axiosInstance;
   constructor(baseUrl) {

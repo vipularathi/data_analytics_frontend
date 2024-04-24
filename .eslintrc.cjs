@@ -1,12 +1,7 @@
 module.exports = {
   root: true,
   env: { browser: true, es2020: true },
-  plugins: [
-    "react-refresh",
-    "mobx",
-    "@tanstack/query",
-    "unused-imports",
-  ],
+  plugins: ["react-refresh", "mobx", "@tanstack/query", "unused-imports"],
   extends: [
     "airbnb",
     "eslint:recommended",
@@ -38,7 +33,7 @@ module.exports = {
     "mobx/exhaustive-make-observable": "warn",
     "mobx/unconditional-make-observable": "error",
     "mobx/missing-make-observable": "error",
-    "mobx/missing-observer": "warn",
+    "mobx/missing-observer": "off",
 
     // React Query [https://tanstack.com/query/v5/docs/eslint/eslint-plugin-query]
     "@tanstack/query/exhaustive-deps": "error",
@@ -65,5 +60,7 @@ module.exports = {
     "no-underscore-dangle": "off",
     "object-curly-newline": "off",
     "class-methods-use-this": "off",
+    "import/no-extraneous-dependencies": "off",
+    "react/prop-types": "off"
   },
 };

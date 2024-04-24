@@ -1,9 +1,10 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { authApi } from "../services/auth.service";
 
+// Auth Store; auth service is used here
 export class AuthStore {
   userStore;
-  verifyingToken = true;
+  verifyingToken = false;
   showOtp = false;
   requestToken = null;
   accessToken = "";
@@ -42,11 +43,29 @@ export class AuthStore {
       const { data: respData } = await authApi.verifyOtp(data, {
         headers: { "request-token": this.requestToken },
       });
-      runInAction(() => {
-        this.showOtp = false;
-        this.isLoading = false;
-        this.requestToken = null;
-      });
+      if (respData && "processed" in respData && respData.processed) {
+        runInAction(() => {
+          this.showOtp = false;
+          this.isLoading = false;
+          this.requestToken = null;
+        });
+      }
+
+      if (respData && "token" in respData) {
+        const userData = respData?.data.user;
+
+        const accessToken = respData.token;
+
+        authApi.setToken(accessToken);
+
+        runInAction(() => {
+          this.isLoading = false;
+          this.accessToken = accessToken;
+          this.isAuthenticated = true;
+          this.userStore.user = userData.data;
+          this.userStore.userRole = userData.role;
+        });
+      }
       return respData;
     } catch (error) {
       //
@@ -98,24 +117,32 @@ export class AuthStore {
     try {
       const { data: respData } = await authApi.signIn(credentials);
 
-      const userData = respData?.data.user;
+      if (respData && "token" in respData) {
+        const userData = respData?.data.user;
 
-      const accessToken = respData.token;
+        const accessToken = respData.token;
 
-      authApi.setToken(accessToken);
+        authApi.setToken(accessToken);
 
-      runInAction(() => {
-        this.isLoading = false;
-        this.accessToken = accessToken;
-        this.isAuthenticated = true;
-        this.userStore.user = userData.data;
-        this.userStore.userRole = userData.role;
-      });
-
+        runInAction(() => {
+          this.isLoading = false;
+          this.accessToken = accessToken;
+          this.isAuthenticated = true;
+          this.userStore.user = userData.data;
+          this.userStore.userRole = userData.role;
+        });
+      }
+      if (respData && "request_token" in respData) {
+        runInAction(() => {
+          this.showOtp = true;
+          this.requestToken = respData.request_token;
+          this.isLoading = false;
+        });
+      }
       return respData;
     } catch (err) {
       const errorData = err.response.data;
-      if ("verified" in errorData && !errorData.verified) {
+      if (errorData && "verified" in errorData && !errorData.verified) {
         runInAction(() => {
           this.isLoading = true;
         });
@@ -165,6 +192,10 @@ export class AuthStore {
   }
 
   async verifyToken() {
+    runInAction(() => {
+      this.verifyingToken = true;
+    });
+
     const accessToken = authApi.getToken();
 
     if (!accessToken) {

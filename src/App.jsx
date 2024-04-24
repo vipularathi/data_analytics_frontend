@@ -1,19 +1,19 @@
 import { observer } from "mobx-react-lite";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StoreProvider } from "./app/contexts/store.context";
-import RootThemeProvider from "./app/contexts/theme.context";
 import RouterProviderWithContext from "./RouterProviderWithContext";
+import ThemeProvider from "./app/theme/ThemeProvider";
 
 const queryClient = new QueryClient();
 
 const App = observer(() => (
-  <RootThemeProvider>
-    <QueryClientProvider client={queryClient}>
-      <StoreProvider>
+  <StoreProvider>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
         <RouterProviderWithContext />
-      </StoreProvider>
-    </QueryClientProvider>
-  </RootThemeProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
+  </StoreProvider>
 ));
 
 export default App;

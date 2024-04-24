@@ -16,8 +16,10 @@ const SignInPage = observer(() => {
     setErrMsg(null);
     authStore
       .signIn({ provider: "email", email, password })
-      .then(() => {
-        navigate({ to: "/" });
+      .then((resp) => {
+        if ("token" in resp) {
+          navigate({ to: "/" });
+        }
       })
       .catch((error) => {
         setErrMsg(error.message);
@@ -26,9 +28,18 @@ const SignInPage = observer(() => {
 
   const handleOtpSubmit = (e) => {
     e.preventDefault();
-    authStore.verifyOtp({ otp })
+    authStore
+      .verifyOtp({ otp })
+      .then((resp) => {
+        if ("token" in resp) {
+          navigate({ to: "/admin" });
+        }
+      })
       .catch((error) => {
         setErrMsg(error.message);
+      })
+      .finally(() => {
+        setOtp("");
       });
   };
   return (
@@ -86,9 +97,7 @@ const SignInPage = observer(() => {
           <button type="submit">
             {authStore.isLoading ? "Loading..." : "verify"}
           </button>
-          <p>
-            {errMsg}
-          </p>
+          <p>{errMsg}</p>
         </form>
       )}
     </div>

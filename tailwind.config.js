@@ -1,8 +1,14 @@
+const path = require("path");
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   safelist: ["pl-24", "pl-40", "pl-56", "pl-72", "pl-80"],
   presets: [],
+  corePlugins: {
+    preflight: false,
+  },
+  important: true,
   darkMode: "class", // or 'class'
   theme: {
     accentColor: ({ theme }) => ({
@@ -1503,5 +1509,9 @@ export default {
     "active",
     "disabled",
   ],
-  plugins: [],
+  plugins: [
+    require(path.resolve(__dirname, "src/@core/tailwind/plugins/icon-size")),
+    require("@tailwindcss/typography")({ modifiers: ["sm", "lg"] }),
+    require("@tailwindcss/aspect-ratio"),
+  ],
 };

@@ -1,5 +1,6 @@
 import { action, makeObservable, observable } from "mobx";
 
+// User store and there methods
 export class UserStore {
   _rootStore;
   user = null;

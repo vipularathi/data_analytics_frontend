@@ -20,7 +20,8 @@ const ForgetPassword = observer(() => {
 
   const handleSetNewPassword = (e) => {
     e.preventDefault();
-    authStore.setNewPassword({ otp, password: newPassword })
+    authStore
+      .setNewPassword({ otp, password: newPassword })
       .then(() => {
         navigate({ to: "/signin" });
       })
@@ -43,9 +44,7 @@ const ForgetPassword = observer(() => {
           <button type="submit">
             {authStore.isLoading ? "Loading..." : "Submit"}
           </button>
-          <p>
-            {errMsg}
-          </p>
+          <p>{errMsg}</p>
         </form>
       ) : (
         <form onSubmit={handleSetNewPassword}>
@@ -71,10 +70,10 @@ const ForgetPassword = observer(() => {
             />
           </label>
           <br />
-          <button type="submit">{authStore.isLoading ? "Loading..." : "submit"}</button>
-          <p>
-            {errMsg}
-          </p>
+          <button type="submit">
+            {authStore.isLoading ? "Loading..." : "submit"}
+          </button>
+          <p>{errMsg}</p>
         </form>
       )}
     </div>

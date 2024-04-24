@@ -12,9 +12,12 @@ const SignUpPage = observer(() => {
   const [errMsg, setErrMsg] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => () => {
-    authStore.showOtp = false;
-  }, [authStore]);
+  useEffect(
+    () => () => {
+      authStore.showOtp = false;
+    },
+    [authStore],
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -83,9 +86,7 @@ const SignUpPage = observer(() => {
           <button type="submit">
             {authStore.isLoading ? "Loading..." : "Sign Up"}
           </button>
-          <p>
-            {errMsg}
-          </p>
+          <p>{errMsg}</p>
         </fieldset>
       </form>
 

@@ -2,6 +2,7 @@ import { createContext, useContext } from "react";
 import { observer } from "mobx-react-lite";
 import RootStore from "../store/root.store";
 
+// Root store context
 const rootStore = new RootStore();
 
 const initializeStore = () => {

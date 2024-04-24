@@ -1,6 +1,7 @@
 import { API_BASE_URL } from "../utils/url";
 import { BaseApi } from "./base.service";
 
+// Auth service
 class AuthApi extends BaseApi {
   authConfig = {
     signInUrl: "auth/sign-in",
