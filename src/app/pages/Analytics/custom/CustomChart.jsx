@@ -26,7 +26,6 @@ const CustomChart = observer(() => {
     [data]
   );
 
-
   useEffect(() => {
     const getContinousTableData = async () => {
       try {
@@ -46,7 +45,6 @@ const CustomChart = observer(() => {
     return () => clearInterval(intervalId);
   }, []);
 
-
   const chartSettigs = [
     {
       id: 0,
@@ -54,6 +52,7 @@ const CustomChart = observer(() => {
       expiryName: "Current Week",
       expiry: expirys("NIFTY")[0],
       chartName: "continusStraddleMinima",
+      title: "NF CW",
     },
     {
       id: 1,
@@ -61,6 +60,7 @@ const CustomChart = observer(() => {
       expiryName: "Current Week",
       expiry: expirys("BANKNIFTY")[0],
       chartName: "continusStraddleMinima",
+      title: "BN CW",
     },
     {
       id: 2,
@@ -68,6 +68,7 @@ const CustomChart = observer(() => {
       expiryName: "Current Week",
       expiry: expirys("FINNIFTY")[0],
       chartName: "continusStraddleMinima",
+      title: "FN CW",
     },
     {
       id: 3,
@@ -75,6 +76,7 @@ const CustomChart = observer(() => {
       expiryName: "Next Week",
       expiry: expirys("NIFTY")[1],
       chartName: "continusStraddleMinima",
+      title: "NF NW",
     },
     {
       id: 4,
@@ -82,6 +84,7 @@ const CustomChart = observer(() => {
       expiryName: "Next Week",
       expiry: expirys("BANKNIFTY")[1],
       chartName: "continusStraddleMinima",
+      title: "BN NW",
     },
     {
       id: 5,
@@ -89,6 +92,7 @@ const CustomChart = observer(() => {
       expiryName: "Current Week",
       expiry: expirys("MIDCPNIFTY")[0],
       chartName: "continusStraddleMinima",
+      title: "MN CW",
     },
     {
       id: 6,
@@ -96,6 +100,7 @@ const CustomChart = observer(() => {
       expiryName: "Next Week",
       expiry: expirys("NIFTY")[1],
       chartName: "clusterIVLine",
+      title: "NF NW",
     },
     {
       id: 7,
@@ -103,6 +108,7 @@ const CustomChart = observer(() => {
       expiryName: "Next Week",
       expiry: expirys("BANKNIFTY")[1],
       chartName: "clusterIVLine",
+      title: "BN NW",
     },
     {
       id: 8,
@@ -110,6 +116,7 @@ const CustomChart = observer(() => {
       expiryName: "Current Month",
       expiry: expirys("NIFTY")[2],
       chartName: "clusterIVLine",
+      title: "NF CM",
     },
     {
       id: 9,
@@ -117,6 +124,7 @@ const CustomChart = observer(() => {
       expiryName: "Current Week",
       expiry: expirys("NIFTY")[0],
       chartName: "clusterIVLine",
+      title: "NF CW",
     },
     {
       id: 10,
@@ -124,6 +132,7 @@ const CustomChart = observer(() => {
       expiryName: "Current Week",
       expiry: expirys("BANKNIFTY")[0],
       chartName: "clusterIVLine",
+      title: "BN CW",
     },
     {
       id: 11,
@@ -131,6 +140,7 @@ const CustomChart = observer(() => {
       expiryName: "Current Week",
       expiry: expirys("FINNIFTY")[0],
       chartName: "clusterIVLine",
+      title: "FN CW",
     },
     {
       id: 12,
@@ -138,6 +148,7 @@ const CustomChart = observer(() => {
       expiryName: "Current Week",
       expiry: expirys("MIDCPNIFTY")[0],
       chartName: "clusterIVLine",
+      title: "MN CW",
     },
     {
       id: 13,
@@ -148,6 +159,7 @@ const CustomChart = observer(() => {
       expiryName: "Next Month",
       expiry: expirys("NIFTY")[3],
       chartName: "clusterIVLine",
+      title: "NF NM",
     },
   ];
 
@@ -182,14 +194,15 @@ const CustomChart = observer(() => {
 
   const renderChart = (chart) => {
     const title = getTitle(chart);
-    // console.log("symbols===>", chart);
+    console.log("symbols===>", chart.title);
     if (chart.chartName === "continusStraddleMinima") {
       return (
         <div style={{ height: chartHeight }}>
           <ContinousStraddleMinimaChart
             symbol={chart.name}
             expiry={chart.expiry}
-            title={title}
+            title={chart.title}
+            // title={title}
           />
         </div>
       );
@@ -199,7 +212,8 @@ const CustomChart = observer(() => {
           <ClusterIVLineChart
             symbol={chart.name}
             expiry={chart.expiry}
-            title={title}
+            title={chart.title}
+            //  title={title}
           />
         </div>
       );
@@ -208,19 +222,17 @@ const CustomChart = observer(() => {
     }
   };
 
-
   const CustomTable = () => {
-
     const keyMapping = {
-      "BANKNIFTY_CW": "BN CW",
-      "BANKNIFTY_NW": "BN NW",
-      "FINNIFTY" : "FN CW",
-      "MIDCPNIFTY": "MD CW",
-      "NIFTY_CW": "NF CW",
-      "NIFTY_NW" : "NF NW"
+      BANKNIFTY_CW: "BN CW",
+      BANKNIFTY_NW: "BN NW",
+      FINNIFTY: "FN CW",
+      MIDCPNIFTY: "MD CW",
+      NIFTY_CW: "NF CW",
+      NIFTY_NW: "NF NW",
     };
-   
-    const rowData = financialData.map(item => {
+
+    const rowData = financialData.map((item) => {
       const indexKey = Object.keys(item)[0];
       const newIndexKey = keyMapping[indexKey] || indexKey;
       // alert(indexKey)
@@ -231,47 +243,49 @@ const CustomChart = observer(() => {
         liveMin: indexMetrics["Live-Min"],
         maxLive: indexMetrics["Max-Live"],
         max: indexMetrics.Max,
-        min: indexMetrics.Min
+        min: indexMetrics.Min,
       };
     });
 
     return (
       <Card
-      variant="outlined"
-      sx={{ backgroundColor: (theme) => theme.palette.background.paper }}
-      className="shadow-2"
-      style={{ overflowX: "auto"}}
-    >
-      <table className="custom-table">
-        <thead>
-          <tr>
-            <th>Straddle</th>
-            <th>Live</th>
-            <th>Live-min.</th>
-            <th>Max-live</th>
-            <th>Max</th>
-            <th>Min</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rowData.map((row, index) => (
-            <tr key={index}>
-              <td className="straddle-cell">{row.straddle}</td>
-              <td>{row.live}</td>
-              <td>{row.liveMin}</td>
-              <td>{row.maxLive}</td>
-              <td>{row.max}</td>
-              <td>{row.min}</td>
+        variant="outlined"
+        sx={{ backgroundColor: (theme) => theme.palette.background.paper }}
+        className="shadow-2"
+        style={{ overflowX: "auto" }}
+      >
+        <table className="custom-table">
+          <thead>
+            <tr>
+              <th>Straddle</th>
+              <th>Live</th>
+              <th>Live-min.</th>
+              <th>Max-live</th>
+              <th>Max</th>
+              <th>Min</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </Card>
+          </thead>
+          <tbody>
+            {rowData.map((row, index) => (
+              <tr key={index}>
+                <td className="straddle-cell" style={{ fontWeight: "600" }}>
+                  {row.straddle}
+                </td>
+                <td>{row.live}</td>
+                <td>{row.liveMin}</td>
+                <td>{row.maxLive}</td>
+                <td>{row.max}</td>
+                <td>{row.min}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </Card>
     );
   };
 
   return (
-    <div className="sm:px-16" style={{  overflow: "hidden" }}>
+    <div className="sm:px-16" style={{ overflow: "hidden" }}>
       <div
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
         style={{

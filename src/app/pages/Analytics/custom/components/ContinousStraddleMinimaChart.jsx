@@ -107,7 +107,7 @@ const ContinousStraddleMinimaChart = observer(({ symbol, expiry ,title}) => {
           },
           labels: {
             align: "",
-            format: "{value}",
+            // format: "{value}",
             style: {
               color: theme.palette.chart.headingColor,
             },
@@ -115,7 +115,7 @@ const ContinousStraddleMinimaChart = observer(({ symbol, expiry ,title}) => {
         },
       ],
       legend: {
-        enabled: true,
+        enabled: false,
         itemStyle: {
           color: theme.palette.chart.headingColor,
         },
@@ -142,7 +142,7 @@ const ContinousStraddleMinimaChart = observer(({ symbol, expiry ,title}) => {
       },
       series: [
         {
-          name: "Premium",
+          name: "",
           data: chartData1,
           zoneAxis: "x",
           zones,

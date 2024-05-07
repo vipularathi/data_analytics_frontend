@@ -113,7 +113,7 @@ const ClusterIVLineChart = observer(({ symbol, expiry,title }) => {
       xAxis: {
         categories: [],
         title: {
-          text: "Strike",
+          text: "",
           style: {
             color: theme.palette.chart.headingColor,
           },
@@ -136,10 +136,10 @@ const ClusterIVLineChart = observer(({ symbol, expiry,title }) => {
       yAxis: {
         gridLineColor: theme.palette.chart.borderColor,
         title: {
-          // text: "IV",
-          // style: {
-          //   color: theme.palette.chart.headingColor,
-          // },
+          text: "",
+          style: {
+            color: theme.palette.chart.headingColor,
+          },
         },
         labels: {
           format: "{value}",
