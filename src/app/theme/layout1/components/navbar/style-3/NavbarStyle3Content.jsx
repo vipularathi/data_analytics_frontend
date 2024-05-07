@@ -11,7 +11,7 @@ import navigation from "../../../../../configs/navigationConfig";
 import useThemeMediaQuery from "../../../../../hooks/use-thememediaquery";
 import { useNavbar } from "../../../../../hooks/store/use-navbar";
 import smallDarkLogo from "../../../../../../assets/logo/finzome-logo-icon-white.png";
-import smallLightLogo from "../../../../../../assets/logo/finzome-logo-icon.png";
+import smallLightLogo from "../../../../../../assets/logo/arathi-logo-icon.png";
 
 const Root = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,

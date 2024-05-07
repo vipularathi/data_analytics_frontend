@@ -6,7 +6,7 @@ import { useTheme } from "@mui/material";
 import { colorList } from "../../../../utils/constant/colorList";
 import { chartApi } from "../../../../services/chart.service";
 
-const ClusterIVLineChart = observer(({ symbol, expiry }) => {
+const ClusterIVLineChart = observer(({ symbol, expiry,title }) => {
   const theme = useTheme();
   const chartRef = useRef(null);
   function plotChart(chartData, categoriesData, tsData) {
@@ -101,7 +101,8 @@ const ClusterIVLineChart = observer(({ symbol, expiry }) => {
         enabled: false,
       },
       title: {
-        text: "Strike Cluster IV",
+        // text: "Strike Cluster IV",
+        text: title,
         align: "center",
         style: {
           color: theme.palette.chart.headingColor,
@@ -135,10 +136,10 @@ const ClusterIVLineChart = observer(({ symbol, expiry }) => {
       yAxis: {
         gridLineColor: theme.palette.chart.borderColor,
         title: {
-          text: "IV",
-          style: {
-            color: theme.palette.chart.headingColor,
-          },
+          // text: "IV",
+          // style: {
+          //   color: theme.palette.chart.headingColor,
+          // },
         },
         labels: {
           format: "{value}",

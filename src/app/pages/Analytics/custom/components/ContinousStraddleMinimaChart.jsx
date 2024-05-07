@@ -6,7 +6,7 @@ import { useTheme } from "@mui/material";
 import { DateTime } from "luxon";
 import { chartApi } from "../../../../services/chart.service";
 
-const ContinousStraddleMinimaChart = observer(({ symbol, expiry }) => {
+const ContinousStraddleMinimaChart = observer(({ symbol, expiry ,title}) => {
   const [chartData, setChartData] = useState([]);
   const theme = useTheme();
 
@@ -71,7 +71,8 @@ const ContinousStraddleMinimaChart = observer(({ symbol, expiry }) => {
         enabled: false,
       },
       title: {
-        text: "Continuous Straddle Minima Chart",
+        // text: "Continuous Straddle Minima Chart",
+        text: title,
         align: "center",
         style: {
           color: theme.palette.chart.headingColor,
@@ -99,13 +100,13 @@ const ContinousStraddleMinimaChart = observer(({ symbol, expiry }) => {
         {
           gridLineColor: theme.palette.chart.borderColor,
           title: {
-            text: "Premium",
+            text: "",
             style: {
               color: theme.palette.chart.headingColor,
             },
           },
           labels: {
-            align: "left",
+            align: "",
             format: "{value}",
             style: {
               color: theme.palette.chart.headingColor,

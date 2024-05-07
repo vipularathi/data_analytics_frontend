@@ -178,5 +178,30 @@ input:-webkit-autofill:active {
   height: 1px !important;
 }
 
+.highcharts-background {
+  box-sizing: border-box; 
+  /* height:"120px"or any other value you prefer */
+}
+
+.custom-table {
+  border-collapse: collapse;
+  width: 95%;
+  margin: auto;
+  margin-top: 10px; 
+}
+
+.custom-table th,
+.custom-table td {
+  border: 0.1px solid black;
+  padding: 1.06px;
+}
+
+/* .custom-table th:first-child,
+.custom-table td:first-child {
+  border-top: none;
+} */
+
+
+
 @tailwind components;
 @tailwind utilities;

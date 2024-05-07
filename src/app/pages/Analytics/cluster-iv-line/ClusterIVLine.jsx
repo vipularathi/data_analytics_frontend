@@ -18,9 +18,10 @@ const ClusterIVLine = observer(() => {
   const theme = useTheme();
   const chartRef = useRef(null);
   const data = useLoaderData({ select: (d) => d });
+  
   const [symbol, setSymbol] = useState(data[0].name);
   const [expiry, setExpiry] = useState(data[0].expiry[0]);
-
+alert(symbol)
   const symbols = useMemo(() => {
     if (data) {
       return data.map((s) => s.name);

@@ -20,11 +20,11 @@ const continuousStraddle = observer(() => {
   const [symbol, setSymbol] = useState(data[0].name);
   const [expiry, setExpiry] = useState(data[0].expiry[0]);
   const [chartData, setChartData] = useState([]);
-
+  // console.log(data)
   const symbols = useMemo(() => {
     if (data) {
       return data.map((s) => s.name);
-    }
+    } 
     return [];
   }, [data]);
 
@@ -45,7 +45,7 @@ const continuousStraddle = observer(() => {
             cont: true,
           };
           const res = await chartApi.getStraddleMinima(payload);
-
+          console.log("res==>",res)
           setChartData(res.data);
         } catch (error) {
           console.log(error);

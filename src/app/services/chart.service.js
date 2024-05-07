@@ -7,6 +7,7 @@ class ChartApi extends BaseApi {
     straddleMinima: "straddle/minima",
     straddleIV: "straddle/iv",
     straddleCluster: "straddle/cluster",
+    tableData:"straddle/minima/table"
   };
   constructor() {
     super(CHART_BASE_URL);
@@ -30,6 +31,12 @@ class ChartApi extends BaseApi {
 
   getStraddleCluster(payload) {
     return this.axiosInstance.get(this.chartConfigUrl.straddleCluster, {
+      params: payload,
+    });
+  }
+
+  getTableData(payload) {
+    return this.axiosInstance.get(this.chartConfigUrl.tableData, {
       params: payload,
     });
   }
