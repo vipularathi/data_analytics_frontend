@@ -10,7 +10,7 @@ import { observer } from "mobx-react-lite";
 import navigation from "../../../../../configs/navigationConfig";
 import useThemeMediaQuery from "../../../../../hooks/use-thememediaquery";
 import { useNavbar } from "../../../../../hooks/store/use-navbar";
-import smallDarkLogo from "../../../../../../assets/logo/finzome-logo-icon-white.png";
+import smallDarkLogo from "../../../../../../assets/logo/arathi-logo-icon.png";
 import smallLightLogo from "../../../../../../assets/logo/arathi-logo-icon.png";
 
 const Root = styled("div")(({ theme }) => ({

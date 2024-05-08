@@ -3,9 +3,9 @@ import { observer } from "mobx-react-lite";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { useNavbar } from "../../hooks/store/use-navbar";
 import largeLightLogo from "../../../assets/logo/arathi-logo.png";
-import largeDarkLogo from "../../../assets/logo/finzome-logo-white.png";
+import largeDarkLogo from "../../../assets/logo/arathi-logo.png";
 import smallLightLogo from "../../../assets/logo/arathi-logo-icon.png";
-import smallDarkLogo from "../../../assets/logo/finzome-logo-icon-white.png";
+import smallDarkLogo from "../../../assets/logo/arathi-logo-icon.png";
 import Layout1Config from "../layout1/Layout1Config";
 
 const Root = styled("div")(({ theme }) => ({
