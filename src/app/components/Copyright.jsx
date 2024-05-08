@@ -7,10 +7,10 @@ const Copyright = observer(() => (
       ©
       {new Date().getFullYear()}
       {" "}
-      <a href="https://www.finzome.com/" className=" font-bold ml-2">
-        Finzome
+      <a href="" className=" font-bold ml-2">
+      Anand Rathi Global Finance LTD
       </a>
-      , Made with
+      {"  "} Made with
       <svg
         className="mx-2"
         xmlns="http://www.w3.org/2000/svg"

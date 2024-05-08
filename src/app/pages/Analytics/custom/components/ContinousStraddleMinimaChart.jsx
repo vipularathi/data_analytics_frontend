@@ -6,9 +6,29 @@ import { useTheme } from "@mui/material";
 import { DateTime } from "luxon";
 import { chartApi } from "../../../../services/chart.service";
 
-const ContinousStraddleMinimaChart = observer(({ symbol, expiry ,title}) => {
+const ContinousStraddleMinimaChart = observer(({ symbol, expiry, title }) => {
   const [chartData, setChartData] = useState([]);
   const theme = useTheme();
+
+  // useEffect(() => {
+  //   const getContinousStraddle = async () => {
+  //     if (symbol && expiry) {
+  //       try {
+  //         const payload = {
+  //           symbol,
+  //           expiry,
+  //           cont: true,
+  //         };
+  //         const res = await chartApi.getStraddleMinima(payload);
+
+  //         setChartData(res.data);
+  //       } catch (error) {
+  //         console.log(error);
+  //       }
+  //     }
+  //   };
+  //   getContinousStraddle();
+  // }, [symbol, expiry]);
 
   useEffect(() => {
     const getContinousStraddle = async () => {
@@ -20,16 +40,19 @@ const ContinousStraddleMinimaChart = observer(({ symbol, expiry ,title}) => {
             cont: true,
           };
           const res = await chartApi.getStraddleMinima(payload);
-
           setChartData(res.data);
         } catch (error) {
           console.log(error);
         }
       }
     };
-    getContinousStraddle();
-  }, [symbol, expiry]);
 
+    getContinousStraddle();
+
+    const intervalId = setInterval(getContinousStraddle, 60000);
+
+    return () => clearInterval(intervalId);
+  }, [symbol, expiry]);
   const options = useMemo(() => {
     const chartData1 = chartData.map((c) => ({
       y: c.combined_premium,

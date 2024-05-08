@@ -39,7 +39,7 @@ const CustomChart = observer(() => {
 
     getContinousTableData();
 
-    const intervalId = setInterval(getContinousTableData, 30000);
+    const intervalId = setInterval(getContinousTableData, 60000);
 
     // Clean up function to clear the interval when the component unmounts
     return () => clearInterval(intervalId);
@@ -193,8 +193,7 @@ const CustomChart = observer(() => {
   const gridContainerHeight = windowHeight - 40; // Subtract any additional height if needed
 
   const renderChart = (chart) => {
-    const title = getTitle(chart);
-    console.log("symbols===>", chart.title);
+    // const title = getTitle(chart);
     if (chart.chartName === "continusStraddleMinima") {
       return (
         <div style={{ height: chartHeight }}>
