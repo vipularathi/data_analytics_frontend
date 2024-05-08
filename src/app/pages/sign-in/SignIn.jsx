@@ -18,7 +18,7 @@ const SignInPage = observer(() => {
       .signIn({ provider: "email", email, password })
       .then((resp) => {
         if ("token" in resp) {
-          navigate({ to: "/" });
+          navigate({ to: "/dashboard" });
         }
       })
       .catch((error) => {
