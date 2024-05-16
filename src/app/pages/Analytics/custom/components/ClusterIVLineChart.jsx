@@ -27,7 +27,7 @@ const ClusterIVLineChart = observer(({ symbol, expiry,title }) => {
               color: "#1d4ed8",
               zIndex: 10,
               lineWidth: 3,
-              dashStyle: "dash",
+              dashStyle: "dot",
             }
             : i === chartData.length - 1
               ? {
