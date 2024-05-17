@@ -117,60 +117,20 @@ export class AuthStore {
     try {
       const { data: respData } = await authApi.signIn(credentials);
 
-      if (respData && "token" in respData) {
-        const userData = respData?.data.user;
-
-        const accessToken = respData.token;
-
-        authApi.setToken(accessToken);
-
+      if (respData) {
         runInAction(() => {
           this.isLoading = false;
-          this.accessToken = accessToken;
           this.isAuthenticated = true;
-          this.userStore.user = userData.data;
-          this.userStore.userRole = userData.role;
         });
       }
-      if (respData && "request_token" in respData) {
+      if (respData) {
         runInAction(() => {
-          this.showOtp = true;
-          this.requestToken = respData.request_token;
           this.isLoading = false;
         });
       }
       return respData;
     } catch (err) {
       const errorData = err.response.data;
-      if (errorData && "verified" in errorData && !errorData.verified) {
-        runInAction(() => {
-          this.isLoading = true;
-        });
-
-        try {
-          const { data: otpData } = await authApi.sendOtp({
-            email: credentials.email,
-            purpose: "email_verify",
-          });
-
-          runInAction(() => {
-            this.requestToken = otpData.request_token;
-            this.showOtp = true;
-            this.isLoading = false;
-          });
-        } catch (error) {
-          const errorDataOtp = error.response.data;
-          runInAction(() => {
-            this.isLoading = false;
-          });
-          throw new Error(errorDataOtp.message);
-        }
-      }
-      runInAction(() => {
-        this.isLoading = false;
-        this.isAuthenticated = false;
-        this.user = null;
-      });
       throw new Error(errorData.message);
     }
   }
@@ -264,7 +224,7 @@ export class AuthStore {
     try {
       const { data: respData } = await authApi.verifyOtp(
         { otp, password },
-        { headers: { "request-token": this.requestToken } },
+        { headers: { "request-token": this.requestToken } }
       );
       runInAction(() => {
         this.isLoading = false;
