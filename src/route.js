@@ -15,15 +15,17 @@ import { dashboardRoute } from "./app/pages/dashboard/dashboardConfig";
  * Define the router Tree for adding children based on pages
  */
 const routeTree = rootRoute.addChildren([
+  
+  signInRoute,
   dashboardRoute,
   analyticsRoute.addChildren([
+    
     clusterIVRoute,
     clusterIVLineRoute,
     continuousStraddleRoute,
     straddleMinRoute,
     customChartRoute,
   ]),
-  signInRoute,
   signUpRoute,
   forgetPasswordRoute,
 ]);
