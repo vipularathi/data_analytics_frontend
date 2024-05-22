@@ -50,8 +50,28 @@ class AuthApi extends BaseApi {
     return this.axiosInstance.post(this.authConfig.signUpUrl, credentails);
   }
 
-  signIn(credentails) {
-    return this.axiosInstance.post(this.authConfig.signInUrl, credentails);
+  // signIn(credentails) {
+  //   return this.axiosInstance.post(this.authConfig.signInUrl, credentails);
+  // }
+
+
+
+async signIn(email, password) {
+    // const apiUrl = "http://172.16.47.81:8701";
+    const url = `${API_BASE_URL}/login?username=${email}&password=${password}`;
+ 
+    try {
+      const response = await this.axiosInstance.post(url, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+ 
+      return response.data;
+    } catch (error) {
+      console.error("Error in get strategy:", error);
+      throw new Error("Failed to get strategy");
+    }
   }
 
   signOut() {

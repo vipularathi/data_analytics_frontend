@@ -8,9 +8,11 @@ import ContinousStraddleMinimaChart from "./components/ContinousStraddleMinimaCh
 import ClusterIVLineChart from "./components/ClusterIVLineChart";
 import "../../../.././index.css";
 import { chartApi } from "../../../services/chart.service";
+import Charttable from "./Charttable";
+
 const CustomChart = observer(() => {
   const data = useLoaderData({ select: (d) => d });
-  const [financialData, setFinancialData] = useState([]);
+ 
 
   const expirys = useCallback(
     (name) => {
@@ -26,24 +28,7 @@ const CustomChart = observer(() => {
     [data]
   );
 
-  useEffect(() => {
-    const getContinousTableData = async () => {
-      try {
-        // Fetch data from your API
-        const res = await chartApi.getTableData();
-        setFinancialData(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getContinousTableData();
-
-    const intervalId = setInterval(getContinousTableData, 60000);
-
-    // Clean up function to clear the interval when the component unmounts
-    return () => clearInterval(intervalId);
-  }, []);
+  
 
   const chartSettigs = [
     {
@@ -152,6 +137,7 @@ const CustomChart = observer(() => {
     },
     {
       id: 13,
+      chartName: "chartTable",
     },
     {
       id: 14,
@@ -176,17 +162,6 @@ const CustomChart = observer(() => {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  const getTitle = (chart) => {
-    let title = "";
-    if (chart.chartName === "continusStraddleMinima") {
-      title = "";
-    } else if (chart.chartName === "clusterIVLine") {
-      title = "";
-    }
-    title += `  ${chart.name} ${chart.expiryName}`;
-    return title;
-  };
 
   const cardHeight = 288; // Adjust the height of the cards
   const chartHeight = 100; // Adjust the height of the charts
@@ -216,71 +191,15 @@ const CustomChart = observer(() => {
           />
         </div>
       );
+    } else if (chart.chartName === "chartTable") {
+      return (
+        <div style={{ height: chartHeight }}>
+          <Charttable/>
+        </div>
+      );
     } else {
       return <CardContent>No data</CardContent>;
     }
-  };
-
-  const CustomTable = () => {
-    const keyMapping = {
-      BANKNIFTY_CW: "BN CW",
-      BANKNIFTY_NW: "BN NW",
-      FINNIFTY: "FN CW",
-      MIDCPNIFTY: "MD CW",
-      NIFTY_CW: "NF CW",
-      NIFTY_NW: "NF NW",
-    };
-
-    const rowData = financialData.map((item) => {
-      const indexKey = Object.keys(item)[0];
-      const newIndexKey = keyMapping[indexKey] || indexKey;
-      // alert(indexKey)
-      const indexMetrics = item[indexKey][0];
-      return {
-        straddle: newIndexKey,
-        live: indexMetrics.Live,
-        liveMin: indexMetrics["Live-Min"],
-        maxLive: indexMetrics["Max-Live"],
-        max: indexMetrics.Max,
-        min: indexMetrics.Min,
-      };
-    });
-
-    return (
-      <Card
-        variant="outlined"
-        sx={{ backgroundColor: (theme) => theme.palette.background.paper }}
-        className="shadow-2"
-        style={{ overflowX: "auto" }}
-      >
-        <table className="custom-table">
-          <thead>
-            <tr>
-              <th>Straddle</th>
-              <th>Live</th>
-              <th>Live-min.</th>
-              <th>Max-live</th>
-              <th>Max</th>
-              <th>Min</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rowData.map((row, index) => (
-              <tr key={index}>
-                <td className="straddle-cell" style={{ fontWeight: "600" }}>
-                  {row.straddle}
-                </td>
-                <td>{row.live}</td>
-                <td>{row.liveMin}</td>
-                <td>{row.maxLive}</td>
-                <td>{row.max}</td>
-                <td>{row.min}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </Card>
-    );
   };
 
   return (
@@ -301,32 +220,7 @@ const CustomChart = observer(() => {
             className="shadow-2"
             style={{ height: cardHeight }}
           >
-            {/* <div
-              style={{
-                position: "relative",
-                zIndex: 1,
-                backgroundColor: "white",
-                padding: "3px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <div>
-                <h3 style={{ margin: 0, display: "inline-block" }}>
-                  {chart.name}
-                </h3>
-                <p
-                  style={{
-                    margin: 0,
-                    display: "inline-block",
-                    marginLeft: "5px",
-                  }}
-                >
-                  {chart.expiryName}
-                </p>
-              </div>
-            </div> */}
+            
             <div style={{ height: chartHeight }}>{renderChart(chart)}</div>
           </Card>
         ))}
@@ -348,32 +242,6 @@ const CustomChart = observer(() => {
             className="shadow-2"
             style={{ height: cardHeight }}
           >
-            {/* <div
-              style={{
-                position: "relative",
-                zIndex: 1,
-                backgroundColor: "white",
-                padding: "3px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <div>
-                <h3 style={{ margin: 0, display: "inline-block" }}>
-                  {chart.name}
-                </h3>
-                <p
-                  style={{
-                    margin: 0,
-                    display: "inline-block",
-                    marginLeft: "5px",
-                  }}
-                >
-                  {chart.expiryName}
-                </p>
-              </div>
-            </div> */}
             <div style={{ height: chartHeight }}>{renderChart(chart)}</div>
           </Card>
         ))}
@@ -389,9 +257,7 @@ const CustomChart = observer(() => {
       >
         {chartSettigs.slice(9).map((chart) => (
           <React.Fragment key={chart.id}>
-            {chart.id === 13 ? (
-              <CustomTable />
-            ) : (
+           
               <Card
                 key={chart.id}
                 variant="outlined"
@@ -401,35 +267,9 @@ const CustomChart = observer(() => {
                 className="shadow-2"
                 style={{ height: cardHeight }}
               >
-                {/* <div
-                  style={{
-                    position: "relative",
-                    zIndex: 1,
-                    backgroundColor: "white",
-                    padding: "3px",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <div>
-              <h3 style={{ margin: 0, display: "inline-block" }}>
-                {chart.name}
-              </h3>
-              <p
-                style={{
-                  margin: 0,
-                  display: "inline-block",
-                  marginLeft: "5px",
-                }}
-              >
-                {chart.expiryName}
-              </p>
-            </div>
-                </div> */}
                 <div style={{ height: chartHeight }}>{renderChart(chart)}</div>
               </Card>
-            )}
+       
           </React.Fragment>
         ))}
       </div>
