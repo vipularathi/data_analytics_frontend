@@ -187,20 +187,28 @@ input:-webkit-autofill:active {
   border-collapse: collapse;
   width: 95%;
   margin: auto;
-  margin-top: 10px; 
+  margin-top: 10px;
 }
-
+ 
 .custom-table th,
 .custom-table td {
   border: 0.1px solid black;
   padding: 1.06px;
 }
-
-/* .custom-table th:first-child,
-.custom-table td:first-child {
-  border-top: none;
-} */
-
+ 
+ 
+.custom-table-dark {
+  border-collapse: collapse;
+  width: 95%;
+  margin: auto;
+  margin-top: 10px;
+}
+ 
+.custom-table-dark th,
+.custom-table-dark td {
+  border: 0.1px solid grey;
+  padding: 1.06px;
+}
 
 
 @tailwind components;
