@@ -7,7 +7,7 @@ import largeDarkLogo from "../../../assets/logo/finzomeLargeWhite.png";
 import smallLightLogo from "../../../assets/logo/finzomeSmallColored.png";
 import smallDarkLogo from "../../../assets/logo/finzomeSmallWhite.png";
 import Layout1Config from "../layout1/Layout1Config";
-
+ 
 const Root = styled("div")(({ theme }) => ({
   "& > .logo-icon": {
     transition: theme.transitions.create(["width", "height"], {
@@ -22,7 +22,7 @@ const Root = styled("div")(({ theme }) => ({
     }),
   },
 }));
-
+ 
 /**
  * The logo component.
  */
@@ -35,7 +35,7 @@ const Logo = observer(() => {
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
   let smallLogo;
   let largeLogo;
-
+ 
   if (theme.palette.mode === "light") {
     smallLogo = smallLightLogo;
     largeLogo = largeLightLogo;
@@ -60,5 +60,5 @@ const Logo = observer(() => {
     </Root>
   );
 });
-
+ 
 export default Logo;

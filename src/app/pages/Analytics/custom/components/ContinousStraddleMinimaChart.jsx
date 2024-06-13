@@ -80,7 +80,7 @@ const ContinousStraddleMinimaChart = observer(({ symbol, expiry, title }) => {
 
     return {
       chart: {
-        type: "spline",
+        type: "scatter",
         backgroundColor: theme.palette.chart.cardColor,
         height: 300,
         style: {
@@ -170,8 +170,11 @@ const ContinousStraddleMinimaChart = observer(({ symbol, expiry, title }) => {
           zoneAxis: "x",
           zones,
           marker: {
-            enabled: false,
+            enabled: true,
+            radius: 2,
+                symbol: 'circle',
           },
+          dashStyle: 'Dot'
         },
       ],
     };

@@ -8,12 +8,12 @@ import ContinousStraddleMinimaChart from "./components/ContinousStraddleMinimaCh
 import ClusterIVLineChart from "./components/ClusterIVLineChart";
 import "../../../.././index.css";
 import { chartApi } from "../../../services/chart.service";
-import Charttable from "./Charttable";
-
+import ChartTable from "./ChartTable"
+ 
 const CustomChart = observer(() => {
   const data = useLoaderData({ select: (d) => d });
  
-
+ 
   const expirys = useCallback(
     (name) => {
       // console.log("name",name)
@@ -27,9 +27,9 @@ const CustomChart = observer(() => {
     },
     [data]
   );
-
-  
-
+ 
+ 
+ 
   const chartSettigs = [
     {
       id: 0,
@@ -148,25 +148,25 @@ const CustomChart = observer(() => {
       title: "NF NM",
     },
   ];
-
+ 
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
+ 
   useEffect(() => {
     const handleResize = () => {
       setWindowHeight(window.innerHeight);
       setWindowWidth(window.innerWidth);
     };
-
+ 
     window.addEventListener("resize", handleResize);
-
+ 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
+ 
   const cardHeight = 288; // Adjust the height of the cards
   const chartHeight = 100; // Adjust the height of the charts
   const gridContainerHeight = windowHeight - 40; // Subtract any additional height if needed
-
+ 
   const renderChart = (chart) => {
     // const title = getTitle(chart);
     if (chart.chartName === "continusStraddleMinima") {
@@ -194,14 +194,14 @@ const CustomChart = observer(() => {
     } else if (chart.chartName === "chartTable") {
       return (
         <div style={{ height: chartHeight }}>
-          <Charttable/>
+          <ChartTable/>
         </div>
       );
     } else {
       return <CardContent>No data</CardContent>;
     }
   };
-
+ 
   return (
     <div className="sm:px-16" style={{ overflow: "hidden" }}>
       <div
@@ -220,12 +220,12 @@ const CustomChart = observer(() => {
             className="shadow-2"
             style={{ height: cardHeight }}
           >
-            
+           
             <div style={{ height: chartHeight }}>{renderChart(chart)}</div>
           </Card>
         ))}
       </div>
-
+ 
       <div
         className="grid grid-cols-3 lg:grid-cols-6 gap-4"
         style={{
@@ -246,7 +246,7 @@ const CustomChart = observer(() => {
           </Card>
         ))}
       </div>
-
+ 
       <div
         className="grid grid-cols-3 lg:grid-cols-6 gap-4"
         style={{
