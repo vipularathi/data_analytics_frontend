@@ -6,194 +6,197 @@ import { useTheme } from "@mui/material";
 import { colorList } from "../../../../utils/constant/colorList";
 import { chartApi } from "../../../../services/chart.service";
 
-const ClusterIVLineChart = observer(({ symbol, expiry, title, selectedChart }) => {
-  const theme = useTheme();
-  const chartRef = useRef(null);
+const ClusterIVLineChart = observer(
+  ({ symbol, expiry, title, selectedChart }) => {
+    const theme = useTheme();
+    const chartRef = useRef(null);
 
-  function plotChart(chartData, categoriesData, tsData) {
-    const seriesLength = chartRef.current.chart.series.length;
-    for (let j = 0; j < seriesLength; j += 1) {
-      chartRef.current.chart.series[0].remove(false, false, false);
-    }
-
-    for (let i = 0; i < chartData.length; i += 1) {
-      const elem = chartData[i];
-      const timeStamp = tsData[i];
-      chartRef.current.chart.addSeries(
-        {
-          name: `iv${i}`,
-          // eslint-disable-next-line no-nested-ternary
-          ...(i === 0
-            ? {
-                color: "#1d4ed8",
-                zIndex: 10,
-                lineWidth: 3,
-                dashStyle: "dot",
-              }
-            : i === chartData.length - 1
-            ? {
-                color: "#fd7e14",
-                zIndex: 10,
-                lineWidth: 3,
-                dashStyle: "dash",
-              }
-            : { color: colorList[i] }),
-          data: elem.map((iv) => ({ y: iv, timeStamp })),
-          marker: {
-            enabled: false,
-          },
-        },
-        false,
-        false
-      );
-    }
-    chartRef.current.chart.xAxis[0].update({
-      categories: categoriesData,
-    });
-
-    chartRef.current.chart.redraw();
-  }
-
-  useEffect(() => {
-    const getStraddleCluster = async () => {
-      if (symbol && expiry) {
-        try {
-          const payload = {
-            symbol,
-            expiry,
-          };
-          const { data: resp } = await chartApi.getStraddleCluster(payload);
-          if (resp.strikes.length > 0) {
-            const chartData = resp.iv;
-            const categoriesData = resp.strikes;
-            const timeData = resp.ts.map((t) => t[0]);
-            plotChart(chartData, categoriesData, timeData);
-            chartRef.current.chart.hideLoading();
-          }
-        } catch (error) {
-          console.log(error);
-        }
+    function plotChart(chartData, categoriesData, tsData) {
+      const seriesLength = chartRef.current.chart.series.length;
+      for (let j = 0; j < seriesLength; j += 1) {
+        chartRef.current.chart.series[0].remove(false, false, false);
       }
-    };
 
-    // if (selectedChart) {
-    //   // Adjust height based on selectedChart presence
-    //   chartRef.current.chart.update({ chart: { height: 800 } }, true, false);
-    // } else {
-    //   chartRef.current.chart.update({ chart: { height: 300 } }, true, false);
-    // }
+      for (let i = 0; i < chartData.length; i += 1) {
+        const elem = chartData[i];
+        const timeStamp = tsData[i];
+        chartRef.current.chart.addSeries(
+          {
+            name: `iv${i}`,
+            // eslint-disable-next-line no-nested-ternary
+            ...(i === 0
+              ? {
+                  color: "#1d4ed8",
+                  zIndex: 10,
+                  lineWidth: 3,
+                  dashStyle: "dot",
+                }
+              : i === chartData.length - 1
+                ? {
+                    color: "#fd7e14",
+                    zIndex: 10,
+                    lineWidth: 3,
+                    dashStyle: "dash",
+                  }
+                : { color: colorList[i] }),
+            data: elem.map((iv) => ({ y: iv, timeStamp })),
+            marker: {
+              enabled: false,
+            },
+          },
+          false,
+          false
+        );
+      }
+      chartRef.current.chart.xAxis[0].update({
+        categories: categoriesData,
+      });
 
-    if (chartRef.current && chartRef.current.chart) {
-      getStraddleCluster();
+      chartRef.current.chart.redraw();
     }
 
-    const intervalId = setInterval(() => {
+    useEffect(() => {
+      const getStraddleCluster = async () => {
+        if (symbol && expiry) {
+          try {
+            const payload = {
+              symbol,
+              expiry,
+            };
+            const { data: resp } = await chartApi.getStraddleCluster(payload);
+            if (resp.strikes.length > 0) {
+              const chartData = resp.iv;
+              const categoriesData = resp.strikes;
+              const timeData = resp.ts.map((t) => t[0]);
+              plotChart(chartData, categoriesData, timeData);
+              chartRef.current.chart.hideLoading();
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      };
+
+      // if (selectedChart) {
+      //   // Adjust height based on selectedChart presence
+      //   chartRef.current.chart.update({ chart: { height: 800 } }, true, false);
+      // } else {
+      //   chartRef.current.chart.update({ chart: { height: 300 } }, true, false);
+      // }
+
       if (chartRef.current && chartRef.current.chart) {
         getStraddleCluster();
       }
-    }, 60000);
 
-    return () => clearInterval(intervalId);
-  }, [symbol, expiry, theme.palette.mode, selectedChart]);
+      const intervalId = setInterval(() => {
+        if (chartRef.current && chartRef.current.chart) {
+          getStraddleCluster();
+        }
+      }, 60000);
 
-  const options = useMemo(
-    () => ({
-      chart: {
-        type: "line",
-        backgroundColor: theme.palette.chart.cardColor,
-        height: selectedChart ? 800 : 300, // Adjusted height based on selectedChart
-        style: {
-          fontSize: "1.4rem",
+      return () => clearInterval(intervalId);
+    }, [symbol, expiry, theme.palette.mode, selectedChart]);
+
+    const options = useMemo(
+      () => ({
+        chart: {
+          type: "line",
+          backgroundColor: theme.palette.chart.cardColor,
+          height: selectedChart ? 800 : 300, // Adjusted height based on selectedChart
+          style: {
+            fontSize: "1.4rem",
+          },
         },
-      },
-      accessibility: {
-        enabled: false,
-      },
-      exporting: {
-        enabled: false,
-      },
-      title: {
-        text: title,
-        align: "center",
-        style: {
-          color: theme.palette.chart.headingColor,
-          fontWeight: "bold",
-          fontSize: "1.4rem",
+        accessibility: {
+          enabled: false,
         },
-      },
-      xAxis: {
-        categories: [],
+        exporting: {
+          enabled: false,
+        },
         title: {
-          text: "",
+          text: title,
+          align: "center",
           style: {
+            color: theme.palette.chart.headingColor,
+            fontWeight: "bold",
+            fontSize: "1.4rem",
+          },
+        },
+        xAxis: {
+          categories: [],
+          title: {
+            text: "",
+            style: {
+              color: theme.palette.chart.headingColor,
+            },
+          },
+          labels: {
+            format: "{value}",
+            style: {
+              color: theme.palette.chart.headingColor,
+            },
+          },
+          tickColor: theme.palette.chart.headingColor,
+          tickWidth: 1,
+          lineColor: theme.palette.chart.headingColor,
+        },
+        plotOptions: {
+          series: {
+            animation: false,
+          },
+        },
+        yAxis: {
+          gridLineColor: theme.palette.chart.borderColor,
+          title: {
+            text: "",
+            style: {
+              color: theme.palette.chart.headingColor,
+            },
+          },
+          labels: {
+            format: "{value}",
+            style: {
+              color: theme.palette.chart.headingColor,
+            },
+          },
+        },
+        legend: {
+          enabled: false,
+          itemStyle: {
             color: theme.palette.chart.headingColor,
           },
         },
-        labels: {
-          format: "{value}",
-          style: {
-            color: theme.palette.chart.headingColor,
-          },
-        },
-        tickColor: theme.palette.chart.headingColor,
-        tickWidth: 1,
-        lineColor: theme.palette.chart.headingColor,
-      },
-      plotOptions: {
-        series: {
-          animation: false,
-        },
-      },
-      yAxis: {
-        gridLineColor: theme.palette.chart.borderColor,
-        title: {
-          text: "",
-          style: {
-            color: theme.palette.chart.headingColor,
-          },
-        },
-        labels: {
-          format: "{value}",
-          style: {
-            color: theme.palette.chart.headingColor,
-          },
-        },
-      },
-      legend: {
-        enabled: false,
-        itemStyle: {
-          color: theme.palette.chart.headingColor,
-        },
-      },
-      tooltip: {
-        enabled: true,
-        shared: true,
-        formatter() {
-          const strike = this.x;
-          return this.points.reduce(
-            (s, point) => {
+        tooltip: {
+          enabled: true,
+          shared: true,
+          formatter() {
+            const strike = this.x;
+            return this.points.reduce((s, point) => {
               const date = point.point.options.timeStamp.replace("T", " ");
               const { color } = point;
               return `${s} </br> <span style="color: ${color}">${date} - ${point.y.toFixed(
                 3
               )}</span>`;
-            },
-            `Strike - ${strike}`
-          );
+            }, `Strike - ${strike}`);
+          },
+          backgroundColor: theme.palette.chart.cardColor,
+          style: {
+            color: theme.palette.chart.headingColor,
+          },
         },
-        backgroundColor: theme.palette.chart.cardColor,
-        style: {
-          color: theme.palette.chart.headingColor,
-        },
-      },
-      series: [],
-    }),
-    [theme, selectedChart, title]
-  );
+        series: [],
+      }),
+      [theme, selectedChart, title]
+    );
 
-  return (
-    <HighchartsReact ref={chartRef} highcharts={Highcharts} options={options} />
-  );
-});
+    return (
+      <HighchartsReact
+        ref={chartRef}
+        highcharts={Highcharts}
+        options={options}
+      />
+    );
+  }
+);
 
 export default ClusterIVLineChart;

@@ -35,18 +35,38 @@ const Charttable = observer(() => {
     NIFTY_NW: "NF NW",
   };
 
-  const rowData = financialData.map((item) => {
-    const indexKey = Object.keys(item)[0];
-    const newIndexKey = keyMapping[indexKey] || indexKey;
-    const indexMetrics = item[indexKey][0];
-    return {
-      straddle: newIndexKey,
-      live: indexMetrics.Live,
-      liveMin: indexMetrics["Live-Min"],
-      maxLive: indexMetrics["Max-Live"],
-      max: indexMetrics.Max,
-      min: indexMetrics.Min,
-    };
+  // const rowData = financialData.map((item) => {
+  //   const indexKey = Object.keys(item)[0];
+  //   const newIndexKey = keyMapping[indexKey] || indexKey;
+  //   const indexMetrics = item[indexKey][0];
+  //   return {
+  //     straddle: newIndexKey,
+  //     live: indexMetrics.Live,
+  //     liveMin: indexMetrics["Live-Min"],
+  //     maxLive: indexMetrics["Max-Live"],
+  //     max: indexMetrics.Max,
+  //     min: indexMetrics.Min,
+  //   };
+  // });
+
+  const rowData = [];
+  // Iterate over keyMapping to ensure the order
+  Object.keys(keyMapping).forEach((indexKey) => {
+    const newIndexKey = keyMapping[indexKey];
+    const indexData = financialData.find(
+      (item) => Object.keys(item)[0] === indexKey
+    );
+    if (indexData) {
+      const indexMetrics = indexData[indexKey][0];
+      rowData.push({
+        straddle: newIndexKey,
+        live: indexMetrics.Live,
+        liveMin: indexMetrics["Live-Min"],
+        maxLive: indexMetrics["Max-Live"],
+        max: indexMetrics.Max,
+        min: indexMetrics.Min,
+      });
+    }
   });
 
   return (

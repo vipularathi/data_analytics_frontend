@@ -1,6 +1,12 @@
 import React from "react";
 import { useEffect, useMemo, useState } from "react";
-import { Card, CardContent, CardHeader,Modal, Typography } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Modal,
+  Typography,
+} from "@mui/material";
 import { useLoaderData } from "@tanstack/react-router";
 import { observer } from "mobx-react-lite";
 import { useCallback } from "react";
@@ -8,13 +14,12 @@ import ContinousStraddleMinimaChart from "./components/ContinousStraddleMinimaCh
 import ClusterIVLineChart from "./components/ClusterIVLineChart";
 import "../../../.././index.css";
 import { chartApi } from "../../../services/chart.service";
-import ChartTable from "./ChartTable"
+import ChartTable from "./ChartTable";
 // import { Card, Modal, Typography } from "@mui/material";
 
 const CustomChart = observer(() => {
   const data = useLoaderData({ select: (d) => d });
- 
- 
+
   const expirys = useCallback(
     (name) => {
       // console.log("name",name)
@@ -28,9 +33,7 @@ const CustomChart = observer(() => {
     },
     [data]
   );
- 
- 
- 
+
   const chartSettigs = [
     {
       id: 0,
@@ -149,21 +152,21 @@ const CustomChart = observer(() => {
       title: "NF NM",
     },
   ];
- 
+
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
- 
+
   useEffect(() => {
     const handleResize = () => {
       setWindowHeight(window.innerHeight);
       setWindowWidth(window.innerWidth);
     };
- 
+
     window.addEventListener("resize", handleResize);
- 
+
     return () => window.removeEventListener("resize", handleResize);
   }, []);
- 
+
   const cardHeight = 288; // Adjust the height of the cards
   const chartHeight = 100; // Adjust the height of the charts
   const gridContainerHeight = windowHeight - 40; // Subtract any additional height if needed
@@ -188,7 +191,7 @@ const CustomChart = observer(() => {
             symbol={chart.name}
             expiry={chart.expiry}
             title={chart.title}
-            selectedChart = {selectedChart}
+            selectedChart={selectedChart}
             // title={title}
           />
         </div>
@@ -200,7 +203,7 @@ const CustomChart = observer(() => {
             symbol={chart.name}
             expiry={chart.expiry}
             title={chart.title}
-            selectedChart = {selectedChart}
+            selectedChart={selectedChart}
 
             //  title={title}
           />
@@ -209,7 +212,7 @@ const CustomChart = observer(() => {
     } else if (chart.chartName === "chartTable") {
       return (
         <div style={{ height: chartHeight }}>
-          <ChartTable/>
+          <ChartTable />
         </div>
       );
     } else {
@@ -217,11 +220,11 @@ const CustomChart = observer(() => {
     }
   };
 
-  const closeModal = ()=>{
+  const closeModal = () => {
     setModalVisible(false);
-    setSelectedChart(null)
-  }
- 
+    setSelectedChart(null);
+  };
+
   return (
     <div className="sm:px-16" style={{ overflow: "hidden" }}>
       <div
@@ -241,12 +244,11 @@ const CustomChart = observer(() => {
             style={{ height: cardHeight }}
             onClick={() => handleTitleClick(chart)}
           >
-           
             <div style={{ height: chartHeight }}>{renderChart(chart)}</div>
           </Card>
         ))}
       </div>
- 
+
       <div
         className="grid grid-cols-3 lg:grid-cols-6 gap-4"
         style={{
@@ -268,7 +270,7 @@ const CustomChart = observer(() => {
           </Card>
         ))}
       </div>
- 
+
       <div
         className="grid grid-cols-3 lg:grid-cols-6 gap-4"
         style={{
@@ -279,20 +281,18 @@ const CustomChart = observer(() => {
       >
         {chartSettigs.slice(9).map((chart) => (
           <React.Fragment key={chart.id}>
-           
-              <Card
-                key={chart.id}
-                variant="outlined"
-                sx={{
-                  backgroundColor: (theme) => theme.palette.background.paper,
-                }}
-                className="shadow-2"
-                style={{ height: cardHeight }}
-                onClick={() => handleTitleClick(chart)}
-              >
-                <div style={{ height: chartHeight }}>{renderChart(chart)}</div>
-              </Card>
-       
+            <Card
+              key={chart.id}
+              variant="outlined"
+              sx={{
+                backgroundColor: (theme) => theme.palette.background.paper,
+              }}
+              className="shadow-2"
+              style={{ height: cardHeight }}
+              onClick={() => handleTitleClick(chart)}
+            >
+              <div style={{ height: chartHeight }}>{renderChart(chart)}</div>
+            </Card>
           </React.Fragment>
         ))}
       </div>
@@ -305,15 +305,21 @@ const CustomChart = observer(() => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background:"transparent"
+          background: "transparent",
         }}
       >
-        <div style={{  padding: 20, width: "80vw", height: "80vh", maxWidth: "1400px", maxHeight: "1000px" }}>
-         
+        <div
+          style={{
+            padding: 20,
+            width: "80vw",
+            height: "80vh",
+            maxWidth: "1400px",
+            maxHeight: "1000px",
+          }}
+        >
           {renderChart(selectedChart)}
         </div>
       </Modal>
-
     </div>
   );
 });

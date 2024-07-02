@@ -5,7 +5,12 @@ import { useTheme } from "@mui/material";
 import { DateTime } from "luxon";
 import { chartApi } from "../../../../services/chart.service";
 
-const ContinousStraddleMinimaChart = ({ symbol, expiry, title, selectedChart }) => {
+const ContinousStraddleMinimaChart = ({
+  symbol,
+  expiry,
+  title,
+  selectedChart,
+}) => {
   const [chartData, setChartData] = useState([]);
   const theme = useTheme();
 
@@ -17,6 +22,7 @@ const ContinousStraddleMinimaChart = ({ symbol, expiry, title, selectedChart }) 
             symbol,
             expiry,
             cont: true,
+            // interval: 1, //uncomment if interval b/w datapoint is not 1 min
           };
           const res = await chartApi.getStraddleMinima(payload);
           setChartData(res.data);
@@ -90,7 +96,7 @@ const ContinousStraddleMinimaChart = ({ symbol, expiry, title, selectedChart }) 
           formatter() {
             return DateTime.fromMillis(this.value)
               .setZone("Asia/Kolkata")
-              .toFormat("LLL dd hh:mm");
+              .toFormat("hh:mm");
           },
           style: {
             color: theme.palette.chart.headingColor,
@@ -152,9 +158,9 @@ const ContinousStraddleMinimaChart = ({ symbol, expiry, title, selectedChart }) 
           marker: {
             enabled: true,
             radius: 2,
-            symbol: 'circle',
+            symbol: "circle",
           },
-          dashStyle: 'Dot'
+          dashStyle: "Dot",
         },
       ],
     };
