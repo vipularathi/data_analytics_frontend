@@ -9,7 +9,7 @@ const ContinousStraddleMinimaChart = ({
   symbol,
   expiry,
   title,
-  selectedChart,
+  modalVisible,
 }) => {
   const [chartData, setChartData] = useState([]);
   const theme = useTheme();
@@ -40,7 +40,7 @@ const ContinousStraddleMinimaChart = ({
   }, [symbol, expiry]);
 
   const options = useMemo(() => {
-    const chartHeight = selectedChart ? 800 : 300; // Adjusted height based on selectedChart
+    const chartHeight = modalVisible ? 800 : 300; // Adjusted height based on selectedChart
 
     const chartData1 = chartData.map((c) => ({
       y: c.combined_premium,
@@ -164,7 +164,7 @@ const ContinousStraddleMinimaChart = ({
         },
       ],
     };
-  }, [theme, chartData, selectedChart, title]);
+  }, [theme, chartData, modalVisible, title]);
 
   return <HighchartsReact highcharts={Highcharts} options={options} />;
 };

@@ -7,7 +7,7 @@ import { colorList } from "../../../../utils/constant/colorList";
 import { chartApi } from "../../../../services/chart.service";
 
 const ClusterIVLineChart = observer(
-  ({ symbol, expiry, title, selectedChart }) => {
+  ({ symbol, expiry, title, modalVisible }) => {
     const theme = useTheme();
     const chartRef = useRef(null);
 
@@ -23,7 +23,6 @@ const ClusterIVLineChart = observer(
         chartRef.current.chart.addSeries(
           {
             name: `iv${i}`,
-            // eslint-disable-next-line no-nested-ternary
             ...(i === 0
               ? {
                   color: "#1d4ed8",
@@ -77,13 +76,6 @@ const ClusterIVLineChart = observer(
         }
       };
 
-      // if (selectedChart) {
-      //   // Adjust height based on selectedChart presence
-      //   chartRef.current.chart.update({ chart: { height: 800 } }, true, false);
-      // } else {
-      //   chartRef.current.chart.update({ chart: { height: 300 } }, true, false);
-      // }
-
       if (chartRef.current && chartRef.current.chart) {
         getStraddleCluster();
       }
@@ -95,14 +87,14 @@ const ClusterIVLineChart = observer(
       }, 60000);
 
       return () => clearInterval(intervalId);
-    }, [symbol, expiry, theme.palette.mode, selectedChart]);
+    }, [symbol, expiry, theme.palette.mode, modalVisible]);
 
     const options = useMemo(
       () => ({
         chart: {
           type: "line",
           backgroundColor: theme.palette.chart.cardColor,
-          height: selectedChart ? 800 : 300, // Adjusted height based on selectedChart
+          height: modalVisible ? 800 : 300,
           style: {
             fontSize: "1.4rem",
           },
@@ -143,6 +135,15 @@ const ClusterIVLineChart = observer(
         plotOptions: {
           series: {
             animation: false,
+            states: {
+              hover: {
+                enabled: true,
+                lineWidth: 3,
+              },
+              inactive: {
+                opacity: 0.3,
+              },
+            },
           },
         },
         yAxis: {
@@ -168,16 +169,14 @@ const ClusterIVLineChart = observer(
         },
         tooltip: {
           enabled: true,
-          shared: true,
+          shared: false, // This ensures only the selected line's data is shown
           formatter() {
-            const strike = this.x;
-            return this.points.reduce((s, point) => {
-              const date = point.point.options.timeStamp.replace("T", " ");
-              const { color } = point;
-              return `${s} </br> <span style="color: ${color}">${date} - ${point.y.toFixed(
-                3
-              )}</span>`;
-            }, `Strike - ${strike}`);
+            const point = this.point;
+            const date = point.options.timeStamp.replace("T", " ");
+            const { color } = point.series;
+            return `Strike - ${this.x}</br><span style="color: ${color}">${date} - ${point.y.toFixed(
+              3
+            )}</span>`;
           },
           backgroundColor: theme.palette.chart.cardColor,
           style: {
@@ -186,7 +185,7 @@ const ClusterIVLineChart = observer(
         },
         series: [],
       }),
-      [theme, selectedChart, title]
+      [theme, modalVisible, title]
     );
 
     return (
