@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import ContinousStraddleMinimaChart from "./components/ContinousStraddleMinimaChart";
 import ClusterIVLineChart from "./components/ClusterIVLineChart";
 import "../../../.././index.css";
-import ChartTable from "./ChartTable";
+import ChartTable from "./Charttable";
 
 const CustomChart = observer(() => {
   const data = useLoaderData({ select: (d) => d });
