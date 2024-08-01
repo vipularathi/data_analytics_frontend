@@ -4,16 +4,15 @@ import { Card, CardContent, CardHeader } from "@mui/material";
 import { chartApi } from "../../../services/chart.service";
 import { useTheme } from "@mui/material";
 
-const ChartTable = observer(() => {
+const Charttable = observer(() => {
   const theme = useTheme();
   const [financialData, setFinancialData] = useState([]);
 
   useEffect(() => {
     const getContinousTableData = async () => {
       try {
-        // Fetch data from your API
         const res = await chartApi.getTableData();
-        // console.log("res.data",res.data)
+
         setFinancialData(res.data);
       } catch (error) {
         console.log(error);
@@ -23,26 +22,23 @@ const ChartTable = observer(() => {
     getContinousTableData();
 
     const intervalId = setInterval(getContinousTableData, 60000);
+
     return () => clearInterval(intervalId);
   }, []);
 
   const keyMapping = {
-    NIFTY_CW: "NF CW",
     BANKNIFTY_CW: "BN CW",
-    MIDCPNIFTY: "MD CW",
-    FINNIFTY: "FN CW",
-    NIFTY_NW: "NF NW",
     BANKNIFTY_NW: "BN NW",
+    FINNIFTY: "FN CW",
+    MIDCPNIFTY: "MD CW",
+    NIFTY_CW: "NF CW",
+    NIFTY_NW: "NF NW",
   };
 
   // const rowData = financialData.map((item) => {
   //   const indexKey = Object.keys(item)[0];
-  //   // console.log("indexKey",indexKey)
-
   //   const newIndexKey = keyMapping[indexKey] || indexKey;
-  //   console.log("newIndexKey",newIndexKey)
   //   const indexMetrics = item[indexKey][0];
-  //   // console.log("indexMetrics",indexMetrics)
   //   return {
   //     straddle: newIndexKey,
   //     live: indexMetrics.Live,
@@ -52,19 +48,16 @@ const ChartTable = observer(() => {
   //     min: indexMetrics.Min,
   //   };
   // });
-  // const sortedRowData = rowData.sort((a, b) => {
-  //   return Object.keys(keyMapping).indexOf(a.straddle) - Object.keys(keyMapping).indexOf(b.straddle);
-  // });
-
-  if (!financialData) {
-    console.error("Error: financialData is undefined or null.");
-    return;
-  }
 
   const rowData = [];
   // Iterate over keyMapping to ensure the order
   Object.keys(keyMapping).forEach((indexKey) => {
     const newIndexKey = keyMapping[indexKey];
+
+    if (!financialData) {
+      console.error("Error: financialData is undefined or null.");
+      return;
+    }
     const indexData = financialData.find(
       (item) => Object.keys(item)[0] === indexKey
     );
@@ -81,7 +74,6 @@ const ChartTable = observer(() => {
     }
   });
 
-  console.log("sortedRowData", rowData);
   return (
     <Card
       variant="outlined"
@@ -148,4 +140,4 @@ const ChartTable = observer(() => {
   );
 });
 
-export default ChartTable;
+export default Charttable;

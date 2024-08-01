@@ -8,7 +8,7 @@ import ContinousStraddleMinimaChart from "./components/ContinousStraddleMinimaCh
 import ClusterIVLineChart from "./components/ClusterIVLineChart";
 import "../../../.././index.css";
 import { chartApi } from "../../../services/chart.service";
-import ChartTable from "./ChartTable"
+import ChartTable from "./Charttable";
  
 const CustomChart = observer(() => {
   const data = useLoaderData({ select: (d) => d });

@@ -1,34 +1,18 @@
-import { observer } from "mobx-react-lite";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useTheme } from "@mui/material";
 import { DateTime } from "luxon";
 import { chartApi } from "../../../../services/chart.service";
 
-const ContinousStraddleMinimaChart = observer(({ symbol, expiry, title }) => {
+const ContinousStraddleMinimaChart = ({
+  symbol,
+  expiry,
+  title,
+  modalVisible,
+}) => {
   const [chartData, setChartData] = useState([]);
   const theme = useTheme();
-
-  // useEffect(() => {
-  //   const getContinousStraddle = async () => {
-  //     if (symbol && expiry) {
-  //       try {
-  //         const payload = {
-  //           symbol,
-  //           expiry,
-  //           cont: true,
-  //         };
-  //         const res = await chartApi.getStraddleMinima(payload);
-
-  //         setChartData(res.data);
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     }
-  //   };
-  //   getContinousStraddle();
-  // }, [symbol, expiry]);
 
   useEffect(() => {
     const getContinousStraddle = async () => {
@@ -38,6 +22,7 @@ const ContinousStraddleMinimaChart = observer(({ symbol, expiry, title }) => {
             symbol,
             expiry,
             cont: true,
+            // interval: 1, //uncomment if interval b/w datapoint is not 1 min
           };
           const res = await chartApi.getStraddleMinima(payload);
           setChartData(res.data);
@@ -53,9 +38,16 @@ const ContinousStraddleMinimaChart = observer(({ symbol, expiry, title }) => {
 
     return () => clearInterval(intervalId);
   }, [symbol, expiry]);
+
   const options = useMemo(() => {
+    const chartHeight = modalVisible ? 800 : 300; // Adjusted height based on selectedChart
+
+    // const chartData1 = chartData.map((c) => ({
+    //   y: c.combined_premium,
+    //   strike: c.strike,
+    // }));
     const chartData1 = chartData.map((c) => ({
-      y: c.combined_premium,
+      y: c.strike === 0 || c.combined_premium === 0 ? null : c.combined_premium,
       strike: c.strike,
     }));
 
@@ -82,7 +74,7 @@ const ContinousStraddleMinimaChart = observer(({ symbol, expiry, title }) => {
       chart: {
         type: "scatter",
         backgroundColor: theme.palette.chart.cardColor,
-        height: 300,
+        height: chartHeight,
         style: {
           fontSize: "1.4rem",
         },
@@ -94,7 +86,6 @@ const ContinousStraddleMinimaChart = observer(({ symbol, expiry, title }) => {
         enabled: false,
       },
       title: {
-        // text: "Continuous Straddle Minima Chart",
         text: title,
         align: "center",
         style: {
@@ -109,7 +100,7 @@ const ContinousStraddleMinimaChart = observer(({ symbol, expiry, title }) => {
           formatter() {
             return DateTime.fromMillis(this.value)
               .setZone("Asia/Kolkata")
-              .toFormat("LLL dd hh:mm");
+              .toFormat("hh:mm");
           },
           style: {
             color: theme.palette.chart.headingColor,
@@ -130,7 +121,6 @@ const ContinousStraddleMinimaChart = observer(({ symbol, expiry, title }) => {
           },
           labels: {
             align: "",
-            // format: "{value}",
             style: {
               color: theme.palette.chart.headingColor,
             },
@@ -172,15 +162,15 @@ const ContinousStraddleMinimaChart = observer(({ symbol, expiry, title }) => {
           marker: {
             enabled: true,
             radius: 2,
-                symbol: 'circle',
+            symbol: "circle",
           },
-          dashStyle: 'Dot'
+          dashStyle: "Dot",
         },
       ],
     };
-  }, [theme, chartData]);
+  }, [theme, chartData, modalVisible, title]);
 
   return <HighchartsReact highcharts={Highcharts} options={options} />;
-});
+};
 
 export default ContinousStraddleMinimaChart;
