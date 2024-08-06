@@ -81,7 +81,7 @@ const Charttable = observer(() => {
     }
   });
 
-  console.log("sortedRowData", rowData);
+  // console.log("sortedRowData", rowData);
   return (
     <Card
       variant="outlined"

@@ -10,8 +10,55 @@ const ClusterIVLineChart = observer(
   ({ symbol, expiry, title, modalVisible }) => {
     const theme = useTheme();
     const chartRef = useRef(null);
+    const timeInterval = 60000;
 
-    function plotChart(chartData, categoriesData, tsData) {
+    // function plotChart(chartData, categoriesData, tsData) {
+    //   const seriesLength = chartRef.current.chart.series.length;
+    //   for (let j = 0; j < seriesLength; j += 1) {
+    //     chartRef.current.chart.series[0].remove(false, false, false);
+    //   }
+
+    //   for (let i = 0; i < chartData.length; i += 1) {
+    //     const elem = chartData[i];
+    //     const timeStamp = tsData[i];
+    //     chartRef.current.chart.addSeries(
+    //       {
+    //         name: `iv${i}`,
+    //         ...(i === 0
+    //           ? {
+    //               color: "#1d4ed8",
+    //               zIndex: 10,
+    //               lineWidth: 3,
+    //               dashStyle: "dot",
+    //             }
+    //           : i === chartData.length - 1
+    //             ? {
+    //                 color: "#fd7e14",
+    //                 zIndex: 10,
+    //                 lineWidth: 3,
+    //                 dashStyle: "dash",
+    //               }
+    //             : { color: colorList[i] }),
+    //         data: elem.map((iv) => ({ y: iv, timeStamp })),
+    //         marker: {
+    //           enabled: false,
+    //         },
+    //       },
+    //       false,
+    //       false
+    //     );
+    //   }
+    //   chartRef.current.chart.xAxis[0].update({
+    //     categories: categoriesData,
+    //   });
+
+    //   chartRef.current.chart.redraw();
+    // }
+
+    function plotChart(chartData, categoriesData, tsData, spot,symbol) {
+      // console.log("spot===>", spot);
+      // console.log("symbol",symbol)
+      // console.log("categoriesData",categoriesData)
       const seriesLength = chartRef.current.chart.series.length;
       for (let j = 0; j < seriesLength; j += 1) {
         chartRef.current.chart.series[0].remove(false, false, false);
@@ -47,6 +94,34 @@ const ClusterIVLineChart = observer(
           false
         );
       }
+
+      chartRef.current.chart.xAxis[0].removePlotLine("spot-line");
+
+      const spotIndex = categoriesData.findIndex(
+        (category) => 
+          // console.log(category),
+       parseFloat(category) === parseFloat(spot)
+      );
+
+      console.log("spotIndex", spotIndex);
+      if (spotIndex !== -1) {
+        chartRef.current.chart.xAxis[0].addPlotLine({
+          id: "spot-line", 
+          color: theme.palette.mode === "light" ? "black" : "white",
+          width: 2,
+          value: spotIndex, 
+          zIndex: 5,
+          label: {
+            text: `Spot: ${spot}`,
+            style: {
+              color: theme.palette.mode === "light" ? "black" : "white",
+            },
+            align: "left",
+            y: 12,
+          },
+        });
+      }
+
       chartRef.current.chart.xAxis[0].update({
         categories: categoriesData,
       });
@@ -61,13 +136,23 @@ const ClusterIVLineChart = observer(
             const payload = {
               symbol,
               expiry,
+              interval: timeInterval,
             };
             const { data: resp } = await chartApi.getStraddleCluster(payload);
             if (resp.strikes.length > 0) {
               const chartData = resp.iv;
               const categoriesData = resp.strikes;
+              
               const timeData = resp.ts.map((t) => t[0]);
-              plotChart(chartData, categoriesData, timeData);
+              const spot = resp.spot;
+              const symbol = resp.symbol;
+              const expiry = resp.expiry;
+
+              if (symbol[0] === "NIFTY" && expiry[0] == "2024-09-26"){
+                console.log("spot",spot)
+                console.log("categoriesDataOfNifty===>",categoriesData) 
+              }
+              plotChart(chartData, categoriesData, timeData, spot[0],symbol[0]);
               chartRef.current.chart.hideLoading();
             }
           } catch (error) {
