@@ -56,12 +56,22 @@ const StraddleMinima = observer(() => {
   }, [symbol, expiry]);
 
   const options = useMemo(() => {
+    // const chartData1 = chartData.map((c) => ({
+    //   y: c.combined_premium,
+    //   strike: c.strike,
+    // }));
+    // const chartData2 = chartData.map((c) => ({
+    //   y: c.combined_iv,
+    //   strike: c.strike,
+    // }));
+
     const chartData1 = chartData.map((c) => ({
-      y: c.combined_premium,
+      y: c.strike === 0 || c.combined_premium === 0 ? null : c.combined_premium,
       strike: c.strike,
     }));
+
     const chartData2 = chartData.map((c) => ({
-      y: c.combined_iv,
+      y: c.strike === 0 || c.combined_iv === 0 ? null : c.combined_iv,
       strike: c.strike,
     }));
     const categoriesData = chartData.map((c) => c.ts);
@@ -160,7 +170,7 @@ const StraddleMinima = observer(() => {
           const { strike } = this.points[0].point.options;
           return this.points.reduce(
             (s, point) => `${s} </br> ${point.series.name}: ${point.y}`,
-            `${date} </br> Strike: ${strike}`,
+            `${date} </br> Strike: ${strike}`
           );
         },
         backgroundColor: theme.palette.chart.cardColor,
@@ -202,7 +212,7 @@ const StraddleMinima = observer(() => {
             onChange={(e) => {
               setSymbol(e.target.value);
               setExpiry(
-                data.find((s) => s.name === e.target.value)?.expiry[0] ?? "",
+                data.find((s) => s.name === e.target.value)?.expiry[0] ?? ""
               );
             }}
           >

@@ -210,6 +210,13 @@ input:-webkit-autofill:active {
   padding: 1.06px;
 }
 
+@media only screen and (min-width: 992px) {
+  ::-webkit-scrollbar {
+      width: 8px;
+      height: 4px;
+      background-color: rgba(0, 0, 0, 0);
+  }
+}
 
 @tailwind components;
 @tailwind utilities;

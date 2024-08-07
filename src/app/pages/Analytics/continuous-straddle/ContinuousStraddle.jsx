@@ -56,8 +56,13 @@ const continuousStraddle = observer(() => {
   }, [symbol, expiry]);
 
   const options = useMemo(() => {
+    // const chartData1 = chartData.map((c) => ({
+    //   y: c.combined_premium,
+    //   strike: c.strike,
+    // }));
+
     const chartData1 = chartData.map((c) => ({
-      y: c.combined_premium,
+      y: c.strike === 0 || c.combined_premium === 0 ? null : c.combined_premium,
       strike: c.strike,
     }));
 

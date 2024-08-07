@@ -314,7 +314,8 @@ export default (mode) => {
         background: {
           // paper: "#283144",
           // default: "#1c222f",
-          paper: "#333333",
+          // paper: "#333333",
+          paper: "rgb(19, 23, 34)",
           default: "#1A1A1A",
         },
         error: {
