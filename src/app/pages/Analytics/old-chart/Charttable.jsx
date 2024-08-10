@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Card, CardContent, CardHeader } from "@mui/material";
-import { chartApi } from "../../../services/chart.service";
+import { Card } from "@mui/material";
+import { chartApiOld } from "../../../services/oldchart.service";
 import { useTheme } from "@mui/material";
 
 const Charttable = observer(() => {
@@ -13,7 +13,7 @@ const Charttable = observer(() => {
     const getContinousTableData = async () => {
       try {
         // Fetch data from your API
-        const res = await chartApi.getTableData();
+        const res = await chartApiOld.getTableData();
         // console.log("res.data", res.data);
         setFinancialData(res.data);
       } catch (error) {

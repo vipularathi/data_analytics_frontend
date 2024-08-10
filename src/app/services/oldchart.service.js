@@ -1,7 +1,7 @@
-import { CHART_BASE_URL } from "../utils/url";
+import { CHART_BASE_URL_OLD } from "../utils/url";
 import { BaseApi } from "./base.service";
 
-class ChartApi extends BaseApi {
+class ChartApiOld extends BaseApi {
   chartConfigUrl = {
     symbols: "symbol",
     straddleMinima: "straddle/minima",
@@ -10,7 +10,7 @@ class ChartApi extends BaseApi {
     tableData:"straddle/minima/table"
   };
   constructor() {
-    super(CHART_BASE_URL);
+    super(CHART_BASE_URL_OLD);
 }
   
 
@@ -43,4 +43,4 @@ class ChartApi extends BaseApi {
   }
 }
 
-export const chartApi = new ChartApi();
+export const chartApiOld = new ChartApiOld();

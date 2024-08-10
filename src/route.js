@@ -10,6 +10,7 @@ import { continuousStraddleRoute } from "./app/pages/Analytics/continuous-stradd
 import { straddleMinRoute } from "./app/pages/Analytics/straddle-minima/straddleMinimaConfig";
 import { customChartRoute } from "./app/pages/Analytics/custom/customConfig";
 import { dashboardRoute } from "./app/pages/dashboard/dashboardConfig";
+import { oldChartRoute } from "./app/pages/Analytics/old-chart/oldChartConfig";
 
 /*
  * Define the router Tree for adding children based on pages
@@ -25,6 +26,7 @@ const routeTree = rootRoute.addChildren([
     continuousStraddleRoute,
     straddleMinRoute,
     customChartRoute,
+    oldChartRoute
   ]),
   signUpRoute,
   forgetPasswordRoute,

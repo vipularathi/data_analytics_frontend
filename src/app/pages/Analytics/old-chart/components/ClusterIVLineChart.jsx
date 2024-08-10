@@ -13,9 +13,9 @@ const ClusterIVLineChart = observer(
     const timeInterval = 60000;
 
     function plotChart(chartData, categoriesData, tsData, spot,symbol) {
-      // console.log("spot===>", spot);
-      // console.log("symbol",symbol)
-      // console.log("categoriesData",categoriesData)
+      console.log("spot===>", spot);
+      console.log("symbol",symbol)
+      console.log("categoriesData",categoriesData)
       const seriesLength = chartRef.current.chart.series.length;
       for (let j = 0; j < seriesLength; j += 1) {
         chartRef.current.chart.series[0].remove(false, false, false);

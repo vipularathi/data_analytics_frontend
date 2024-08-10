@@ -36,9 +36,17 @@ const navigationConfig = [
   },
   {
     id: "customChart",
-    title: "Custom Chart",
+    title: "Custom Chart with Filter",
     icon: "circle",
     url: "/analytics/custom-chart",
+    type: "item",
+    active: false,
+  },
+  {
+    id: "oldChart",
+    title: "Custom Chart w/o Filter",
+    icon: "circle",
+    url: "/analytics/old-chart",
     type: "item",
     active: false,
   },

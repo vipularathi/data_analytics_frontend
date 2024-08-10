@@ -5,7 +5,9 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useTheme } from "@mui/material";
 import { DateTime } from "luxon";
-import { chartApi } from "../../../../services/chart.service";
+import { chartApiOld } from "../../../../services/oldchart.service";
+
+
 
 const ContinousStraddleMinimaChart = ({
   symbol,
@@ -28,7 +30,7 @@ const ContinousStraddleMinimaChart = ({
           };
 
           console.log("payload===>",payload)
-          const res = await chartApi.getStraddleMinima(payload);
+          const res = await chartApiOld.getStraddleMinima(payload);
           setChartData(res.data);
         } catch (error) {
           console.log(error);
