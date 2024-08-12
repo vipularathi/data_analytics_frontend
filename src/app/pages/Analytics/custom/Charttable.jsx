@@ -12,7 +12,7 @@ const Charttable = observer(() => {
   useEffect(() => {
     const getContinousTableData = async () => {
       try {
-        const res = await chartApiOld.getTableData();
+        const res = await chartApi.getTableData();
 
         if (res && res.data) {
           console.log("Fetched data:", res.data);
