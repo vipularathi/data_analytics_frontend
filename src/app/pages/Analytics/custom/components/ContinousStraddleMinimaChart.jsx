@@ -17,32 +17,36 @@ const ContinousStraddleMinimaChart = ({
   const theme = useTheme();
 
   useEffect(() => {
-    const getContinousStraddle = async () => {
+    const getContinuousStraddle = async () => {
       if (symbol && expiry) {
         try {
           const payload = {
             symbol,
             expiry,
             cont: true,
-            // interval: 1, //uncomment if interval b/w datapoint is not 1 min
+            // interval: 1, // Uncomment if interval between data points is not 1 min
           };
-
-          console.log("payload===>",payload)
+  
+          // console.log("payload===>", payload);
           const res = await chartApi.getStraddleMinima(payload);
-          setChartData(res.data);
+          if (res.data) {
+            setChartData(res.data);
+          } else {
+            console.warn("Received empty data:", res);
+          }
         } catch (error) {
-          console.log(error);
+          console.error("Error fetching continuous straddle data:", error);
         }
       }
     };
-
-    getContinousStraddle();
-
-    const intervalId = setInterval(getContinousStraddle, 60000);
-
-    return () => clearInterval(intervalId);
+  
+    getContinuousStraddle(); // Initial call
+  
+    const intervalId = setInterval(getContinuousStraddle, 60000); // Set up interval
+  
+    return () => clearInterval(intervalId); // Clean up interval on component unmount
   }, [symbol, expiry]);
-
+  
   const options = useMemo(() => {
     const chartHeight = modalVisible ? 800 : 300; // Adjusted height based on selectedChart
 

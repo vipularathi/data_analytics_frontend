@@ -12,12 +12,16 @@ const Charttable = observer(() => {
   useEffect(() => {
     const getContinousTableData = async () => {
       try {
-        // Fetch data from your API
-        const res = await chartApi.getTableData();
-        // console.log("res.data", res.data);
-        setFinancialData(res.data);
+        const res = await chartApiOld.getTableData();
+
+        if (res && res.data) {
+          console.log("Fetched data:", res.data);
+          setFinancialData(res.data);
+        } else {
+          console.warn("Received no data or response:", res);
+        }
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching table data:", error);
       }
     };
 
@@ -27,6 +31,7 @@ const Charttable = observer(() => {
 
     return () => clearInterval(intervalId);
   }, []);
+  
 
   const keyMapping = {
     NIFTY_CW: "NF CW",
