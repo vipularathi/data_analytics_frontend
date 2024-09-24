@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useMemo, useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
@@ -26,7 +24,7 @@ const ContinousStraddleMinimaChart = ({
             cont: true,
             // interval: 1, // Uncomment if interval between data points is not 1 min
           };
-  
+
           // console.log("payload===>", payload);
           const res = await chartApi.getStraddleMinima(payload);
           if (res.data) {
@@ -39,16 +37,16 @@ const ContinousStraddleMinimaChart = ({
         }
       }
     };
-  
+
     getContinuousStraddle(); // Initial call
-  
-    const intervalId = setInterval(getContinuousStraddle, 60000); // Set up interval
-  
-    return () => clearInterval(intervalId); // Clean up interval on component unmount
+
+    const intervalId = setInterval(getContinuousStraddle, 60000);
+
+    return () => clearInterval(intervalId);
   }, [symbol, expiry]);
-  
+
   const options = useMemo(() => {
-    const chartHeight = modalVisible ? 800 : 300; // Adjusted height based on selectedChart
+    const chartHeight = modalVisible ? 700 : 300;
 
     // const chartData1 = chartData.map((c) => ({
     //   y: c.combined_premium,
@@ -178,7 +176,18 @@ const ContinousStraddleMinimaChart = ({
     };
   }, [theme, chartData, modalVisible, title]);
 
-  return <HighchartsReact highcharts={Highcharts} options={options} />;
+  const modalStyleBorder = {
+    position: "relative",
+    border: modalVisible ? "2px solid" : "none",
+    padding: modalVisible ? "10px" : "0",
+    backgroundColor: "grey",
+  };
+
+  return (
+    <div style={modalStyleBorder}>
+      <HighchartsReact highcharts={Highcharts} options={options} />
+    </div>
+  );
 };
 
 export default ContinousStraddleMinimaChart;

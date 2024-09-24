@@ -6,6 +6,8 @@ import ContinousStraddleMinimaChart from "./components/ContinousStraddleMinimaCh
 import ClusterIVLineChart from "./components/ClusterIVLineChart";
 import "../../../.././index.css";
 import ChartTable from "./Charttable";
+import Draggable from "react-draggable";
+
 
 const CustomChart = observer(() => {
   const data = useLoaderData({ select: (d) => d });
@@ -173,10 +175,20 @@ const CustomChart = observer(() => {
     setSelectedChart(null);
   }, []);
 
+
+  const modalStyle = {
+    padding: 20,
+    width: "80%",
+    // height: "80%",
+    // marginBottom: modalVisible ? "1%" : ""
+  }
+
   const renderChart = useCallback((chart) => {
     if (!chart) {
       return null;
     }
+
+
 
     switch (chart.chartName) {
       case "continusStraddleMinima":
@@ -284,7 +296,8 @@ const CustomChart = observer(() => {
         {renderCharts(9, chartSettings.length)}
       </div>
 
-      <Modal
+<Draggable>
+<Modal
         open={modalVisible}
         onClose={closeModal}
         aria-labelledby="chart-modal-title"
@@ -297,19 +310,15 @@ const CustomChart = observer(() => {
         }}
       >
         <div
-          style={{
-            padding: 20,
-            width: "80%",
-            height: "80%",
-            // maxWidth: "1400px",
-            // maxHeight: "1000px",
-          }}
+          style={modalStyle}
         >
           <div style={{ width: "100%", height: "100%" }}>
             {renderModalContent()}
           </div>
         </div>
       </Modal>
+</Draggable>
+     
     </div>
   );
 });

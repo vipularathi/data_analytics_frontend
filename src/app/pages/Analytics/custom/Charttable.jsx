@@ -70,7 +70,7 @@ const Charttable = observer(() => {
       variant="outlined"
       // sx={{ backgroundColor: (theme) => theme.palette.background.paper }}
       className="shadow-2"
-      style={{ overflowX: "auto" }}
+      style={{ overflowX: "auto", border:"2px solid",padding:"10px" }}
     >
       {theme.palette.mode == "light" ? (
         <table className="custom-table">

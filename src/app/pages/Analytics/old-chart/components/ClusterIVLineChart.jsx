@@ -1,21 +1,27 @@
 import { observer } from "mobx-react-lite";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "@mui/material";
 import { colorList } from "../../../../utils/constant/colorList";
 import { chartApi } from "../../../../services/chart.service";
+import { Button } from "@mui/material";
+import { Play, Pause } from "lucide-react";
 
 const ClusterIVLineChart = observer(
   ({ symbol, expiry, title, modalVisible }) => {
     const theme = useTheme();
     const chartRef = useRef(null);
-    const timeInterval = 60000;
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [currentPoint, setCurrentPoint] = useState(0);
+    const [chartDataAll, setChartData] = useState([]);
+    const [categoriesData, setCategoriesData] = useState([]);
+    const [timeData, setTimeData] = useState([]);
+    const [spot, setSpot] = useState(null);
+    const [sliceData, setSliceData] = useState([]);
 
-    function plotChart(chartData, categoriesData, tsData, spot,symbol) {
-      console.log("spot===>", spot);
-      console.log("symbol",symbol)
-      console.log("categoriesData",categoriesData)
+    function plotChart(chartData, categoriesData, tsData, spot, symbol) {
+      // console.log("chartData===>", chartData);
       const seriesLength = chartRef.current.chart.series.length;
       for (let j = 0; j < seriesLength; j += 1) {
         chartRef.current.chart.series[0].remove(false, false, false);
@@ -55,18 +61,16 @@ const ClusterIVLineChart = observer(
       chartRef.current.chart.xAxis[0].removePlotLine("spot-line");
 
       const spotIndex = categoriesData.findIndex(
-        (category) => 
-          // console.log(category),
-       parseFloat(category) === parseFloat(spot)
+        (category) => parseFloat(category) === parseFloat(spot)
       );
 
-      // console.log("spotIndex", spotIndex);
+      // Used for plot spot index(vertical line {spot})
       if (spotIndex !== -1) {
         chartRef.current.chart.xAxis[0].addPlotLine({
-          id: "spot-line", 
+          id: "spot-line",
           color: theme.palette.mode === "light" ? "black" : "white",
           width: 2,
-          value: spotIndex, 
+          value: spotIndex,
           zIndex: 5,
           label: {
             text: `Spot: ${spot}`,
@@ -98,17 +102,42 @@ const ClusterIVLineChart = observer(
             if (resp.strikes.length > 0) {
               const chartData = resp.iv;
               const categoriesData = resp.strikes;
-              
+
               const timeData = resp.ts.map((t) => t[0]);
               const spot = resp.spot;
               const symbol = resp.symbol;
               const expiry = resp.expiry;
 
-              // if (symbol[0] === "NIFTY" && expiry[0] == "2024-09-26"){
-              //   // console.log("spot",spot)
-              //   // console.log("categoriesDataOfNifty===>",categoriesData) 
-              // }
-              plotChart(chartData, categoriesData, timeData, spot[0],symbol[0]);
+              // Used to fix the y axis
+              const allDataPoints = chartData.flat();
+              let calculatedYMin = Math.floor(Math.min(...allDataPoints));
+              let calculatedYMax = Math.ceil(Math.max(...allDataPoints));
+              // console.log("yMin=>", calculatedYMin);
+              // console.log("yMax=>", calculatedYMax);
+
+              chartRef.current.chart.yAxis[0].update({
+                min: calculatedYMin,
+                max: calculatedYMax,
+              });
+
+              if (sliceData.length === 0) {
+                setChartData(chartData);
+                setCategoriesData(categoriesData);
+                setTimeData(timeData);
+                setSpot(spot);
+              }
+
+              if (!modalVisible) {
+                setSliceData([]);
+              }
+
+              plotChart(
+                chartData,
+                categoriesData,
+                timeData,
+                spot[0],
+                symbol[0]
+              );
               chartRef.current.chart.hideLoading();
             }
           } catch (error) {
@@ -128,14 +157,44 @@ const ClusterIVLineChart = observer(
       }, 60000);
 
       return () => clearInterval(intervalId);
-    }, [symbol, expiry, theme.palette.mode, modalVisible]);
+    }, [symbol, expiry, theme.palette.mode]);
+
+    useEffect(() => {
+      let playIntervalId;
+
+      if (isPlaying && modalVisible) {
+        playIntervalId = setInterval(() => {
+          setCurrentPoint((prevPoint) => {
+            if (prevPoint <= chartDataAll.length - 1) {
+              const newSliceData = chartDataAll.slice(0, prevPoint + 1);
+              setSliceData(newSliceData);
+
+              return prevPoint + 1;
+            } else {
+              clearInterval(playIntervalId);
+              setIsPlaying(false);
+              setCurrentPoint(0);
+              return prevPoint;
+            }
+          });
+        }, 1000);
+      }
+
+      return () => clearInterval(playIntervalId);
+    }, [isPlaying, modalVisible, chartDataAll]);
+
+    useEffect(() => {
+      if (sliceData.length > 0) {
+        plotChart(sliceData, categoriesData, timeData, spot, symbol);
+      }
+    }, [sliceData, categoriesData, timeData, spot, symbol]);
 
     const options = useMemo(
       () => ({
         chart: {
           type: "line",
           backgroundColor: theme.palette.chart.cardColor,
-          height: modalVisible ? 800 : 300,
+          height: modalVisible ? 700 : 300,
           style: {
             fontSize: "1.4rem",
           },
@@ -201,6 +260,8 @@ const ClusterIVLineChart = observer(
               color: theme.palette.chart.headingColor,
             },
           },
+          // min: yMin,
+          // max: yMax,
         },
         legend: {
           enabled: false,
@@ -210,7 +271,7 @@ const ClusterIVLineChart = observer(
         },
         tooltip: {
           enabled: true,
-          shared: false, // This ensures only the selected line's data is shown
+          shared: false,
           formatter() {
             const point = this.point;
             const date = point.options.timeStamp.replace("T", " ");
@@ -229,12 +290,39 @@ const ClusterIVLineChart = observer(
       [theme, modalVisible, title]
     );
 
+    const modalStyleBorder = {
+      position: "relative",
+      border: modalVisible ? "2px solid" : "none",
+      padding: modalVisible ? "10px" : "0",
+      backgroundColor: "grey",
+    };
+
     return (
-      <HighchartsReact
-        ref={chartRef}
-        highcharts={Highcharts}
-        options={options}
-      />
+      <div style={modalStyleBorder}>
+        {modalVisible && (
+          <Button
+            variant="contained"
+            color={isPlaying ? "secondary" : "primary"}
+            onClick={() => setIsPlaying((prev) => !prev)}
+            style={{
+              bottom: "5px",
+              left: "95%",
+              backgroundColor: "red",
+            }}
+          >
+            {isPlaying ? (
+              <Pause style={{ width: "17px", height: "17px" }} />
+            ) : (
+              <Play style={{ width: "17px", height: "17px" }} />
+            )}
+          </Button>
+        )}
+        <HighchartsReact
+          ref={chartRef}
+          highcharts={Highcharts}
+          options={options}
+        />
+      </div>
     );
   }
 );

@@ -1,3 +1,2 @@
-D:
-cd \iv_charts_4\dfgf\analytics-dashboard_new\
+cd C:\Users\colo\iv_charts\final_data_analytics_frontend
 npm run dev

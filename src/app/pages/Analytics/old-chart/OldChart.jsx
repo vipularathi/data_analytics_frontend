@@ -6,6 +6,7 @@ import ContinousStraddleMinimaChart from "./components/ContinousStraddleMinimaCh
 import ClusterIVLineChart from "./components/ClusterIVLineChart";
 import "../../../.././index.css";
 import ChartTable from "./Charttable";
+import Draggable from "react-draggable";
 
 const OldChart = observer(() => {
   const data = useLoaderData({ select: (d) => d });
@@ -249,6 +250,13 @@ const OldChart = observer(() => {
     }
   }, [selectedChart]);
 
+  const modalStyle = {
+    padding: 20,
+    width: "80%",
+    // height: "80%",
+    // marginBottom: modalVisible ? "3%" : ""
+  }
+
   return (
     <div className="sm:px-16" style={{ overflow: "hidden" }}>
       <div
@@ -284,32 +292,29 @@ const OldChart = observer(() => {
         {renderCharts(9, chartSettings.length)}
       </div>
 
-      <Modal
-        open={modalVisible}
-        onClose={closeModal}
-        aria-labelledby="chart-modal-title"
-        aria-describedby="chart-modal-description"
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "transparent",
-        }}
+      <Draggable
       >
-        <div
-          style={{
-            padding: 20,
-            width: "80%",
-            height: "80%",
-            // maxWidth: "1400px",
-            // maxHeight: "1000px",
+        <Modal
+          open={modalVisible}
+          onClose={closeModal}
+          aria-labelledby="chart-modal-title"
+          aria-describedby="chart-modal-description"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "transparent",
           }}
         >
-          <div style={{ width: "100%", height: "100%" }}>
-            {renderModalContent()}
+          <div
+             style={modalStyle}
+          >
+            <div style={{ width: "100%", height: "100%" }}>
+              {renderModalContent()}
+            </div>
           </div>
-        </div>
-      </Modal>
+        </Modal>
+      </Draggable>
     </div>
   );
 });
