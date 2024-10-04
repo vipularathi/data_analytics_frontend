@@ -31,7 +31,6 @@ const Charttable = observer(() => {
 
     return () => clearInterval(intervalId);
   }, []);
-  
 
   const keyMapping = {
     NIFTY_CW: "NF CW",
@@ -44,7 +43,7 @@ const Charttable = observer(() => {
 
   Object.keys(keyMapping).forEach((indexKey) => {
     const newIndexKey = keyMapping[indexKey];
-// console.log("financialData=====>",financialData)
+    // console.log("financialData=====>",financialData)
     if (Array.isArray(financialData)) {
       const indexData = financialData.find(
         (item) => Object.keys(item)[0] === indexKey
@@ -58,6 +57,8 @@ const Charttable = observer(() => {
           maxLive: indexMetrics["Max-Live"],
           max: indexMetrics.Max,
           min: indexMetrics.Min,
+          col_live_min: indexMetrics.col_live_min,
+          col_max_live: indexMetrics.col_max_live,
         });
       }
     } else {
@@ -70,7 +71,7 @@ const Charttable = observer(() => {
       variant="outlined"
       // sx={{ backgroundColor: (theme) => theme.palette.background.paper }}
       className="shadow-2"
-      style={{ overflowX: "auto", border:"2px solid",padding:"10px" }}
+      style={{ overflowX: "auto" }}
     >
       {theme.palette.mode == "light" ? (
         <table className="custom-table">
@@ -91,8 +92,12 @@ const Charttable = observer(() => {
                   {row.straddle}
                 </td>
                 <td>{row.live}</td>
-                <td>{row.liveMin}</td>
-                <td>{row.maxLive}</td>
+                <td style={{ backgroundColor: row.col_live_min }}>
+                  {row.liveMin}
+                </td>
+                <td style={{ backgroundColor: row.col_max_live }}>
+                  {row.maxLive}
+                </td>
                 <td>{row.max}</td>
                 <td>{row.min}</td>
               </tr>
@@ -118,8 +123,12 @@ const Charttable = observer(() => {
                   {row.straddle}
                 </td>
                 <td>{row.live}</td>
-                <td>{row.liveMin}</td>
-                <td>{row.maxLive}</td>
+                <td style={{ backgroundColor: row.col_live_min,color:"black" }}>
+                  {row.liveMin}
+                </td>
+                <td style={{ backgroundColor: row.col_max_live,color:"black" }}>
+                  {row.maxLive}
+                </td>
                 <td>{row.max}</td>
                 <td>{row.min}</td>
               </tr>

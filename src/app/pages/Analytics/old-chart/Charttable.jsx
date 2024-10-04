@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Card } from "@mui/material";
-import { chartApiOld } from "../../../services/oldchart.service";
+import { Card, CardContent, CardHeader } from "@mui/material";
+import { chartApi } from "../../../services/chart.service";
 import { useTheme } from "@mui/material";
 
 const Charttable = observer(() => {
@@ -12,7 +12,7 @@ const Charttable = observer(() => {
   useEffect(() => {
     const getContinousTableData = async () => {
       try {
-        const res = await chartApiOld.getTableData();
+        const res = await chartApi.getTableData();
 
         if (res && res.data) {
           console.log("Fetched data:", res.data);
@@ -57,6 +57,8 @@ const Charttable = observer(() => {
           maxLive: indexMetrics["Max-Live"],
           max: indexMetrics.Max,
           min: indexMetrics.Min,
+          col_live_min: indexMetrics.col_live_min,
+          col_max_live: indexMetrics.col_max_live,
         });
       }
     } else {
@@ -69,7 +71,7 @@ const Charttable = observer(() => {
       variant="outlined"
       // sx={{ backgroundColor: (theme) => theme.palette.background.paper }}
       className="shadow-2"
-      style={{ overflowX: "auto", border:"2px solid",padding:"10px" }}
+      style={{ overflowX: "auto" }}
     >
       {theme.palette.mode == "light" ? (
         <table className="custom-table">
@@ -90,8 +92,12 @@ const Charttable = observer(() => {
                   {row.straddle}
                 </td>
                 <td>{row.live}</td>
-                <td>{row.liveMin}</td>
-                <td>{row.maxLive}</td>
+                <td style={{ backgroundColor: row.col_live_min }}>
+                  {row.liveMin}
+                </td>
+                <td style={{ backgroundColor: row.col_max_live }}>
+                  {row.maxLive}
+                </td>
                 <td>{row.max}</td>
                 <td>{row.min}</td>
               </tr>
@@ -117,8 +123,12 @@ const Charttable = observer(() => {
                   {row.straddle}
                 </td>
                 <td>{row.live}</td>
-                <td>{row.liveMin}</td>
-                <td>{row.maxLive}</td>
+                <td style={{ backgroundColor: row.col_live_min,color:"black" }}>
+                  {row.liveMin}
+                </td>
+                <td style={{ backgroundColor: row.col_max_live,color:"black" }}>
+                  {row.maxLive}
+                </td>
                 <td>{row.max}</td>
                 <td>{row.min}</td>
               </tr>

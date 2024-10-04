@@ -229,7 +229,7 @@ export const darkPaletteText = {
  
 export default (mode) => {
   const palettes = {
-    default: {
+    defaultDark: {
       palette: {
         mode: "light",
         divider: "#e2e8f0",
@@ -248,9 +248,6 @@ export default (mode) => {
           light: "#818cf8",
           main: "#4f46e5",
           dark: "#3730a3",
-          // light: "rgb(125,122,255)",
-          // main: "rgb(88,86,214)",
-          // dark: "rgb(54,52,163)",
           contrastText: "rgb(255, 255, 255)",
         },
         chart: {
@@ -287,7 +284,7 @@ export default (mode) => {
         },
       },
     },
-    defaultDark: {
+    default: {
       palette: {
         mode: "dark",
         divider: "rgba(241,245,249,.12)",
@@ -303,18 +300,12 @@ export default (mode) => {
           contrastText: darkPaletteText.primary,
         },
         secondary: {
-          // light: "#818cf8",
-          // main: "#4f46e5",
-          // dark: "#3730a3",
           light: "rgb(134,132,236)",
           main: "rgb(94,92,230)",
           dark: "rgb(53,49,223)",
           contrastText: darkPaletteText.primary,
         },
         background: {
-          // paper: "#283144",
-          // default: "#1c222f",
-          // paper: "#333333",
           paper: "rgb(19, 23, 34)",
           default: "#1A1A1A",
         },
@@ -325,8 +316,8 @@ export default (mode) => {
         },
         chart: {
           borderColor: "#36445d",
-          cardColor: "#131722", // 283144
-          headingColor: "#d1d4dc", // d8deea
+          cardColor: "#131722", 
+          headingColor: "#d1d4dc", 
         },
         chipColor: {
           bgColor: {
