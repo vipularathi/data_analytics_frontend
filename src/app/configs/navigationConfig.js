@@ -2,14 +2,14 @@
  * The navigationConfig object is an array of navigation items for the Fuse application.
  */
 const navigationConfig = [
-  {
-    id: "straddleMinima",
-    title: "Straddle Minima & IV",
-    icon: "circle",
-    url: "/analytics/straddle-minima",
-    type: "item",
-    active: false,
-  },
+  // {
+  //   id: "straddleMinima",
+  //   title: "Straddle Minima & IV",
+  //   icon: "circle",
+  //   url: "/analytics/straddle-minima",
+  //   type: "item",
+  //   active: false,
+  // },
   {
     id: "continuosStraddleMinima",
     title: "Continuous Straddle Minima",
@@ -18,14 +18,14 @@ const navigationConfig = [
     type: "item",
     active: false,
   },
-  {
-    id: "cluster",
-    title: "Cluster IV",
-    icon: "circle",
-    url: "/analytics/cluster-iv",
-    type: "item",
-    active: false,
-  },
+  // {
+  //   id: "cluster",
+  //   title: "Cluster IV",
+  //   icon: "circle",
+  //   url: "/analytics/cluster-iv",
+  //   type: "item",
+  //   active: false,
+  // },
   {
     id: "clusterLine",
     title: "Cluster IV Line",
