@@ -34,11 +34,11 @@ const Charttable = observer(() => {
 
   const keyMapping = {
     NIFTY_CW: "NF CW",
-    BANKNIFTY_CW: "BN CW",
-    MIDCPNIFTY: "MD CW",
-    FINNIFTY: "FN CW",
+    BANKNIFTY_CW: "BN CM",
+    MIDCPNIFTY: "MD CM",
+    FINNIFTY: "FN CM",
     NIFTY_NW: "NF NW",
-    BANKNIFTY_NW: "BN NW",
+    BANKNIFTY_NW: "BN NM",
   };
 
   Object.keys(keyMapping).forEach((indexKey) => {

@@ -37,7 +37,7 @@ const OldChart = observer(() => {
         expiryName: "Current Week",
         expiry: expirys("BANKNIFTY")[0],
         chartName: "continusStraddleMinima",
-        title: "BN CW",
+        title: "BN CM",
       },
       {
         id: 2,
@@ -45,7 +45,7 @@ const OldChart = observer(() => {
         expiryName: "Current Week",
         expiry: expirys("FINNIFTY")[0],
         chartName: "continusStraddleMinima",
-        title: "FN CW",
+        title: "FN CM",
       },
       {
         id: 3,
@@ -61,7 +61,7 @@ const OldChart = observer(() => {
         expiryName: "Next Week",
         expiry: expirys("BANKNIFTY")[1],
         chartName: "continusStraddleMinima",
-        title: "BN NW",
+        title: "BN NM",
       },
       {
         id: 5,
@@ -69,7 +69,7 @@ const OldChart = observer(() => {
         expiryName: "Current Week",
         expiry: expirys("MIDCPNIFTY")[0],
         chartName: "continusStraddleMinima",
-        title: "MN CW",
+        title: "MN CM",
       },
       {
         id: 6,
@@ -85,7 +85,7 @@ const OldChart = observer(() => {
         expiryName: "Next Week",
         expiry: expirys("BANKNIFTY")[1],
         chartName: "clusterIVLine",
-        title: "BN NW",
+        title: "BN NM",
       },
       {
         id: 8,
@@ -109,7 +109,7 @@ const OldChart = observer(() => {
         expiryName: "Current Week",
         expiry: expirys("BANKNIFTY")[0],
         chartName: "clusterIVLine",
-        title: "BN CW",
+        title: "BN CM",
       },
       {
         id: 11,
@@ -117,7 +117,7 @@ const OldChart = observer(() => {
         expiryName: "Current Week",
         expiry: expirys("FINNIFTY")[0],
         chartName: "clusterIVLine",
-        title: "FN CW",
+        title: "FN CM",
       },
       {
         id: 12,
@@ -125,7 +125,7 @@ const OldChart = observer(() => {
         expiryName: "Current Week",
         expiry: expirys("MIDCPNIFTY")[0],
         chartName: "clusterIVLine",
-        title: "MN CW",
+        title: "MN CM",
       },
       {
         id: 13,
